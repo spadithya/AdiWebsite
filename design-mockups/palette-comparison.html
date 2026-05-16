@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Palette Comparison — Future Nostalgia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400&family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #1A1A1A;
+    color: #E8E9F0;
+    padding: 3rem 2rem;
+    min-height: 100vh;
+  }
+  .page-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 0.4rem;
+  }
+  .page-sub {
+    text-align: center;
+    color: #888;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin-bottom: 3rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Each palette card */
+  .palette {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333;
+  }
+  .palette-header {
+    padding: 1rem 1.25rem;
+    background: #222;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .palette-header h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .palette-header .id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.1em;
+  }
+  .swatches {
+    display: flex;
+    height: 32px;
+  }
+  .swatches div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Sample area inside each palette */
+  .sample {
+    padding: 2rem 1.5rem;
+    min-height: 320px;
+    position: relative;
+  }
+  .sample.scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px);
+    pointer-events: none;
+  }
+  .sample .tag {
+    display: inline-block;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    padding: 6px 8px;
+    border: 1px solid;
+    margin-bottom: 1.2rem;
+  }
+  .sample h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+  .sample .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    margin-bottom: 1.5rem;
+  }
+  .sample .row {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-top: 1px solid;
+    font-size: 13px;
+  }
+  .sample .row .yr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .sample .row .ttl {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+  }
+
+  /* === Palette 1: Synthwave Magenta (CURRENT) === */
+  .p1 .sample { background: #0A0E1A; }
+  .p1 .sample, .p1 .sample .ttl { color: #E8E9F0; }
+  .p1 .sample .tag { color: #FF3B7C; border-color: #2D3658; }
+  .p1 .sample .accent { color: #FF3B7C; text-shadow: 0 0 16px rgba(255,59,124,0.3); }
+  .p1 .sample .sub { color: #4DE5FF; }
+  .p1 .sample .row { border-color: #232A45; }
+  .p1 .sample .row .yr { color: #FF3B7C; }
+
+  /* === Palette 2: Sunset Synthwave === */
+  .p2 .sample { background: #140B24; }
+  .p2 .sample, .p2 .sample .ttl { color: #F5E6D3; }
+  .p2 .sample .tag { color: #FF8552; border-color: #3D2654; }
+  .p2 .sample .accent { color: #FF4D8D; text-shadow: 0 0 18px rgba(255,77,141,0.4); }
+  .p2 .sample .sub { color: #FF8552; }
+  .p2 .sample .row { border-color: #2D1F3E; }
+  .p2 .sample .row .yr { color: #FFB347; }
+
+  /* === Palette 3: CRT Phosphor === */
+  .p3 .sample { background: #0A0F0A; }
+  .p3 .sample, .p3 .sample .ttl { color: #C8E6C8; }
+  .p3 .sample .tag { color: #5BFF85; border-color: #1F3320; }
+  .p3 .sample .accent { color: #5BFF85; text-shadow: 0 0 16px rgba(91,255,133,0.45); }
+  .p3 .sample .sub { color: #FFB347; }
+  .p3 .sample .row { border-color: #1A2A1A; }
+  .p3 .sample .row .yr { color: #FFB347; }
+
+  /* === Palette 4: Game Boy DMG Modern === */
+  .p4 .sample { background: #DAD3B8; }
+  .p4 .sample, .p4 .sample .ttl { color: #1F2A14; }
+  .p4 .sample .tag { color: #5A6B3F; border-color: #5A6B3F; background: #C7C098; }
+  .p4 .sample .accent { color: #5A6B3F; }
+  .p4 .sample .sub { color: #5A6B3F; }
+  .p4 .sample .row { border-color: #B5AE91; }
+  .p4 .sample .row .yr { color: #8B6B2B; }
+
+  .palette-note {
+    padding: 0.8rem 1.25rem;
+    background: #1A1A1A;
+    border-top: 1px solid #333;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Pick a palette</h1>
+<p class="page-sub">Four directions, same retro-modern bones.</p>
+
+<div class="grid">
+
+  <!-- Palette 1: Synthwave Magenta (current) -->
+  <div class="palette p1">
+    <div class="palette-header">
+      <h3>1 · Synthwave Magenta</h3>
+      <span class="id">CURRENT</span>
+    </div>
+    <div class="swatches">
+      <div style="background:#0A0E1A; color:#E8E9F0">#0A0E1A</div>
+      <div style="background:#FF3B7C; color:#fff">#FF3B7C</div>
+      <div style="background:#4DE5FF; color:#0A0E1A">#4DE5FF</div>
+      <div style="background:#FFD15C; color:#0A0E1A">#FFD15C</div>
+    </div>
+    <div class="sample scanlines">
+      <span class="tag">PLAYER 01 // READY</span>
+      <h2>Adithya<br/><span class="accent">Shyamala</span></h2>
+      <div class="sub">&gt; ELECTRICAL_ENGINEER.exe</div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">CMOS Imaging Sensor</span></div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">NES + Game Boy Builds</span></div>
+      <div class="row"><span class="yr">2021</span><span class="ttl">Aerosol Mitigation</span></div>
+    </div>
+    <div class="palette-note">Bold + electric. Currently in v2 mockup. Classic 80s synthwave but disciplined.</div>
+  </div>
+
+  <!-- Palette 2: Sunset Synthwave -->
+  <div class="palette p2">
+    <div class="palette-header">
+      <h3>2 · Sunset Synthwave</h3>
+      <span class="id">WARMER</span>
+    </div>
+    <div class="swatches">
+      <div style="background:#140B24; color:#F5E6D3">#140B24</div>
+      <div style="background:#FF4D8D; color:#fff">#FF4D8D</div>
+      <div style="background:#FF8552; color:#140B24">#FF8552</div>
+      <div style="background:#FFB347; color:#140B24">#FFB347</div>
+    </div>
+    <div class="sample scanlines">
+      <span class="tag">PLAYER 01 // READY</span>
+      <h2>Adithya<br/><span class="accent">Shyamala</span></h2>
+      <div class="sub">&gt; ELECTRICAL_ENGINEER.exe</div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">CMOS Imaging Sensor</span></div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">NES + Game Boy Builds</span></div>
+      <div class="row"><span class="yr">2021</span><span class="ttl">Aerosol Mitigation</span></div>
+    </div>
+    <div class="palette-note">Miami sunset. Drops cyan for orange/amber. Warmer, less "neon arcade," more "vinyl record cover."</div>
+  </div>
+
+  <!-- Palette 3: CRT Phosphor -->
+  <div class="palette p3">
+    <div class="palette-header">
+      <h3>3 · CRT Phosphor</h3>
+      <span class="id">TERMINAL</span>
+    </div>
+    <div class="swatches">
+      <div style="background:#0A0F0A; color:#C8E6C8">#0A0F0A</div>
+      <div style="background:#5BFF85; color:#0A0F0A">#5BFF85</div>
+      <div style="background:#FFB347; color:#0A0F0A">#FFB347</div>
+      <div style="background:#C8E6C8; color:#0A0F0A">#C8E6C8</div>
+    </div>
+    <div class="sample scanlines">
+      <span class="tag">SYSTEM ONLINE</span>
+      <h2>Adithya<br/><span class="accent">Shyamala</span></h2>
+      <div class="sub">&gt; ELECTRICAL_ENGINEER.exe</div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">CMOS Imaging Sensor</span></div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">NES + Game Boy Builds</span></div>
+      <div class="row"><span class="yr">2021</span><span class="ttl">Aerosol Mitigation</span></div>
+    </div>
+    <div class="palette-note">Old IBM monitor / Apple ][ vibe. Phosphor green + amber. Reads more "engineer's terminal" than "arcade." Authentic to your hardware work.</div>
+  </div>
+
+  <!-- Palette 4: Game Boy DMG Modern -->
+  <div class="palette p4">
+    <div class="palette-header">
+      <h3>4 · Game Boy DMG</h3>
+      <span class="id">LIGHT MODE</span>
+    </div>
+    <div class="swatches">
+      <div style="background:#DAD3B8; color:#1F2A14">#DAD3B8</div>
+      <div style="background:#5A6B3F; color:#DAD3B8">#5A6B3F</div>
+      <div style="background:#1F2A14; color:#DAD3B8">#1F2A14</div>
+      <div style="background:#8B6B2B; color:#DAD3B8">#8B6B2B</div>
+    </div>
+    <div class="sample">
+      <span class="tag">PLAYER 01 · READY</span>
+      <h2>Adithya<br/><span class="accent">Shyamala</span></h2>
+      <div class="sub">&gt; ELECTRICAL_ENGINEER.exe</div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">CMOS Imaging Sensor</span></div>
+      <div class="row"><span class="yr">2024</span><span class="ttl">NES + Game Boy Builds</span></div>
+      <div class="row"><span class="yr">2021</span><span class="ttl">Aerosol Mitigation</span></div>
+    </div>
+    <div class="palette-note">Direct Game Boy DMG colors, but used in a modern way. Light, parchment-feel, prints beautifully. Quietest of the four — looks great in screenshots and on a recruiter's screen.</div>
+  </div>
+
+</div>
+
+</body>
+</html>

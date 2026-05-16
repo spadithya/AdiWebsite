@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adithya Shyamala Pandian — Aesthetic Mockup v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Catamaran:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #F8F2E6;
+    --cream-deep: #F1E9D6;
+    --ink: #1A1814;
+    --muted: #5C544A;
+    --line: #DDD2BD;
+    --indigo: #1F3A5F;
+    --terracotta: #B85932;
+    --saffron: #D49B3F;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+  /* Nav */
+  nav {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  nav .mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  nav ul { display: flex; gap: 2.5rem; list-style: none; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--terracotta); }
+
+  /* Hero */
+  .hero { padding: 6rem 0 4rem; text-align: center; position: relative; }
+  .hero .tamil {
+    font-family: 'Catamaran', sans-serif;
+    font-size: 28px;
+    color: var(--terracotta);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.04em;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--indigo);
+  }
+  .hero .tagline {
+    font-size: 16px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .hero .meta {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .hero .meta span { margin: 0 0.6rem; color: var(--terracotta); }
+
+  /* Ornament divider */
+  .ornament {
+    display: flex; justify-content: center; align-items: center;
+    margin: 4rem 0;
+    color: var(--terracotta);
+  }
+  .ornament .line { flex: 1; height: 1px; background: var(--line); max-width: 200px; }
+  .ornament svg { margin: 0 1.5rem; }
+
+  /* Section heading */
+  section { padding: 3rem 0; }
+  .section-label {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 2.5rem;
+    line-height: 1.2;
+  }
+  .section-title em { font-style: italic; color: var(--indigo); }
+
+  /* About */
+  .about p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--ink);
+    max-width: 680px;
+    margin-bottom: 1.2rem;
+  }
+  .about p.smaller {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* Projects */
+  .projects { display: grid; gap: 0; }
+  .project {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 2rem;
+    align-items: baseline;
+    padding: 2rem 0;
+    border-top: 1px solid var(--line);
+    transition: padding-left 0.3s;
+  }
+  .project:hover { padding-left: 1rem; }
+  .project:last-child { border-bottom: 1px solid var(--line); }
+  .project .year {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--terracotta);
+  }
+  .project .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .project .desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 540px;
+  }
+  .project .arrow {
+    color: var(--indigo);
+    font-size: 20px;
+    transition: transform 0.3s;
+  }
+  .project:hover .arrow { transform: translateX(8px); }
+
+  /* Publications strip */
+  .pubs { background: var(--cream-deep); margin: 4rem -2rem 0; padding: 4rem 2rem; }
+  .pubs .container { max-width: 960px; margin: 0 auto; }
+  .pubs ul { list-style: none; }
+  .pubs li {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .pubs li:last-child { border-bottom: none; }
+  .pubs li .pub-year { color: var(--terracotta); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 18px; margin-right: 0.5rem; }
+  .pubs li .pub-venue { color: var(--muted); font-style: italic; }
+
+  /* Hobbies */
+  .hobbies-card {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3rem;
+    border-radius: 2px;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hobbies-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(212, 155, 63, 0.15) 0%, transparent 70%);
+  }
+  .hobbies-card .section-label { color: var(--saffron); }
+  .hobbies-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    color: var(--cream);
+  }
+  .hobbies-card h3 em { font-style: italic; color: var(--saffron); }
+  .hobbies-card p { font-size: 15px; opacity: 0.8; max-width: 500px; }
+
+  /* Footer */
+  footer {
+    padding: 4rem 0 3rem;
+    border-top: 1px solid var(--line);
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  footer .socials { display: flex; gap: 1.5rem; }
+  footer a { color: var(--muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.12em; }
+  footer a:hover { color: var(--terracotta); }
+
+  @media (max-width: 700px) {
+    .hero h1 { font-size: 48px; }
+    .section-title { font-size: 30px; }
+    .project { grid-template-columns: 60px 1fr; }
+    .project .arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav>
+    <div class="mark">a · sp</div>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#hobbies">Hobbies</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="tamil">அதித்யா</div>
+    <h1>Adithya<br/><em>Shyamala Pandian</em></h1>
+    <div class="tagline">Electrical Engineer · Biomedical Sensor Researcher</div>
+    <div class="meta">Tempe, Arizona <span>◆</span> PhD candidate, ASU <span>◆</span> Sequitur Health</div>
+  </section>
+
+  <div class="ornament">
+    <div class="line"></div>
+    <svg width="48" height="24" viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M24 2 C 30 8, 30 16, 24 22 C 18 16, 18 8, 24 2 Z" stroke="#B85932" stroke-width="1"/>
+      <circle cx="6" cy="12" r="1.5" fill="#B85932"/>
+      <circle cx="42" cy="12" r="1.5" fill="#B85932"/>
+      <path d="M10 12 L 18 12" stroke="#B85932" stroke-width="0.8"/>
+      <path d="M30 12 L 38 12" stroke="#B85932" stroke-width="0.8"/>
+    </svg>
+    <div class="line"></div>
+  </div>
+
+  <section class="about" id="about">
+    <div class="section-label">About</div>
+    <h2 class="section-title">Building <em>mission-critical</em> biomedical sensors,<br/>from photodiode to clinical insight.</h2>
+    <p>I design hardware-algorithm co-designed CMOS imaging sensors for high-sensitivity biomarker detection — the kind of instruments that need to be right the first time, every time.</p>
+    <p class="smaller">PhD candidate at Arizona State University working with Dr. Erica Forzani at the Biodesign Institute, in collaboration with Mayo Clinic and Sequitur Health Corporation. Previously co-founded Symbionic, building EEG-driven bionic prostheses in Chennai. I care about the meeting point of careful engineering and human consequence.</p>
+  </section>
+
+  <section id="work">
+    <div class="section-label">Selected Work</div>
+    <h2 class="section-title">Projects <em>&amp;</em> instruments</h2>
+    <div class="projects">
+
+      <a class="project" href="#">
+        <div class="year">2024</div>
+        <div>
+          <div class="title">CMOS Imaging Biomarker Sensor</div>
+          <div class="desc">10 µM detection sensitivity, 0.25 µL sample volume resolution, 10× SNR improvement. EMC Class B certified. NIH &amp; NSF SBIR-funded.</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2021</div>
+        <div>
+          <div class="title">Aerosol Mitigation System</div>
+          <div class="desc">Self-contained embedded system to mitigate contaminated SARS-CoV-2 aerosol sources. Deployed at Mayo Clinic Scottsdale and a healthcare facility in Haiti.</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2020</div>
+        <div>
+          <div class="title">Symbionic — Bionic Prosthetic Arm</div>
+          <div class="desc">Co-founded. Real-time EEG biopotentials translated into hand gesture recognition for bionic prostheses. DST India-funded.</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2017</div>
+        <div>
+          <div class="title">Wireless Seatbelt Indicator</div>
+          <div class="desc">RF-based Hall-effect seatbelt monitoring system. Indian patent filed; two conference papers (Springer FICTA, INDIACom).</div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="pubs" id="writing">
+    <div class="container">
+      <div class="section-label">Writing</div>
+      <h2 class="section-title">Peer-reviewed <em>publications</em></h2>
+      <ul>
+        <li><span class="pub-year">2025</span> Efficacy of portable fugitive aerosol mitigation systems for nebulizer therapy during HFNC and NIV. <span class="pub-venue">Emergency Care and Medicine, 2(3), 36.</span></li>
+        <li><span class="pub-year">2026</span> Development and validation of an optical sensor-based automated urine flow meter for real-time patient monitoring.</li>
+        <li><span class="pub-year">2024</span> Commonly disrupted pathways in brain and kidney in a pig model of systemic endotoxemia. <span class="pub-venue">Journal of Neuroinflammation, 21(1), 9.</span></li>
+        <li><span class="pub-year">2021</span> Self-contained system for mitigation of contaminated aerosol sources of SARS-CoV-2. <span class="pub-venue">Master's thesis, ASU.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="hobbies">
+    <div class="hobbies-card">
+      <div class="section-label">Off-hours</div>
+      <h3>Country swing, <em>and counting</em>.</h3>
+      <p>When I'm not at the bench, I'm on the dance floor — country swing, two-step, and learning everything in between.</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div>© 2026 Adithya Shyamala Pandian</div>
+    <div class="socials">
+      <a href="#">GitHub</a>
+      <a href="#">Scholar</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

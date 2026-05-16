@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Project list (move to a content collection in Phase 2)
+const projects = [
+  {
+    year: 2024,
+    title: 'CMOS Imaging Biomarker Sensor',
+    desc: '10 µM detection sensitivity. 0.25 µL sample volume resolution. 10× SNR improvement. EMC Class B certified.',
+    tags: ['CMOS', 'EMC', 'NIH-SBIR', 'Python'],
+    href: '#',
+  },
+  {
+    year: 2024,
+    title: 'NES + Game Boy From Scratch',
+    desc: 'Four Game Boys (ASU Open Door 2023) and four NES systems (Open Door 2024). PCB design, firmware, custom enclosures. Featured in ASU news.',
+    tags: ['Hardware', 'Firmware', 'Retro'],
+    href: '#',
+  },
+  {
+    year: 2021,
+    title: 'Aerosol Mitigation System',
+    desc: 'Self-contained embedded system to mitigate contaminated SARS-CoV-2 aerosols. Deployed at Mayo Clinic Scottsdale and a healthcare facility in Haiti.',
+    tags: ['Embedded', 'Linux', 'NIH-NIBIB'],
+    href: '#',
+  },
+  {
+    year: 2020,
+    title: 'Symbionic — Bionic Prosthetic Arm',
+    desc: 'Co-founded. Real-time EEG biopotentials translated into hand gesture recognition for bionic prostheses. DST India-funded.',
+    tags: ['EEG', 'Signal Processing', 'Startup'],
+    href: '#',
+  },
+  {
+    year: 2017,
+    title: 'Wireless Seatbelt Indicator',
+    desc: 'RF-based Hall-effect seatbelt monitoring system. Indian patent filed; two conference papers (Springer FICTA, INDIACom).',
+    tags: ['RF', 'Hall Effect', 'Patent'],
+    href: '#',
+  },
+];
+
+const publications = [
+  {
+    year: 2025,
+    text: 'Efficacy of portable fugitive aerosol mitigation systems for nebulizer therapy during HFNC and NIV.',
+    venue: 'Emergency Care and Medicine, 2(3), 36.',
+  },
+  {
+    year: 2026,
+    text: 'Development and validation of an optical sensor-based automated urine flow meter for real-time patient monitoring.',
+  },
+  {
+    year: 2024,
+    text: 'Commonly disrupted pathways in brain and kidney in a pig model of systemic endotoxemia.',
+    venue: 'Journal of Neuroinflammation, 21(1), 9.',
+  },
+  {
+    year: 2021,
+    text: 'Self-contained system for mitigation of contaminated aerosol sources of SARS-CoV-2.',
+    venue: "Master's thesis, ASU.",
+  },
+];
+---
+
+<Base>
+  <nav class="site">
+    <div class="mark">ADITHYA<span>_</span>SP</div>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#off-hours">Off-hours</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="status-tag">AVAILABLE · 2026</div>
+    <h1>Adithya<br /><span class="accent">Shyamala Pandian</span></h1>
+    <div class="tagline">&gt; Electrical Engineer · Biomedical Sensor Researcher</div>
+    <div class="meta">Tempe, AZ <span>◆</span> PhD @ ASU <span>◆</span> Sequitur Health</div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <div class="label">Education</div>
+        <div class="value">PhD<span class="unit">expected 2026</span></div>
+        <div class="bar" style="--fill: 88%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">Experience</div>
+        <div class="value">7<span class="unit">years</span></div>
+        <div class="bar" style="--fill: 70%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">Publications</div>
+        <div class="value">6<span class="unit">papers</span></div>
+        <div class="bar" style="--fill: 55%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">Patents</div>
+        <div class="value">1<span class="unit">filed</span></div>
+        <div class="bar" style="--fill: 35%"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="section-label"><span class="num">01</span>About</div>
+    <h2 class="section-title">I build <span class="accent">mission-critical</span><br />biomedical sensors.</h2>
+    <p>
+      Hardware-algorithm co-designed CMOS imaging sensors for high-sensitivity biomarker detection — the kind of instruments that need to be right the first time, every time.
+    </p>
+    <p class="dim">
+      PhD candidate at Arizona State University with Dr. Erica Forzani at the Biodesign Institute, in collaboration with Mayo Clinic and Sequitur Health. Previously co-founded Symbionic, building EEG-driven bionic prostheses in Chennai. I care about the meeting point of careful engineering and human consequence — and yes, I've built four Game Boys and four NES systems from scratch.
+    </p>
+  </section>
+
+  <section id="work">
+    <div class="section-label"><span class="num">02</span>Work</div>
+    <h2 class="section-title">Selected <span class="accent">projects</span>.</h2>
+    <div class="projects">
+      {projects.map((p) => (
+        <a class="project" href={p.href}>
+          <div class="year">{p.year}</div>
+          <div>
+            <div class="title">{p.title}</div>
+            <div class="desc">{p.desc}</div>
+            <div class="tags">
+              {p.tags.map((t) => <span>{t}</span>)}
+            </div>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+      ))}
+    </div>
+
+    <div class="featured">
+      <div class="label-row">
+        <div class="section-label">★ Featured Build</div>
+        <div class="badge">Showcase</div>
+      </div>
+      <h3>Four Game Boys and four NES systems, <span class="accent">built from scratch</span>.</h3>
+      <p>
+        Designed and showcased at ASU Open Door 2023 (Game Boys) and 2024 (NES). PCB design, firmware reverse-engineered, custom enclosures fabricated on the lab's drill press and SLA printers. Featured in ASU news coverage. The retro hardware is the through-line for everything I do — patient instruments and consumer hardware run on the same engineering discipline.
+      </p>
+      <div class="pixels">
+        <div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div></div>
+        <div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pubs" id="writing">
+    <div class="section-label"><span class="num">03</span>Writing</div>
+    <h2 class="section-title">Peer-reviewed <span class="accent">publications</span>.</h2>
+    <ul>
+      {publications.map((p) => (
+        <li>
+          <span class="pub-year">{p.year}</span>
+          <span>
+            {p.text}
+            {p.venue && <span class="pub-venue">{p.venue}</span>}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="off-hours">
+    <div class="section-label"><span class="num">04</span>Off-hours</div>
+    <div class="off-hours">
+      <h3>Country swing, <span class="accent">and counting</span>.</h3>
+      <p>
+        When I'm not at the bench, I'm on the dance floor — country swing, two-step, and learning everything in between. Outside the lab, outside the screen.
+      </p>
+    </div>
+  </section>
+
+  <footer class="site" id="contact">
+    <div class="saved">Last updated · May 2026</div>
+    <div class="socials">
+      <a href="https://github.com/spadithya">GitHub</a>
+      <a href="#">Scholar</a>
+      <a href="https://www.linkedin.com/in/adithya-shyamala-pandian">LinkedIn</a>
+      <a href="mailto:adithya.sp.ee@gmail.com">Email</a>
+    </div>
+  </footer>
+</Base>

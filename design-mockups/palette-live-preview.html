@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Palette Live Preview — Click to Switch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  /* === Palette themes via data attribute === */
+  body[data-palette="synthwave"] {
+    --bg: #0A0E1A; --bg-card: #181E33; --line: #232A45; --line-glow: #2D3658;
+    --text: #E8E9F0; --muted: #7886A1; --dim: #4A5374;
+    --primary: #FF3B7C; --secondary: #4DE5FF; --accent: #FFD15C;
+    --glow: rgba(255, 59, 124, 0.35);
+  }
+  body[data-palette="phosphor"] {
+    --bg: #0A0F0A; --bg-card: #15201D; --line: #1F3320; --line-glow: #2A4530;
+    --text: #C8E6C8; --muted: #6F8F70; --dim: #4A5C4B;
+    --primary: #5BFF85; --secondary: #FFB347; --accent: #FFB347;
+    --glow: rgba(91, 255, 133, 0.45);
+  }
+  body[data-palette="cactus"] {
+    --bg: #0E141C; --bg-card: #19222F; --line: #243345; --line-glow: #2E4156;
+    --text: #E0E8F2; --muted: #7A8FA8; --dim: #4D5E76;
+    --primary: #5BAFFF; --secondary: #8FCAFF; --accent: #FFB347;
+    --glow: rgba(91, 175, 255, 0.4);
+  }
+  body[data-palette="purple"] {
+    --bg: #0F0820; --bg-card: #1B1235; --line: #2A1F4A; --line-glow: #3D2D66;
+    --text: #ECE8F5; --muted: #8B7FB0; --dim: #5C5380;
+    --primary: #C084FC; --secondary: #F0ABFC; --accent: #FCD34D;
+    --glow: rgba(192, 132, 252, 0.4);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    transition: background 0.4s, color 0.4s;
+  }
+  /* Scanlines */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    pointer-events: none;
+    z-index: 100;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+  /* === Palette switcher (fixed top bar) === */
+  .switcher {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--line);
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .switcher .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    align-self: center;
+    margin-right: 0.5rem;
+  }
+  .switcher button {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .switcher button:hover {
+    color: var(--text);
+    border-color: var(--line-glow);
+  }
+  .switcher button.active {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--glow);
+  }
+
+  /* Nav */
+  nav.site {
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.site .mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text);
+    letter-spacing: 0.1em;
+  }
+  nav.site .mark span { color: var(--primary); }
+  nav.site ul { display: flex; gap: 2rem; list-style: none; }
+  nav.site a {
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav.site a:hover { color: var(--secondary); }
+
+  /* Hero */
+  .hero { padding: 5rem 0 3rem; position: relative; }
+  .hero .status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    padding: 6px 12px;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  .hero .status-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    border-radius: 50%;
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 78px;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .accent {
+    color: var(--primary);
+    text-shadow: 0 0 24px var(--glow);
+  }
+  .hero .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--secondary);
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .hero .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .hero .meta span { color: var(--primary); margin: 0 0.6rem; }
+
+  /* Status panel */
+  .status-panel {
+    margin: 3rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+  }
+  .status-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .status-item .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--text);
+  }
+  .status-item .value .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 0.3rem;
+  }
+  .status-item .bar {
+    height: 4px;
+    background: var(--line);
+    margin-top: 0.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .status-item .bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    width: var(--fill, 70%);
+  }
+
+  /* Section heading — refined: numbered + word, mono not pixel */
+  section { padding: 3.5rem 0; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-label .num { color: var(--primary); margin-right: 0.6rem; }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .section-title .accent { color: var(--primary); }
+
+  /* About */
+  .about p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text);
+    max-width: 720px;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+  .about p.dim { font-size: 15px; color: var(--muted); }
+
+  /* Projects (no LVL prefixes) */
+  .projects { display: grid; gap: 0; }
+  .project {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 2rem;
+    align-items: baseline;
+    padding: 1.8rem 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+    transition: padding-left 0.25s, background 0.25s;
+  }
+  .project:hover {
+    padding-left: 1.5rem;
+    background: linear-gradient(90deg, var(--glow), transparent);
+  }
+  .project:last-child { border-bottom: 1px solid var(--line); }
+  .project .year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+  }
+  .project .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .project .desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 540px;
+  }
+  .project .tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .project .tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--secondary);
+    border: 1px solid var(--line-glow);
+    padding: 2px 6px;
+    letter-spacing: 0.05em;
+  }
+  .project .arrow {
+    color: var(--secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    transition: transform 0.25s, color 0.25s;
+  }
+  .project:hover .arrow { transform: translateX(8px); color: var(--primary); }
+
+  /* Featured */
+  .featured {
+    margin: 4rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  }
+  .featured .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .featured .section-label { margin-bottom: 0; color: var(--accent); }
+  .featured .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 4px 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .featured h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.02em;
+  }
+  .featured h3 .accent { color: var(--accent); }
+  .featured p { font-size: 15px; color: var(--muted); max-width: 620px; line-height: 1.7; }
+  .featured .pixels { display: flex; gap: 4px; margin-top: 1.5rem; }
+  .featured .pixels div { width: 12px; height: 12px; background: var(--line-glow); }
+  .featured .pixels div.lit { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+
+  /* Off-hours (was Bonus Level) */
+  .off-hours {
+    margin: 4rem 0;
+    border: 2px solid var(--primary);
+    padding: 2.5rem;
+    position: relative;
+    background: linear-gradient(135deg, var(--glow), transparent);
+  }
+  .off-hours::before {
+    content: 'OFF-HOURS';
+    position: absolute;
+    top: -10px;
+    left: 1.5rem;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--primary);
+  }
+  .off-hours h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .off-hours h3 .accent { color: var(--primary); }
+  .off-hours p { font-size: 15px; color: var(--muted); }
+
+  /* Publications */
+  .pubs ul { list-style: none; }
+  .pubs li {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1.5rem;
+  }
+  .pubs li:last-child { border-bottom: none; }
+  .pubs li .pub-year {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--primary);
+    font-size: 13px;
+  }
+  .pubs li .pub-venue { color: var(--muted); font-style: italic; display: block; margin-top: 0.2rem; font-size: 12px; }
+
+  /* Footer */
+  footer {
+    padding: 3rem 0 2.5rem;
+    border-top: 1px solid var(--line);
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer .socials { display: flex; gap: 1.5rem; }
+  footer a { color: var(--muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; }
+  footer a:hover { color: var(--secondary); }
+  footer .saved { color: var(--primary); display: flex; align-items: center; gap: 8px; }
+  footer .saved::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--primary);
+  }
+
+  @media (max-width: 700px) {
+    .hero h1 { font-size: 50px; }
+    .section-title { font-size: 30px; }
+    .status-panel { grid-template-columns: repeat(2, 1fr); }
+    .project { grid-template-columns: 70px 1fr; }
+    .project .arrow { display: none; }
+    .pubs li { grid-template-columns: 50px 1fr; gap: 1rem; }
+  }
+</style>
+</head>
+<body data-palette="synthwave">
+
+<div class="switcher">
+  <span class="label">PALETTE</span>
+  <button data-p="synthwave" class="active">1 · Synthwave Magenta</button>
+  <button data-p="phosphor">2 · CRT Phosphor</button>
+  <button data-p="cactus">3 · Cactus Blue</button>
+  <button data-p="purple">4 · Purple Twilight</button>
+</div>
+
+<div class="container">
+  <nav class="site">
+    <div class="mark">ADITHYA<span>_</span>SP</div>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#off-hours">Off-hours</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="status-tag">AVAILABLE · 2026</div>
+    <h1>Adithya<br/><span class="accent">Shyamala Pandian</span></h1>
+    <div class="tagline">&gt; Electrical Engineer · Biomedical Sensor Researcher</div>
+    <div class="meta">Tempe, AZ <span>◆</span> PhD @ ASU <span>◆</span> Sequitur Health</div>
+
+    <div class="status-panel">
+      <div class="status-item">
+        <div class="label">Education</div>
+        <div class="value">PhD<span class="unit">expected 2026</span></div>
+        <div class="bar" style="--fill: 88%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">Experience</div>
+        <div class="value">7<span class="unit">years</span></div>
+        <div class="bar" style="--fill: 70%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">Publications</div>
+        <div class="value">6<span class="unit">papers</span></div>
+        <div class="bar" style="--fill: 55%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">Patents</div>
+        <div class="value">1<span class="unit">filed</span></div>
+        <div class="bar" style="--fill: 35%"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="section-label"><span class="num">01</span>About</div>
+    <h2 class="section-title">I build <span class="accent">mission-critical</span><br/>biomedical sensors.</h2>
+    <p>Hardware-algorithm co-designed CMOS imaging sensors for high-sensitivity biomarker detection — the kind of instruments that need to be right the first time, every time.</p>
+    <p class="dim">PhD candidate at Arizona State University with Dr. Erica Forzani at the Biodesign Institute, in collaboration with Mayo Clinic and Sequitur Health. Previously co-founded Symbionic, building EEG-driven bionic prostheses in Chennai. I care about the meeting point of careful engineering and human consequence — and yes, I've built four Game Boys and four NES systems from scratch.</p>
+  </section>
+
+  <section id="work">
+    <div class="section-label"><span class="num">02</span>Work</div>
+    <h2 class="section-title">Selected <span class="accent">projects</span>.</h2>
+    <div class="projects">
+
+      <a class="project" href="#">
+        <div class="year">2024</div>
+        <div>
+          <div class="title">CMOS Imaging Biomarker Sensor</div>
+          <div class="desc">10 µM detection sensitivity. 0.25 µL sample volume resolution. 10× SNR improvement. EMC Class B certified.</div>
+          <div class="tags"><span>CMOS</span><span>EMC</span><span>NIH-SBIR</span><span>Python</span></div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2024</div>
+        <div>
+          <div class="title">NES + Game Boy From Scratch</div>
+          <div class="desc">Four Game Boys (ASU Open Door 2023) and four NES systems (Open Door 2024). PCB design, firmware, custom enclosures. Featured in ASU news.</div>
+          <div class="tags"><span>Hardware</span><span>Firmware</span><span>Retro</span></div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2021</div>
+        <div>
+          <div class="title">Aerosol Mitigation System</div>
+          <div class="desc">Self-contained embedded system to mitigate contaminated SARS-CoV-2 aerosols. Deployed at Mayo Clinic Scottsdale and a healthcare facility in Haiti.</div>
+          <div class="tags"><span>Embedded</span><span>Linux</span><span>NIH-NIBIB</span></div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2020</div>
+        <div>
+          <div class="title">Symbionic — Bionic Prosthetic Arm</div>
+          <div class="desc">Co-founded. Real-time EEG biopotentials translated into hand gesture recognition for bionic prostheses. DST India-funded.</div>
+          <div class="tags"><span>EEG</span><span>Signal Processing</span><span>Startup</span></div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a class="project" href="#">
+        <div class="year">2017</div>
+        <div>
+          <div class="title">Wireless Seatbelt Indicator</div>
+          <div class="desc">RF-based Hall-effect seatbelt monitoring system. Indian patent filed; two conference papers (Springer FICTA, INDIACom).</div>
+          <div class="tags"><span>RF</span><span>Hall Effect</span><span>Patent</span></div>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+    </div>
+
+    <div class="featured">
+      <div class="label-row">
+        <div class="section-label">★ Featured Build</div>
+        <div class="badge">Showcase</div>
+      </div>
+      <h3>Four Game Boys and four NES systems, <span class="accent">built from scratch</span>.</h3>
+      <p>Designed and showcased at ASU Open Door 2023 (Game Boys) and 2024 (NES). PCB design, firmware reverse-engineered, custom enclosures fabricated on the lab's drill press and SLA printers. Featured in ASU news coverage. The retro hardware is the through-line for everything I do — patient instruments and consumer hardware run on the same engineering discipline.</p>
+      <div class="pixels">
+        <div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div></div>
+        <div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pubs" id="writing">
+    <div class="section-label"><span class="num">03</span>Writing</div>
+    <h2 class="section-title">Peer-reviewed <span class="accent">publications</span>.</h2>
+    <ul>
+      <li>
+        <span class="pub-year">2025</span>
+        <span>Efficacy of portable fugitive aerosol mitigation systems for nebulizer therapy during HFNC and NIV.
+          <span class="pub-venue">Emergency Care and Medicine, 2(3), 36.</span>
+        </span>
+      </li>
+      <li>
+        <span class="pub-year">2026</span>
+        <span>Development and validation of an optical sensor-based automated urine flow meter for real-time patient monitoring.</span>
+      </li>
+      <li>
+        <span class="pub-year">2024</span>
+        <span>Commonly disrupted pathways in brain and kidney in a pig model of systemic endotoxemia.
+          <span class="pub-venue">Journal of Neuroinflammation, 21(1), 9.</span>
+        </span>
+      </li>
+      <li>
+        <span class="pub-year">2021</span>
+        <span>Self-contained system for mitigation of contaminated aerosol sources of SARS-CoV-2.
+          <span class="pub-venue">Master's thesis, ASU.</span>
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="off-hours">
+    <div class="section-label"><span class="num">04</span>Off-hours</div>
+    <div class="off-hours">
+      <h3>Country swing, <span class="accent">and counting</span>.</h3>
+      <p>When I'm not at the bench, I'm on the dance floor — country swing, two-step, and learning everything in between. Outside the lab, outside the screen.</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="saved">Last updated · May 2026</div>
+    <div class="socials">
+      <a href="#">GitHub</a>
+      <a href="#">Scholar</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.switcher button');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = btn.dataset.p;
+      document.body.dataset.palette = p;
+      buttons.forEach(b => b.classList.toggle('active', b === btn));
+    });
+  });
+</script>
+
+</body>
+</html>

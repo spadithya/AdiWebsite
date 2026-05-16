@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Adithya Shyamala Pandian — Future Nostalgia v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&family=Press+Start+2P&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0A0E1A;
+    --bg-lift: #131829;
+    --bg-card: #181E33;
+    --line: #232A45;
+    --line-glow: #2D3658;
+    --text: #E8E9F0;
+    --muted: #7886A1;
+    --dim: #4A5374;
+    --pink: #FF3B7C;
+    --cyan: #4DE5FF;
+    --yellow: #FFD15C;
+    --green: #7CFFB8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+  /* Very subtle scanlines */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+  /* Pixel/mono accent type */
+  .pixel {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Nav */
+  nav {
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  nav .mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text);
+    letter-spacing: 0.1em;
+  }
+  nav .mark span { color: var(--pink); }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--cyan); }
+
+  /* Hero */
+  .hero { padding: 5rem 0 4rem; position: relative; }
+  .hero .player-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    padding: 6px 10px;
+    color: var(--pink);
+    margin-bottom: 2rem;
+  }
+  .hero .player-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--pink);
+    box-shadow: 0 0 8px var(--pink);
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 84px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .accent {
+    color: var(--pink);
+    text-shadow: 0 0 24px rgba(255, 59, 124, 0.35);
+  }
+  .hero .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--cyan);
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+  .hero .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .hero .meta span { color: var(--pink); margin: 0 0.6rem; }
+
+  /* Status panel (RPG stat sheet) */
+  .status {
+    margin: 3rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem;
+  }
+  .status-item .label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .status-item .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--text);
+  }
+  .status-item .value .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 0.3rem;
+  }
+  .status-item .bar {
+    height: 4px;
+    background: var(--line);
+    margin-top: 0.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .status-item .bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    width: var(--fill, 70%);
+  }
+
+  /* Section heading */
+  section { padding: 3.5rem 0; }
+  .section-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .section-title .accent { color: var(--pink); }
+
+  /* About */
+  .about p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text);
+    max-width: 720px;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+  .about p.dim {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  /* Levels / Projects */
+  .levels { display: grid; gap: 0; }
+  .level {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 2rem;
+    align-items: baseline;
+    padding: 1.8rem 0;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+    transition: padding-left 0.25s, background 0.25s;
+  }
+  .level:hover {
+    padding-left: 1.5rem;
+    background: linear-gradient(90deg, rgba(255,59,124,0.04), transparent);
+  }
+  .level:last-child { border-bottom: 1px solid var(--line); }
+  .level .lvl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--pink);
+    letter-spacing: 0.08em;
+  }
+  .level .lvl .year { display: block; color: var(--muted); margin-top: 4px; font-size: 11px; }
+  .level .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .level .desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 540px;
+  }
+  .level .tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .level .tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    border: 1px solid var(--line-glow);
+    padding: 2px 6px;
+    letter-spacing: 0.05em;
+  }
+  .level .arrow {
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    transition: transform 0.25s;
+  }
+  .level:hover .arrow { transform: translateX(8px); color: var(--pink); }
+
+  /* Featured build (NES / Game Boy) */
+  .featured {
+    margin: 4rem 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--pink), var(--cyan), var(--yellow));
+  }
+  .featured .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .featured .section-label { margin-bottom: 0; color: var(--yellow); }
+  .featured .badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--bg);
+    background: var(--yellow);
+    padding: 4px 8px;
+    letter-spacing: 0.1em;
+  }
+  .featured h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.02em;
+  }
+  .featured h3 .accent { color: var(--yellow); }
+  .featured p { font-size: 15px; color: var(--muted); max-width: 620px; line-height: 1.7; }
+  .featured .pixels {
+    display: flex;
+    gap: 4px;
+    margin-top: 1.5rem;
+  }
+  .featured .pixels div {
+    width: 12px; height: 12px;
+    background: var(--line-glow);
+  }
+  .featured .pixels div.lit { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+
+  /* Bonus level (hobbies) */
+  .bonus {
+    margin: 4rem 0;
+    border: 2px solid var(--pink);
+    padding: 2.5rem;
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,59,124,0.06), rgba(77,229,255,0.04));
+  }
+  .bonus::before {
+    content: '★  BONUS LEVEL  ★';
+    position: absolute;
+    top: -12px;
+    left: 1.5rem;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--pink);
+  }
+  .bonus h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .bonus h3 .accent { color: var(--pink); }
+  .bonus p { font-size: 15px; color: var(--muted); }
+
+  /* Publications */
+  .pubs ul { list-style: none; }
+  .pubs li {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1.5rem;
+  }
+  .pubs li:last-child { border-bottom: none; }
+  .pubs li .pub-year {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--pink);
+    font-size: 13px;
+  }
+  .pubs li .pub-venue { color: var(--muted); font-style: italic; display: block; margin-top: 0.2rem; font-size: 12px; }
+
+  /* Footer */
+  footer {
+    padding: 3rem 0 2.5rem;
+    border-top: 1px solid var(--line);
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer .socials { display: flex; gap: 1.5rem; }
+  footer a { color: var(--muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; }
+  footer a:hover { color: var(--cyan); }
+  footer .save { color: var(--green); }
+
+  @media (max-width: 700px) {
+    .hero h1 { font-size: 52px; }
+    .section-title { font-size: 30px; }
+    .status { grid-template-columns: repeat(2, 1fr); }
+    .level { grid-template-columns: 80px 1fr; }
+    .level .arrow { display: none; }
+    .pubs li { grid-template-columns: 50px 1fr; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav>
+    <div class="mark">ADITHYA<span>_</span>SP</div>
+    <ul>
+      <li><a href="#work">Levels</a></li>
+      <li><a href="#writing">Logs</a></li>
+      <li><a href="#hobbies">Bonus</a></li>
+      <li><a href="#contact">Connect</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="player-tag pixel">PLAYER 01 // READY</div>
+    <h1>Adithya<br/><span class="accent">Shyamala Pandian</span></h1>
+    <div class="tagline">&gt; ELECTRICAL_ENGINEER.exe // BIOMEDICAL_SENSOR_RESEARCHER</div>
+    <div class="meta">Tempe, AZ <span>◆</span> PhD @ ASU <span>◆</span> Sequitur Health</div>
+
+    <div class="status">
+      <div class="status-item">
+        <div class="label">EDUCATION</div>
+        <div class="value">PhD<span class="unit">// 2026</span></div>
+        <div class="bar" style="--fill: 88%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">EXP</div>
+        <div class="value">7<span class="unit">YRS</span></div>
+        <div class="bar" style="--fill: 70%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">PUBLICATIONS</div>
+        <div class="value">6<span class="unit">PAPERS</span></div>
+        <div class="bar" style="--fill: 55%"></div>
+      </div>
+      <div class="status-item">
+        <div class="label">PATENTS</div>
+        <div class="value">1<span class="unit">FILED</span></div>
+        <div class="bar" style="--fill: 35%"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="section-label">▸ ABOUT</div>
+    <h2 class="section-title">I build <span class="accent">mission-critical</span><br/>biomedical sensors.</h2>
+    <p>Hardware-algorithm co-designed CMOS imaging sensors for high-sensitivity biomarker detection — the kind of instruments that need to be right the first time, every time.</p>
+    <p class="dim">PhD candidate at Arizona State University with Dr. Erica Forzani at the Biodesign Institute, in collaboration with Mayo Clinic and Sequitur Health. Previously co-founded Symbionic, building EEG-driven bionic prostheses in Chennai. I care about the meeting point of careful engineering and human consequence — and yes, I've built four Game Boys and four NES systems from scratch.</p>
+  </section>
+
+  <section id="work">
+    <div class="section-label">▸ LEVELS</div>
+    <h2 class="section-title">Selected <span class="accent">work</span>.</h2>
+    <div class="levels">
+
+      <a class="level" href="#">
+        <div class="lvl">LVL_06<span class="year">2024</span></div>
+        <div>
+          <div class="title">CMOS Imaging Biomarker Sensor</div>
+          <div class="desc">10 µM detection sensitivity. 0.25 µL sample volume resolution. 10× SNR improvement. EMC Class B certified.</div>
+          <div class="tags"><span>CMOS</span><span>EMC</span><span>NIH-SBIR</span><span>PYTHON</span></div>
+        </div>
+        <div class="arrow">▸</div>
+      </a>
+
+      <a class="level" href="#">
+        <div class="lvl">LVL_05<span class="year">2024</span></div>
+        <div>
+          <div class="title">NES + Game Boy From Scratch</div>
+          <div class="desc">Four Game Boys (ASU Open Door 2023) and four NES systems (Open Door 2024). PCB design, firmware, custom enclosures. Featured in ASU news.</div>
+          <div class="tags"><span>HARDWARE</span><span>FIRMWARE</span><span>RETRO</span></div>
+        </div>
+        <div class="arrow">▸</div>
+      </a>
+
+      <a class="level" href="#">
+        <div class="lvl">LVL_04<span class="year">2021</span></div>
+        <div>
+          <div class="title">Aerosol Mitigation System</div>
+          <div class="desc">Self-contained embedded system to mitigate contaminated SARS-CoV-2 aerosols. Deployed at Mayo Clinic Scottsdale and a healthcare facility in Haiti.</div>
+          <div class="tags"><span>EMBEDDED</span><span>LINUX</span><span>NIH-NIBIB</span></div>
+        </div>
+        <div class="arrow">▸</div>
+      </a>
+
+      <a class="level" href="#">
+        <div class="lvl">LVL_03<span class="year">2020</span></div>
+        <div>
+          <div class="title">Symbionic — Bionic Prosthetic Arm</div>
+          <div class="desc">Co-founded. Real-time EEG biopotentials translated into hand gesture recognition for bionic prostheses. DST India-funded.</div>
+          <div class="tags"><span>EEG</span><span>SIGNAL-PROC</span><span>STARTUP</span></div>
+        </div>
+        <div class="arrow">▸</div>
+      </a>
+
+      <a class="level" href="#">
+        <div class="lvl">LVL_02<span class="year">2017</span></div>
+        <div>
+          <div class="title">Wireless Seatbelt Indicator</div>
+          <div class="desc">RF-based Hall-effect seatbelt monitoring system. Indian patent filed; two conference papers (Springer FICTA, INDIACom).</div>
+          <div class="tags"><span>RF</span><span>HALL-EFFECT</span><span>PATENT</span></div>
+        </div>
+        <div class="arrow">▸</div>
+      </a>
+
+    </div>
+
+    <div class="featured">
+      <div class="label-row">
+        <div class="section-label">★ FEATURED BUILD</div>
+        <div class="badge">SHOWCASE</div>
+      </div>
+      <h3>Four Game Boys and four NES systems, <span class="accent">built from scratch</span>.</h3>
+      <p>Designed and showcased at ASU Open Door 2023 (Game Boys) and 2024 (NES). PCB design, firmware reverse-engineered, custom enclosures fabricated on the lab's drill press and SLA printers. Featured in ASU news coverage. The retro hardware is the through-line for everything I do — patient instruments and consumer hardware run on the same engineering discipline.</p>
+      <div class="pixels">
+        <div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div></div>
+        <div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pubs" id="writing">
+    <div class="section-label">▸ LOGS</div>
+    <h2 class="section-title">Peer-reviewed <span class="accent">publications</span>.</h2>
+    <ul>
+      <li>
+        <span class="pub-year">2025</span>
+        <span>Efficacy of portable fugitive aerosol mitigation systems for nebulizer therapy during HFNC and NIV.
+          <span class="pub-venue">Emergency Care and Medicine, 2(3), 36.</span>
+        </span>
+      </li>
+      <li>
+        <span class="pub-year">2026</span>
+        <span>Development and validation of an optical sensor-based automated urine flow meter for real-time patient monitoring.</span>
+      </li>
+      <li>
+        <span class="pub-year">2024</span>
+        <span>Commonly disrupted pathways in brain and kidney in a pig model of systemic endotoxemia.
+          <span class="pub-venue">Journal of Neuroinflammation, 21(1), 9.</span>
+        </span>
+      </li>
+      <li>
+        <span class="pub-year">2021</span>
+        <span>Self-contained system for mitigation of contaminated aerosol sources of SARS-CoV-2.
+          <span class="pub-venue">Master's thesis, ASU.</span>
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="hobbies">
+    <div class="bonus">
+      <h3>Country swing, <span class="accent">and counting</span>.</h3>
+      <p>When I'm not at the bench, I'm on the dance floor — country swing, two-step, and learning everything in between. Outside the lab, outside the screen.</p>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="save">▸ SAVE_FILE_LOADED // 2026</div>
+    <div class="socials">
+      <a href="#">GitHub</a>
+      <a href="#">Scholar</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
