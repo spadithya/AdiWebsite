@@ -4,20 +4,20 @@ _Last updated: May 14, 2026_
 
 ## 0. Project identity (locked in)
 
-| Item | Value |
-|---|---|
-| Name | Adithya Shyamala Pandian |
-| Custom domain | **spadida.org** (registered) |
-| GitHub username | **spadithya** |
-| Repo | **AdiWebsite** → `https://github.com/spadithya/AdiWebsite` |
-| Pre-domain URL | `https://spadithya.github.io/AdiWebsite/` |
-| Final URL | `https://spadida.org` (after DNS in Phase 4) |
-| Video host | **YouTube Unlisted** (escape hatch to Vimeo later if needed) |
-| Template base | **Astro Cactus** (locked) — reskinned heavily |
-| Aesthetic direction | **Future Nostalgia / retro-gaming-modern** (locked) |
-| Palette | **CRT Phosphor** (locked) — bg `#0A0F0A`, primary `#5BFF85`, secondary `#FFB347`, text `#C8E6C8` |
-| Notation | **Light terminal vibe** — numbered sections (01 · Work), monospace tags, no `LVL_XX`, no `$` symbols |
-| Phase 1 status | ✅ **Scaffold complete** — Astro project built, theme applied, deploy workflow ready. Pending `npm install` + `git push` on Adi's machine. |
+| Item 			| Value 												|
+|----------------------	|------------------------------------------------------------------------------------------------------	|
+| Name 			| Adithya Shyamala Pandian 										|
+| Custom domain 	| **spadida.org** (registered) 										|
+| GitHub username 	| **spadithya** 											|
+| Repo 			| **AdiWebsite** → `https://github.com/spadithya/AdiWebsite` 						|
+| Pre-domain URL 	| `https://spadithya.github.io/AdiWebsite/` 								|
+| Final URL 		| `https://spadida.org` (after DNS in Phase 4) 								|
+| Video host 		| **YouTube Unlisted** (escape hatch to Vimeo later if needed) 						|
+| Template base 	| **Astro Cactus** (locked) — reskinned heavily 							|
+| Aesthetic direction 	| **Future Nostalgia / retro-gaming-modern** (locked) 							|
+| Palette 		| **CRT Phosphor** (locked) — bg `#0A0F0A`, primary `#5BFF85`, secondary `#FFB347`, text `#C8E6C8` 	|
+| Notation 		| **Light terminal vibe** — numbered sections (01 · Work), monospace tags, no `LVL_XX`, no `$` symbols 	|
+| Phase 1 status 	| ✅ **LIVE** — https://spadithya.github.io/AdiWebsite/ — auto-deploys on push. 			|
 
 ## 1. Goals (locked in)
 
