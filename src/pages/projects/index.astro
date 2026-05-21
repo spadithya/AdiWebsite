@@ -1,0 +1,143 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.year - a.data.year
+);
+
+const categories = ['research', 'industry', 'hardware', 'software'] as const;
+---
+
+<Base
+  title="Projects — Adithya Shyamala Pandian"
+  description="Selected hardware and biomedical sensor projects by Adithya Shyamala Pandian."
+>
+  <nav class="site">
+    <div class="mark"><a href={import.meta.env.BASE_URL}>ADITHYA<span>_</span>SP</a></div>
+    <ul>
+      <li><a href={`${import.meta.env.BASE_URL}projects`}>Projects</a></li>
+      <li><a href={`${import.meta.env.BASE_URL}#writing`}>Writing</a></li>
+      <li><a href={`${import.meta.env.BASE_URL}#off-hours`}>Off-hours</a></li>
+      <li><a href={`${import.meta.env.BASE_URL}#contact`}>Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="page-header">
+    <div class="section-label"><span class="num">▸</span>Projects</div>
+    <h1 class="page-title">All <span class="accent">projects</span>.</h1>
+    <p class="page-lede">
+      Hardware-algorithm co-designed biomedical sensors, embedded systems, and the occasional retro console built from scratch.
+    </p>
+
+    <div class="filter-row" role="tablist" aria-label="Filter projects by category">
+      <button class="chip active" data-filter="all">All</button>
+      {categories.map((cat) => (
+        <button class="chip" data-filter={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</button>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <div class="projects">
+      {allProjects.map((project) => (
+        <a
+          class="project"
+          href={`${import.meta.env.BASE_URL}projects/${project.id}`}
+          data-category={project.data.category}
+        >
+          <div class="year">{project.data.year}{project.data.yearEnd ? `–${String(project.data.yearEnd).slice(-2)}` : ''}</div>
+          <div>
+            <div class="title">{project.data.title}</div>
+            <div class="desc">{project.data.summary}</div>
+            <div class="tags">
+              {project.data.tags.map((t) => <span>{t}</span>)}
+            </div>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="saved">Last updated · May 2026</div>
+    <div class="socials">
+      <a href={import.meta.env.BASE_URL}>Home</a>
+      <a href="https://github.com/spadithya">GitHub</a>
+      <a href="mailto:adi@spadida.org">Email</a>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .page-header {
+    padding: 4rem 0 2rem;
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0.5rem 0 1rem;
+  }
+  .page-title .accent {
+    color: var(--primary);
+    text-shadow: 0 0 24px var(--glow);
+  }
+  .page-lede {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+  }
+  .filter-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover {
+    color: var(--text);
+    border-color: var(--line-glow);
+  }
+  .chip.active {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--glow);
+  }
+  .project[data-hidden='true'] {
+    display: none;
+  }
+  @media (max-width: 700px) {
+    .page-title { font-size: 44px; }
+  }
+</style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+  const projects = document.querySelectorAll<HTMLAnchorElement>('.project[data-category]');
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      chips.forEach((c) => c.classList.toggle('active', c === chip));
+      projects.forEach((p) => {
+        const cat = p.dataset.category;
+        p.dataset.hidden = filter === 'all' || filter === cat ? 'false' : 'true';
+      });
+    });
+  });
+</script>

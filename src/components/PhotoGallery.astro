@@ -1,0 +1,76 @@
+---
+interface Image {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  images: Image[];
+  columns?: 2 | 3;
+}
+
+const { images, columns = 2 } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+---
+
+<div class={`gallery cols-${columns}`}>
+  {images.map((img) => (
+    <figure class="gallery-item">
+      <img
+        src={img.src.startsWith('/') ? `${baseUrl}${img.src}` : img.src}
+        alt={img.alt}
+        loading="lazy"
+      />
+      {img.caption && <figcaption>{img.caption}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<style>
+  .gallery {
+    display: grid;
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+  .gallery.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gallery.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .gallery-item {
+    margin: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .gallery-item:hover {
+    border-color: var(--line-glow);
+    transform: translateY(-2px);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .gallery-item figcaption {
+    padding: 0.6rem 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    border-top: 1px solid var(--line);
+  }
+  @media (max-width: 700px) {
+    .gallery.cols-2,
+    .gallery.cols-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

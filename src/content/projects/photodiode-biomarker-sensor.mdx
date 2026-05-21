@@ -1,0 +1,93 @@
+---
+title: "Photodiode Biomarker Sensor"
+summary: "EMC Class B-certified photodiode imaging sensor for high-sensitivity biomarker detection at 10 µM, with 0.25 µL sample-volume resolution and 10× improved signal-to-noise ratio."
+year: 2024
+yearEnd: 2026
+status: active
+category: research
+tags: ["Photodiode", "CMOS", "EMC", "NIH-SBIR", "Embedded", "Python", "FDA"]
+featured: true
+order: 1
+heroImage: "/images/projects/photodiode-biomarker-sensor/hero.jpg"
+videoId: ""
+role: "Lead Hardware Engineer · PhD Candidate"
+collaborators:
+  - "Dr. Erica Forzani (advisor)"
+  - "Sequitur Health Corporation"
+  - "Mayo Clinic Scottsdale"
+  - "Biodesign Institute, ASU"
+funding:
+  - "NIH SBIR"
+  - "NSF SBIR"
+links:
+  - label: "Sequitur Health"
+    url: "https://www.sequiturhealth.com"
+  - label: "Biodesign Institute"
+    url: "https://biodesign.asu.edu"
+---
+
+import VideoEmbed from '../../components/VideoEmbed.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+
+## Overview
+
+**[TODO — replace this paragraph]** Two to three sentences describing the sensor in plain language: what it measures, who uses it, and why it matters. Pretend you're explaining it to a smart non-specialist (a journalist, a recruiter, a relative). Avoid jargon in this paragraph specifically — there's room for the technical depth below.
+
+## Problem
+
+**[TODO]** What was the unmet need or limitation in the field before this work? A few sentences on the clinical or industry-wide gap. Examples to draw from your CV:
+
+- Existing sensors had limited sensitivity for detecting biomarkers at clinically relevant concentrations.
+- Sample-volume measurement at sub-microliter scales was an industry-wide limitation.
+- Signal-to-noise ratio in compact, deployable hardware was insufficient for clinical-grade decisions.
+
+Pick whichever framing matches the truth most accurately.
+
+## Approach
+
+**[TODO]** How did you and the team tackle it? This is the technical meat. Some prompts to expand:
+
+- The **hardware-algorithm co-design** philosophy — what does that mean in practice for this device?
+- Photodiode array selection, optical path, illumination strategy.
+- Communication protocols (I²C, SPI, USB) and the software stack (Python, MATLAB, Linux).
+- Mechanical work — custom enclosures, 3D-printed fixtures, drill-press fabrication.
+- EMC hardening — what specifically did you change to pass Class B?
+
+A short bulleted "Key technical moves" list works well here too.
+
+## Results
+
+**[TODO]** Quantified outcomes — this is where the numbers shine. You have great ones already:
+
+- **10 µM** biomarker detection sensitivity.
+- **0.25 µL** sample-volume resolution.
+- **10× improvement** in signal-to-noise ratio with user-error detection layered in.
+- **EMC Class B certification** achieved.
+- Deployment locations / validation studies (Mayo Clinic? clinical pilots?).
+- Any publications, posters, or invited talks that came out of this work.
+
+Add anything else that proves the device works in the wild and not just on the bench.
+
+## In the lab and the clinic
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/photodiode-biomarker-sensor/lab-1.jpg', alt: 'Sensor on the optical bench', caption: 'Optical bench — initial characterization' },
+    { src: '/images/projects/photodiode-biomarker-sensor/lab-2.jpg', alt: 'Hardware assembly close-up', caption: 'PCB-rework station, custom fixture' },
+    { src: '/images/projects/photodiode-biomarker-sensor/clinical-1.jpg', alt: 'Device deployed in clinical setting', caption: 'Mayo Clinic Scottsdale — pilot deployment' },
+    { src: '/images/projects/photodiode-biomarker-sensor/clinical-2.jpg', alt: 'Clinical setting hardware', caption: 'In-situ use during validation study' },
+  ]}
+  columns={2}
+/>
+
+## Demo video
+
+<VideoEmbed
+  id="REPLACE_WITH_YOUTUBE_ID"
+  title="Photodiode Biomarker Sensor — demonstration"
+  caption="System walk-through: sample loading, measurement, readout."
+/>
+
+## What's next
+
+**[TODO — optional]** One short paragraph on where this is heading: FDA pathway, clinical trials, commercial transfer to Sequitur Health, the next-gen design, etc. Forward-looking notes signal momentum.

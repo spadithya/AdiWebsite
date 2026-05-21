@@ -1,0 +1,31 @@
+May-19-2026
+```````````
+Need to be added to my Website:
+## Projects
+
+### Maricopa County Home Price Predictor
+
+A machine-learning model trained on 456,000 real Phoenix-area home sales
+(2018-2026). Enter property characteristics — square footage, year built,
+neighborhood, pool, garage — and get a predicted sale price with an 80%
+confidence interval. Random Forest beats a linear baseline by ~40% on MAE.
+
+**Stack:** Python · pandas · scikit-learn · XGBoost · Streamlit
+**Model:** XGBoost (chosen for size; Random Forest variant wins by 1% MAE)
+**Code:** [github.com/spadithya/maricopa-housing-predictor](https://github.com/spadithya/maricopa-housing-predictor)
+
+[**Try the predictor →**](https://spadida-maricopa-housing-predictor.streamlit.app)
+
+---
+
+### Maricopa County Housing Stats
+
+An interactive dashboard exploring the same 456,000 sales: price trends
+by year, neighborhood comparisons across 147 geographic clusters,
+property-class breakdowns, and a sqft-vs-price scatter you can filter.
+Built as the EDA companion to the predictor — same data, different lens.
+
+**Stack:** Python · pandas · Plotly · Streamlit
+**Code:** [github.com/spadithya/maricopa-housing-stats](https://github.com/spadithya/maricopa-housing-stats)
+
+[**Explore the dashboard →**](https://spadida-maricopa-housing-stats.streamlit.app)

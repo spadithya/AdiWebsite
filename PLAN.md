@@ -17,7 +17,26 @@ _Last updated: May 14, 2026_
 | Aesthetic direction 	| **Future Nostalgia / retro-gaming-modern** (locked) 							|
 | Palette 		| **CRT Phosphor** (locked) — bg `#0A0F0A`, primary `#5BFF85`, secondary `#FFB347`, text `#C8E6C8` 	|
 | Notation 		| **Light terminal vibe** — numbered sections (01 · Work), monospace tags, no `LVL_XX`, no `$` symbols 	|
-| Phase 1 status 	| ✅ **LIVE** — https://spadithya.github.io/AdiWebsite/ — auto-deploys on push. 			|
+| Phase 1 status 	| ✅ **LIVE** — https://spadida.org — custom domain wired, HTTPS enforced, auto-deploys on push. 	|
+| Phase 2A status 	| ✅ **SCAFFOLDED** — /projects + /projects/[slug] + content collection + VideoEmbed + PhotoGallery components. PD project template ready for real content. 	|
+
+## 0.5 Section plan (locked May 2026)
+
+```
+spadida.org/
+├── /                       Home — snapshot CV + 3 featured projects + recent writing
+├── /projects               All projects (filterable: Research / Industry / Hardware / Software)
+│   └── /projects/[slug]    Individual project detail page
+├── /writing                Publications, talks, patents, thesis — single page, subsectioned
+├── /about                  Full bio, experience, education, skills, teaching, honors
+├── /off-hours              Hobbies (country swing dancing first)
+├── /press                  Media coverage / news features (footer-only until it grows)
+└── /contact                Masked email (Cloudflare forwarding) + socials
+```
+
+**Top nav:** Projects · Writing · About · Off-hours · Contact
+**Footer nav:** same + Press + RSS (later)
+**Email:** masked address via Cloudflare Email Routing — `<chosen>@spadida.org` forwards to `adithya.sp.ee@gmail.com`.
 
 ## 1. Goals (locked in)
 
