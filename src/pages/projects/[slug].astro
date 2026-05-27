@@ -85,10 +85,6 @@ const heroSrc = data.heroImage
       <Content components={{ VideoEmbed, PhotoGallery }} />
     </div>
 
-    {data.videoId && (
-      <VideoEmbed id={data.videoId} title={data.title} />
-    )}
-
     {data.links && data.links.length > 0 && (
       <section class="links-section">
         <div class="section-label"><span class="num">▸</span>Links</div>
