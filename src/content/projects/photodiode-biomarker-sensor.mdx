@@ -42,25 +42,25 @@ Clinical-grade chemistry systems like the **Vitros 5600** can measure 100+ bioma
 
 ## Approach
 
-Iterated through seven PCB designs — from a single low-power LED to a quadruple-LED configuration — systematically solving for light coverage, signal strength, and manufacturing feasibility. The full system covers hardware, firmware, and the algorithms that turn a raw photodiode trace into a clinically meaningful number:
+Iterated through seven PCB designs, from a single low-power LED to a quadruple-LED configuration, systematically solving for light coverage, signal strength, and manufacturing feasibility. The full system covers hardware, firmware, and the algorithms that turn a raw photodiode trace into a clinically meaningful number:
 
 - Real-time analyte insertion detection, endpoint extraction, and polynomial calibration-curve fitting.
 - Artifact-detection algorithms that identify substrate displacement and user misuse during the 2-minute reaction window.
 - Integrated temperature, pressure, and humidity sensors to compensate for environmental variability.
-- Embedded UI on a low-power microprocessor — fully self-contained, no host computer required.
+- Embedded UI on a low-power microprocessor, fully self-contained, no host computer required.
 
 ## Results
 
 - **5 µM** biomarker resolution validated with real blood and plasma samples.
-- **Under $500** total device cost — a 600× reduction from the Vitros 5600 reference.
+- **Under $500** total device cost, a 600× reduction from the Vitros 5600 reference.
 - **Under 5 W** power consumption (300× reduction).
-- **15″ × 15″ × 15″** footprint (versus 40″ × 68″ × 110″ — fits on a clinic counter).
+- **15″ × 15″ × 15″** footprint (versus 40″ × 68″ × 110″, fits on a clinic counter).
 - Noise-threshold algorithm validated against **500+ real datasets**, successfully flagging human-handling artifacts.
 
 <PhotoGallery
   images={[
-    { src: '/images/projects/photodiode-biomarker-sensor/calibration-curve.jpg', alt: 'Calibration curve from real plasma samples', caption: 'Calibration curve — polynomial fit across the biomarker range' },
-    { src: '/images/projects/photodiode-biomarker-sensor/emc-testing.jpg', alt: 'Device undergoing EMC Class B testing', caption: 'EMC Class B testing — Salt Lake City facility' },
+    { src: '/images/projects/photodiode-biomarker-sensor/calibration-curve.jpg', alt: 'Calibration curve from real plasma samples', caption: 'Calibration curve: polynomial fit across the biomarker range' },
+    { src: '/images/projects/photodiode-biomarker-sensor/emc-testing.jpg', alt: 'Device undergoing EMC Class B testing', caption: 'EMC Class B testing at Salt Lake City facility' },
   ]}
   columns={2}
 />
@@ -69,13 +69,13 @@ The device cleared **EMC Class B certification** at a Salt Lake City test facili
 
 ## In the field
 
-The device has been deployed in clinical settings at **Valleywise Health** in Phoenix, Arizona and **Oregon Health & Science University (OHSU)** in Portland, Oregon — moving from bench characterization into real-world validation with the clinicians who will eventually use it.
+The device has been deployed in clinical settings at **Valleywise Health** in Phoenix, Arizona and **Oregon Health & Science University (OHSU)** in Portland, Oregon, moving from bench characterization into real-world validation with the clinicians who will eventually use it.
 
 ## Demo video
 
 <VideoEmbed
   id="arU5Ef2xkGk"
-  title="Photodiode Biomarker Sensor — demonstration"
+  title="Photodiode Biomarker Sensor demonstration"
   caption="System walk-through: sample loading, measurement, readout."
 />
 
