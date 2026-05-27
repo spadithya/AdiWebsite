@@ -1,20 +1,23 @@
 ---
-title: "Photodiode Biomarker Sensor"
-summary: "EMC Class B-certified photodiode imaging sensor for high-sensitivity biomarker detection at 10 µM, with 0.25 µL sample-volume resolution and 10× improved signal-to-noise ratio."
-year: 2024
-yearEnd: 2026
+title: "Photodiode-based Colorimetric Sensor for Biomarker Detection"
+summary: "EMC Class B-certified, sub-$500 colorimetric biomarker detection system using photodiodes in reflectance mode. 5 µM resolution with real blood/plasma samples, deployed at Valleywise and OHSU."
+year: 2021
+yearEnd: 2025
 status: active
 category: research
-tags: ["Photodiode", "CMOS", "EMC", "NIH-SBIR", "Embedded", "Python", "FDA"]
+tags: ["Photodiode", "Colorimetric", "EMC Class B", "NIH-SBIR", "Embedded", "Signal Processing", "FDA Pathway", "Product Development"]
 featured: true
 order: 1
-heroImage: "/images/projects/photodiode-biomarker-sensor/hero.jpg"
-videoId: ""
+heroImage: "/images/projects/photodiode-biomarker-sensor/prototype.jpg"
+videoId: "arU5Ef2xkGk"
 role: "Lead Hardware Engineer · PhD Candidate"
 collaborators:
   - "Dr. Erica Forzani (advisor)"
+  - "Dr. MaryLaura Lind Thomas (co-advisor)"
   - "Sequitur Health Corporation"
   - "Mayo Clinic Scottsdale"
+  - "Valleywise Health (Phoenix)"
+  - "Oregon Health & Science University"
   - "Biodesign Institute, ASU"
 funding:
   - "NIH SBIR"
@@ -31,63 +34,51 @@ import PhotoGallery from '../../components/PhotoGallery.astro';
 
 ## Overview
 
-**[TODO — replace this paragraph]** Two to three sentences describing the sensor in plain language: what it measures, who uses it, and why it matters. Pretend you're explaining it to a smart non-specialist (a journalist, a recruiter, a relative). Avoid jargon in this paragraph specifically — there's room for the technical depth below.
+Designed and built a compact, low-cost colorimetric biomarker detection device using photodiodes and LEDs in reflectance mode. The system measures biomarker concentrations from chemical substrates using a modified Beer–Lambert law approach, complete with signal processing software, environmental compensation, and a user-facing UI on a microprocessor.
 
 ## Problem
 
-**[TODO]** What was the unmet need or limitation in the field before this work? A few sentences on the clinical or industry-wide gap. Examples to draw from your CV:
-
-- Existing sensors had limited sensitivity for detecting biomarkers at clinically relevant concentrations.
-- Sample-volume measurement at sub-microliter scales was an industry-wide limitation.
-- Signal-to-noise ratio in compact, deployable hardware was insufficient for clinical-grade decisions.
-
-Pick whichever framing matches the truth most accurately.
+Clinical-grade chemistry systems like the **Vitros 5600** can measure 100+ biomarkers but cost over **$300,000**, consume **1,500W**, and occupy an entire room. This makes them completely inaccessible to low-income populations and resource-limited clinics, both in the US and globally.
 
 ## Approach
 
-**[TODO]** How did you and the team tackle it? This is the technical meat. Some prompts to expand:
+Iterated through seven PCB designs — from a single low-power LED to a quadruple-LED configuration — systematically solving for light coverage, signal strength, and manufacturing feasibility. The full system covers hardware, firmware, and the algorithms that turn a raw photodiode trace into a clinically meaningful number:
 
-- The **hardware-algorithm co-design** philosophy — what does that mean in practice for this device?
-- Photodiode array selection, optical path, illumination strategy.
-- Communication protocols (I²C, SPI, USB) and the software stack (Python, MATLAB, Linux).
-- Mechanical work — custom enclosures, 3D-printed fixtures, drill-press fabrication.
-- EMC hardening — what specifically did you change to pass Class B?
-
-A short bulleted "Key technical moves" list works well here too.
+- Real-time analyte insertion detection, endpoint extraction, and polynomial calibration-curve fitting.
+- Artifact-detection algorithms that identify substrate displacement and user misuse during the 2-minute reaction window.
+- Integrated temperature, pressure, and humidity sensors to compensate for environmental variability.
+- Embedded UI on a low-power microprocessor — fully self-contained, no host computer required.
 
 ## Results
 
-**[TODO]** Quantified outcomes — this is where the numbers shine. You have great ones already:
-
-- **10 µM** biomarker detection sensitivity.
-- **0.25 µL** sample-volume resolution.
-- **10× improvement** in signal-to-noise ratio with user-error detection layered in.
-- **EMC Class B certification** achieved.
-- Deployment locations / validation studies (Mayo Clinic? clinical pilots?).
-- Any publications, posters, or invited talks that came out of this work.
-
-Add anything else that proves the device works in the wild and not just on the bench.
-
-## In the lab and the clinic
+- **5 µM** biomarker resolution validated with real blood and plasma samples.
+- **Under $500** total device cost — a 600× reduction from the Vitros 5600 reference.
+- **Under 5 W** power consumption (300× reduction).
+- **15″ × 15″ × 15″** footprint (versus 40″ × 68″ × 110″ — fits on a clinic counter).
+- Noise-threshold algorithm validated against **30+ real datasets**, successfully flagging human-handling artifacts.
 
 <PhotoGallery
   images={[
-    { src: '/images/projects/photodiode-biomarker-sensor/lab-1.jpg', alt: 'Sensor on the optical bench', caption: 'Optical bench — initial characterization' },
-    { src: '/images/projects/photodiode-biomarker-sensor/lab-2.jpg', alt: 'Hardware assembly close-up', caption: 'PCB-rework station, custom fixture' },
-    { src: '/images/projects/photodiode-biomarker-sensor/clinical-1.jpg', alt: 'Device deployed in clinical setting', caption: 'Mayo Clinic Scottsdale — pilot deployment' },
-    { src: '/images/projects/photodiode-biomarker-sensor/clinical-2.jpg', alt: 'Clinical setting hardware', caption: 'In-situ use during validation study' },
+    { src: '/images/projects/photodiode-biomarker-sensor/calibration-curve.jpg', alt: 'Calibration curve from real plasma samples', caption: 'Calibration curve — polynomial fit across the biomarker range' },
+    { src: '/images/projects/photodiode-biomarker-sensor/emc-testing.jpg', alt: 'Device undergoing EMC Class B testing', caption: 'EMC Class B testing — Salt Lake City facility' },
   ]}
   columns={2}
 />
 
+The device cleared **EMC Class B certification** at a Salt Lake City test facility, confirming regulatory readiness for hospital and residential environments.
+
+## In the field
+
+The device has been deployed in clinical settings at **Valleywise Health** in Phoenix, Arizona and **Oregon Health & Science University (OHSU)** in Portland, Oregon — moving from bench characterization into real-world validation with the clinicians who will eventually use it.
+
 ## Demo video
 
 <VideoEmbed
-  id="REPLACE_WITH_YOUTUBE_ID"
+  id="arU5Ef2xkGk"
   title="Photodiode Biomarker Sensor — demonstration"
   caption="System walk-through: sample loading, measurement, readout."
 />
 
 ## What's next
 
-**[TODO — optional]** One short paragraph on where this is heading: FDA pathway, clinical trials, commercial transfer to Sequitur Health, the next-gen design, etc. Forward-looking notes signal momentum.
+FDA application is on track, moving the device from clinical validation toward formal regulatory clearance for commercial use.
