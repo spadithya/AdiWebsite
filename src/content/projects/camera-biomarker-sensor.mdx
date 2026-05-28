@@ -1,0 +1,90 @@
+---
+title: "Camera-based Sensor for Biomarker Detection"
+summary: "CMOS imaging sensor that captures rich, multidimensional color data from chemical substrates. Unlocks spatial analysis, manufacturing quality control, and defect detection that are impossible with a 1D photodiode signal."
+year: 2024
+yearEnd: 2025
+status: active
+category: research
+tags: ["CMOS", "Camera", "Imaging", "Computer Vision", "Colorimetric", "Biomarker", "Image Processing", "Product Development"]
+featured: true
+order: 2
+heroImage: "/images/projects/camera-biomarker-sensor/CameraHero.jpg"
+videoId: "GTDR9Ou_XA0"
+role: "Lead Imaging Engineer · PhD Candidate"
+collaborators:
+  - "Dr. Erica Forzani (advisor)"
+  - "Dr. MaryLaura Lind Thomas (co-advisor)"
+  - "Sequitur Health Corporation"
+  - "Biodesign Institute, ASU"
+funding:
+  - "NIH SBIR"
+  - "NSF SBIR"
+links:
+  - label: "Photodiode predecessor"
+    url: "./photodiode-biomarker-sensor"
+  - label: "Sequitur Health"
+    url: "https://www.sequiturhealth.com"
+  - label: "Biodesign Institute"
+    url: "https://biodesign.asu.edu"
+---
+
+import VideoEmbed from '../../components/VideoEmbed.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+
+## Overview
+
+Designed and built a CMOS imaging sensor-based biomarker measurement system that captures rich, multidimensional color data from chemical substrates. This approach unlocks spatial analysis, manufacturing quality control, and defect detection capabilities that are impossible with a 1D photodiode signal.
+
+## Problem
+
+The photodiode solution, while effective, captures only a single voltage value over time. That's 1D data. This limits the system's ability to detect substrate-level quality issues such as dust contamination, physical defects, or uneven analyte distribution, all of which directly affect measurement accuracy.
+
+## Approach
+
+- Iterated through five hardware designs, starting from a GoPro proof-of-concept and ending with a purpose-built system using a **5 MP industrial camera (See3CAM CU55)** and a custom **52 mm-radius 12-LED ring**.
+- Solved critical challenges: disabled auto white-balance to preserve colorimetric fidelity, eliminated bright spots through progressive LED ring scaling, and engineered a sealed 3D-printed chamber with non-reflective lining.
+- Tracked RGB pixel values at multiple spatial points on the substrate to map reaction dynamics over time.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/camera-biomarker-sensor/CameraIterations.jpg', alt: 'Five hardware iterations of the camera-based biomarker sensor', caption: 'Five iterations: from GoPro proof-of-concept to the See3CAM CU55 production design.' },
+  ]}
+  columns={1}
+  natural={true}
+/>
+
+## Results
+
+- Captured **~6.2 million data points per image**, versus a single voltage reading from the photodiode.
+- Reduced background noise to **0.01, 0.27, and 0.45** for R, G, B components respectively, a major improvement over earlier iterations (1.33, 0.92, 1.08).
+- Enabled spatial analysis that distinguishes center vs. edge reaction behavior, opening the door to substrate-level quality control and defect detection.
+- Maintained the same cost (**under $500**), compact footprint (**15″ × 15″ × 15″**), and low power (**under 10 W**) targets as the photodiode predecessor.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/camera-biomarker-sensor/CameraCalibrationCurve.jpg', alt: 'Calibration curve from the camera sensor across biomarker concentrations', caption: 'Calibration curve: fitted response across the biomarker concentration range.' },
+    { src: '/images/projects/camera-biomarker-sensor/RRPGraphs.jpg', alt: 'Reaction rate plots showing temporal dynamics at multiple spatial points', caption: 'Reaction rate plots: temporal dynamics captured at multiple spatial points on the substrate.' },
+  ]}
+  columns={2}
+  natural={true}
+/>
+
+## Reaction dynamics
+
+The video below shows the spatial reaction rate captured by the camera, mapped across the substrate. The richness of this signal is what 1D photodiodes can never see.
+
+<VideoEmbed
+  id="GTDR9Ou_XA0"
+  title="Camera Biomarker Sensor reaction dynamics"
+  caption="Spatial reaction rate captured by the camera, mapped across the substrate."
+/>
+
+## In use
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/camera-biomarker-sensor/CameraApplication.jpg', alt: 'Camera-based biomarker sensor in operation', caption: 'The system in operation: substrate inserted, illumination active, frames streaming.' },
+  ]}
+  columns={1}
+  natural={true}
+/>
