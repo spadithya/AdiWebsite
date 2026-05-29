@@ -1,39 +1,70 @@
 ---
-title: "Aerosol Mitigation System"
-summary: "Self-contained embedded system to mitigate contaminated SARS-CoV-2 aerosols. Deployed and validated at Mayo Clinic Scottsdale and a healthcare facility in Haiti. NIH-NIBIB funded."
+title: "Active Aerosol Mitigation System for Healthcare Workers"
+summary: "Portable, low-cost active aerosol mitigation system for high-risk respiratory therapies. 99.0% peak aerosol reduction during HFNC nebulization without compromising drug delivery. Deployed in 1,100+ clinical cases. Peer-reviewed in Emerg. Care Med. (2025)."
 year: 2019
-yearEnd: 2021
+yearEnd: 2025
 status: completed
 category: research
-tags: ["Embedded", "Linux", "Altium", "SolidWorks", "NIH-NIBIB", "COVID-19"]
-featured: false
+tags: ["Aerosol Science", "Biofilter", "HFNC", "NIV", "Clinical Validation", "COVID-19", "NIH-NIBIB"]
+featured: true
 order: 3
-heroImage: "/images/projects/aerosol-mitigation/hero.jpg"
-role: "Research Associate · Master's Thesis"
+heroImage: "/images/projects/aerosol-mitigation-system/aerosol-hero.jpg"
+role: "Co-Lead Engineer · Master's Thesis"
 collaborators:
+  - "Dr. Erica Forzani (advisor)"
   - "Biodesign Institute, ASU"
   - "Mayo Clinic Scottsdale"
 funding:
   - "NIH-NIBIB"
 links:
-  - label: "Master's thesis (ASU)"
-    url: "https://keep.lib.asu.edu/"
+  - label: "Paper: Emerg. Care Med. 2025"
+    url: "https://www.mdpi.com/2813-7914/2/3/36"
+  - label: "Biodesign Institute"
+    url: "https://biodesign.asu.edu"
 ---
+
+import PhotoGallery from '../../components/PhotoGallery.astro';
 
 ## Overview
 
-**[TODO]** A paragraph on the COVID-19 context, the aerosol problem in clinical settings, and what the device does.
+Co-led the development and validation of a portable active aerosol mitigation system to protect healthcare workers during high-risk respiratory therapies. Took the project from engineering design through clinical validation and peer-reviewed publication (*Emergency Care and Medicine*, 2025), in a collaboration between ASU's Biodesign Institute and Mayo Clinic.
+
+## Problem
+
+Aerosol-generating procedures like nebulization with HFNC or non-invasive ventilation expose healthcare workers to infectious airborne particles (<10 µm) capable of transmitting pathogens like SARS-CoV-2, influenza, and measles. Existing solutions like surgical masks and containment boxes leave most fugitive aerosols unmitigated, and hospital HVAC upgrades aren't a viable point-of-care fix. I set out to build a portable, low-cost system that solves this at the source.
 
 ## Approach
 
-- Embedded Linux prototypes for fast lab-to-hardware iteration.
-- Altium Designer PCB layouts iterated rapidly.
-- Custom test fixtures in SolidWorks, SLA 3D printed.
-- iOS application maintained for the Breezing Metabolic Analyzer App.
+I engineered and tested two active mitigation systems:
+
+1. An **aerosol barrier mask** combining a fitted silicone oronasal mask, biofilter (0.2 µm pore, 99.99%+ bacterial/viral efficiency), and a battery-powered fan for HFNC.
+2. A **containment box** with the same fan and biofilter assembly for NIV.
+
+I designed the experimental framework to benchmark both against passive controls in a simulated airborne infection isolation room, deploying redundant aerosol sensors (Dylos DC1100 Pro and MET ONE HHPC2+) at 3, 6, and 13 ft. I quantified mitigation efficacy through peak and area-under-curve analysis of aerosol concentration-time profiles, and independently validated that the active system didn't compromise nebulized drug delivery across saline, albuterol, vancomycin, and amikacin.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/aerosol-mitigation-system/aerosol-mask.jpg', alt: 'Active aerosol barrier mask prototype', caption: 'Aerosol barrier mask: silicone interface, biofilter, battery-powered fan.' },
+    { src: '/images/projects/aerosol-mitigation-system/aerosol-simulation-room.jpg', alt: 'Experimental setup in simulated airborne infection isolation room', caption: 'Simulated airborne infection isolation room: redundant aerosol sensors at 3, 6, and 13 ft.' },
+  ]}
+  columns={2}
+  natural={true}
+/>
 
 ## Results
 
-- Deployed at Mayo Clinic (Scottsdale).
-- Deployed at a healthcare facility in Haiti.
-- Master's thesis at ASU.
-- Co-authored peer-reviewed publication on portable fugitive aerosol mitigation (2025).
+The active system dramatically outperformed existing approaches:
+
+- **99.0% peak / 96.4% area** aerosol reduction for HFNC + nebulization (vs. 35.9% / 7.6% with a surgical mask).
+- **92.1% peak / 84.5% area** reduction for NIV + nebulization (vs. 53.7% / 25.4% with the box alone).
+- **Drug delivery remained statistically unaffected** (*p* > 0.1 across all four medications: saline, albuterol, vancomycin, amikacin).
+- Applied through the **Wells–Riley infection risk framework**, the system reduces estimated infection probability to **<1% (HFNC)** and **12% (NIV)**.
+- The mask was deployed in **over 1,100 clinical cases** during the pandemic with positive frontline feedback: a real-world validation of the design.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/aerosol-mitigation-system/aerosol-efficacy.jpg', alt: 'Aerosol mitigation efficacy comparison chart', caption: 'Efficacy comparison: active system vs. passive controls across peak and area metrics.' },
+  ]}
+  columns={1}
+  natural={true}
+/>
