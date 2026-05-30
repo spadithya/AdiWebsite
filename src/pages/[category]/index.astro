@@ -1,0 +1,166 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const CATEGORIES = {
+  'lab': {
+    label: 'Lab',
+    title: 'Lab',
+    lede: 'Selected research and engineering work. Biomedical sensors, embedded systems, and the deep work that pays the bills.',
+    soon: "More projects rolling in from the bench.",
+  },
+  'side-quests': {
+    label: 'Side-quests',
+    title: 'Side-quests',
+    lede: 'Curious side projects: machine learning, security, whatever caught my attention this week.',
+    soon: 'Coming soon. Weekend experiments and writeups are on the way.',
+  },
+  'hub': {
+    label: 'Hub',
+    title: 'Hub',
+    lede: 'Community outreach, education, and the things I do with the lab door open.',
+    soon: 'More community work landing soon.',
+  },
+  'off-hours': {
+    label: 'Off-hours',
+    title: 'Off-hours',
+    lede: 'Outside the lab, outside the screen. Country swing, hiking, and what else I get up to.',
+    soon: 'More off-hours pursuits landing here soon.',
+  },
+} as const;
+
+type CategoryKey = keyof typeof CATEGORIES;
+
+export async function getStaticPaths() {
+  return ['lab', 'side-quests', 'hub', 'off-hours'].map((cat) => ({
+    params: { category: cat },
+  }));
+}
+
+const category = Astro.params.category as CategoryKey;
+const meta = CATEGORIES[category];
+
+const allProjects = (await getCollection('projects', ({ data }) => data.category === category && !data.draft))
+  .sort((a, b) => b.data.year - a.data.year);
+
+const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+---
+
+<Base
+  title={`${meta.title} · Adithya Shyamala Pandian`}
+  description={meta.lede}
+>
+  <nav class="site">
+    <div class="mark"><a href={import.meta.env.BASE_URL}>ADITHYA<span>_</span>SP</a></div>
+    <ul>
+      <li><a href={`${baseUrl}/lab`}>Lab</a></li>
+      <li><a href={`${baseUrl}/side-quests`}>Side-quests</a></li>
+      <li><a href={`${baseUrl}/hub`}>Hub</a></li>
+      <li><a href={`${baseUrl}/off-hours`}>Off-hours</a></li>
+      <li><a href={`${import.meta.env.BASE_URL}#contact`}>Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="page-header">
+    <div class="section-label"><span class="num">▸</span>{meta.label}</div>
+    <h1 class="page-title">
+      {meta.title === 'Side-quests' ? (
+        <>Side-<span class="accent">quests</span>.</>
+      ) : meta.title === 'Off-hours' ? (
+        <>Off-<span class="accent">hours</span>.</>
+      ) : (
+        <>{meta.title}.</>
+      )}
+    </h1>
+    <p class="page-lede">{meta.lede}</p>
+  </section>
+
+  <section>
+    {allProjects.length === 0 ? (
+      <div class="empty-state">
+        <div class="empty-pulse"></div>
+        <p>{meta.soon}</p>
+      </div>
+    ) : (
+      <div class="projects">
+        {allProjects.map((project) => (
+          <a
+            class="project"
+            href={`${baseUrl}/${category}/${project.id}`}
+          >
+            <div class="year">{project.data.year}{project.data.yearEnd ? `–${String(project.data.yearEnd).slice(-2)}` : ''}</div>
+            <div>
+              <div class="title">{project.data.title}</div>
+              <div class="desc">{project.data.summary}</div>
+              <div class="tags">
+                {project.data.tags.map((t) => <span>{t}</span>)}
+              </div>
+            </div>
+            <div class="arrow">→</div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <footer class="site">
+    <div class="saved">Last updated · May 2026</div>
+    <div class="socials">
+      <a href={import.meta.env.BASE_URL}>Home</a>
+      <a href="https://github.com/spadithya">GitHub</a>
+      <a href="mailto:adi@spadida.org">Email</a>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .page-header { padding: 4rem 0 2rem; }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0.5rem 0 1rem;
+  }
+  .page-title .accent {
+    color: var(--primary);
+    text-shadow: 0 0 24px var(--glow);
+  }
+  .page-lede {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+  }
+  .empty-state {
+    margin: 4rem 0;
+    padding: 3rem 2rem;
+    background: var(--bg-card);
+    border: 1px dashed var(--line-glow);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+  .empty-pulse {
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    box-shadow: 0 0 12px var(--glow);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  @media (max-width: 700px) {
+    .page-title { font-size: 44px; }
+  }
+</style>

@@ -1,49 +1,64 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
 
-// Project list (move to a content collection in Phase 2)
-const projects = [
+const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+// Pull all projects from the content collection
+const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.year - a.data.year);
+
+// Group by category
+function byCategory(cat: string, limit = 3) {
+  return allProjects.filter((p) => p.data.category === cat).slice(0, limit);
+}
+
+const categoryBlocks = [
   {
-    year: 2025,
-    title: 'Camera-based Sensor for Biomarker Detection',
-    desc: 'CMOS imaging sensor capturing ~6.2M data points per image. Enables spatial analysis, quality control, and defect detection impossible with 1D photodiode signals.',
-    tags: ['CMOS', 'Imaging', 'Computer Vision', 'NIH-SBIR'],
-    href: './projects/camera-biomarker-sensor',
+    key: 'lab',
+    num: '02',
+    label: 'Lab',
+    title: 'Lab',
+    accent: 'work',
+    lede: 'Research and engineering. The deep work.',
+    projects: byCategory('lab'),
+    totalCount: allProjects.filter((p) => p.data.category === 'lab').length,
+    soon: 'More from the bench soon.',
   },
   {
-    year: 2024,
-    title: 'Photodiode Biomarker Sensor',
-    desc: '10 µM detection sensitivity. 0.25 µL sample volume resolution. 10× SNR improvement. EMC Class B certified.',
-    tags: ['Photodiode', 'EMC', 'NIH-SBIR', 'Python'],
-    href: './projects/photodiode-biomarker-sensor',
+    key: 'side-quests',
+    num: '03',
+    label: 'Side-quests',
+    title: 'Side-quests',
+    accent: 'curious',
+    lede: 'Weekend ML, security, and whatever caught my attention this week.',
+    projects: byCategory('side-quests'),
+    totalCount: allProjects.filter((p) => p.data.category === 'side-quests').length,
+    soon: 'Coming soon. Side experiments and writeups landing here.',
   },
   {
-    year: 2024,
-    title: 'NES + Game Boy From Scratch',
-    desc: 'Four Game Boys (ASU Open Door 2023) and four NES systems (Open Door 2024). PCB design, firmware, custom enclosures. Featured in ASU news.',
-    tags: ['Hardware', 'Firmware', 'Retro'],
-    href: './projects/nes-gameboy-builds',
+    key: 'hub',
+    num: '04',
+    label: 'Hub',
+    title: 'Hub',
+    accent: 'open door',
+    lede: 'Outreach, education, and what I do with the lab door open.',
+    projects: byCategory('hub'),
+    totalCount: allProjects.filter((p) => p.data.category === 'hub').length,
+    soon: 'More community work landing here soon.',
   },
   {
-    year: 2025,
-    title: 'Active Aerosol Mitigation System',
-    desc: '99.0% peak aerosol reduction during HFNC nebulization. Deployed in 1,100+ clinical cases. Peer-reviewed in Emerg. Care Med. (2025).',
-    tags: ['Aerosol Science', 'Biofilter', 'Clinical Validation', 'NIH-NIBIB'],
-    href: './projects/aerosol-mitigation',
-  },
-  {
-    year: 2020,
-    title: 'Symbionic: Bionic Prosthetic Arm',
-    desc: 'Co-founded. Real-time EEG biopotentials translated into hand gesture recognition for bionic prostheses. DST India-funded.',
-    tags: ['EEG', 'Signal Processing', 'Startup'],
-    href: './projects/symbionic',
-  },
-  {
-    year: 2017,
-    title: 'Wireless Seatbelt Indicator',
-    desc: 'RF-based Hall-effect seatbelt monitoring system. Indian patent filed; two conference papers (Springer FICTA, INDIACom).',
-    tags: ['RF', 'Hall Effect', 'Patent'],
-    href: './projects/seatbelt-indicator',
+    key: 'off-hours',
+    num: '05',
+    label: 'Off-hours',
+    title: 'Off-hours',
+    accent: 'screen',
+    lede: 'Outside the lab. Country swing, hiking, what else I get up to.',
+    projects: byCategory('off-hours'),
+    totalCount: allProjects.filter((p) => p.data.category === 'off-hours').length,
+    soon: 'Country swing, hiking, more on the way.',
   },
 ];
 
@@ -74,9 +89,10 @@ const publications = [
   <nav class="site">
     <div class="mark">ADITHYA<span>_</span>SP</div>
     <ul>
-      <li><a href="./projects">Projects</a></li>
-      <li><a href="#writing">Writing</a></li>
-      <li><a href="#off-hours">Off-hours</a></li>
+      <li><a href={`${baseUrl}/lab`}>Lab</a></li>
+      <li><a href={`${baseUrl}/side-quests`}>Side-quests</a></li>
+      <li><a href={`${baseUrl}/hub`}>Hub</a></li>
+      <li><a href={`${baseUrl}/off-hours`}>Off-hours</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -122,43 +138,62 @@ const publications = [
     </p>
   </section>
 
-  <section id="work">
-    <div class="section-label"><span class="num">02</span>Work</div>
-    <h2 class="section-title">Selected <span class="accent">projects</span>.</h2>
-    <div class="projects">
-      {projects.map((p) => (
-        <a class="project" href={p.href}>
-          <div class="year">{p.year}</div>
-          <div>
-            <div class="title">{p.title}</div>
-            <div class="desc">{p.desc}</div>
-            <div class="tags">
-              {p.tags.map((t) => <span>{t}</span>)}
-            </div>
-          </div>
-          <div class="arrow">→</div>
+  {categoryBlocks.map((cat) => (
+    <section class="category-block" id={cat.key}>
+      <div class="cat-header">
+        <div class="section-label"><span class="num">{cat.num}</span>{cat.label}</div>
+        <a class="see-all" href={`${baseUrl}/${cat.key}`}>
+          {cat.totalCount > 0 ? `See all ${cat.totalCount}` : 'See more'} →
         </a>
-      ))}
-    </div>
+      </div>
+      <h2 class="section-title">{cat.title.split(' ')[0]} {cat.title.split(' ').slice(1).join(' ')}{cat.title === 'Lab' ? '' : ''}.</h2>
+      <p class="cat-lede">{cat.lede}</p>
 
-    <div class="featured">
-      <div class="label-row">
-        <div class="section-label">★ Featured Build</div>
-        <div class="badge">Showcase</div>
-      </div>
-      <h3>Four Game Boys and four NES systems, <span class="accent">built from scratch</span>.</h3>
-      <p>
-        Designed and showcased at ASU Open Door 2023 (Game Boys) and 2024 (NES). PCB design, firmware reverse-engineered, custom enclosures fabricated on the lab's drill press and SLA printers. Featured in ASU news coverage. The retro hardware is the through-line for everything I do: patient instruments and consumer hardware run on the same engineering discipline.
-      </p>
-      <div class="pixels">
-        <div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div></div>
-        <div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div>
-      </div>
+      {cat.projects.length === 0 ? (
+        <div class="empty-state">
+          <div class="empty-pulse"></div>
+          <p>{cat.soon}</p>
+        </div>
+      ) : (
+        <div class="projects">
+          {cat.projects.map((p) => (
+            <a class="project" href={`${baseUrl}/${cat.key}/${p.id}`}>
+              <div class="year">{p.data.year}{p.data.yearEnd ? `–${String(p.data.yearEnd).slice(-2)}` : ''}</div>
+              <div>
+                <div class="title">{p.data.title}</div>
+                <div class="desc">{p.data.summary}</div>
+                <div class="tags">
+                  {p.data.tags.slice(0, 4).map((t) => <span>{t}</span>)}
+                </div>
+              </div>
+              <div class="arrow">→</div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  ))}
+
+  <div class="featured">
+    <div class="label-row">
+      <div class="section-label">★ Featured Build</div>
+      <div class="badge">Showcase</div>
     </div>
-  </section>
+    <h3>Four Game Boys and four NES systems, <span class="accent">built from scratch</span>.</h3>
+    <p>
+      Designed and showcased at ASU Open Door 2023 (Game Boys) and 2024 (NES). PCB design, firmware reverse-engineered, custom enclosures fabricated on the lab's drill press and SLA printers. Featured in ASU news coverage. The retro hardware is the through-line for everything I do: patient instruments and consumer hardware run on the same engineering discipline.
+    </p>
+    <p class="featured-link">
+      <a href={`${baseUrl}/hub/nes-gameboy-builds`}>See the build →</a>
+    </p>
+    <div class="pixels">
+      <div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div></div>
+      <div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div><div class="lit"></div><div></div><div class="lit"></div><div class="lit"></div>
+    </div>
+  </div>
 
   <section class="pubs" id="writing">
-    <div class="section-label"><span class="num">03</span>Writing</div>
+    <div class="section-label"><span class="num">06</span>Writing</div>
     <h2 class="section-title">Peer-reviewed <span class="accent">publications</span>.</h2>
     <ul>
       {publications.map((p) => (
@@ -173,16 +208,6 @@ const publications = [
     </ul>
   </section>
 
-  <section id="off-hours">
-    <div class="section-label"><span class="num">04</span>Off-hours</div>
-    <div class="off-hours">
-      <h3>Country swing, <span class="accent">and counting</span>.</h3>
-      <p>
-        When I'm not at the bench, I'm on the dance floor: country swing, two-step, and learning everything in between. Outside the lab, outside the screen.
-      </p>
-    </div>
-  </section>
-
   <footer class="site" id="contact">
     <div class="saved">Last updated · May 2026</div>
     <div class="socials">
@@ -193,3 +218,63 @@ const publications = [
     </div>
   </footer>
 </Base>
+
+<style>
+  .category-block { padding: 3.5rem 0 0; }
+  .cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+  .see-all {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .see-all:hover { color: var(--primary); }
+  .cat-lede {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    max-width: 540px;
+  }
+  .empty-state {
+    margin: 1rem 0 2rem;
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px dashed var(--line-glow);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .empty-pulse {
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 0.8rem;
+    box-shadow: 0 0 10px var(--glow);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  .featured-link {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .featured-link a {
+    color: var(--accent);
+    transition: color 0.2s;
+  }
+  .featured-link a:hover { color: var(--primary); }
+</style>

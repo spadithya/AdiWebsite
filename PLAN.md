@@ -19,24 +19,39 @@ _Last updated: May 14, 2026_
 | Notation 		| **Light terminal vibe** — numbered sections (01 · Work), monospace tags, no `LVL_XX`, no `$` symbols 	|
 | Phase 1 status 	| ✅ **LIVE** — https://spadida.org — custom domain wired, HTTPS enforced, auto-deploys on push. 	|
 | Phase 2A status 	| ✅ **SCAFFOLDED** — /projects + /projects/[slug] + content collection + VideoEmbed + PhotoGallery components. PD project template ready for real content. 	|
+| Phase 2B status 	| ✅ **CONTENT** — PD, Camera, and Aerosol Mitigation projects fully fleshed out with images and video. 	|
+| Phase 2C status 	| ✅ **RESTRUCTURED** — Four-category architecture (Lab / Side Quests / Hub / Off-hours). Homepage shows category preview blocks with "Coming soon" for empty ones. Old /projects URLs 301-redirect to new /{category}/[slug] URLs. Featured Build callout kept standalone. 	|
 
-## 0.5 Section plan (locked May 2026)
+## 0.5 Section plan (locked May 2026, revised May 29 2026)
+
+Four-category restructure replacing the single `/projects` page:
 
 ```
 spadida.org/
-├── /                       Home — snapshot CV + 3 featured projects + recent writing
-├── /projects               All projects (filterable: Research / Industry / Hardware / Software)
-│   └── /projects/[slug]    Individual project detail page
-├── /writing                Publications, talks, patents, thesis — single page, subsectioned
+├── /                       Home — snapshot CV + 4 category previews (3 highlights each)
+├── /lab                    Work Projects — research, funded engineering, FDA-pathway work
+│   └── /lab/[slug]         Individual project detail (was /projects/[slug])
+├── /side-quests            Hobby Projects — ML, cybersec, weekend code
+│   └── /side-quests/[slug] Individual side-quest detail
+├── /hub                    Community Activities — outreach, NES/Game Boy for kids, ASU Open Door
+│   └── /hub/[slug]         Individual community-activity detail
+├── /off-hours              Fun Hobbies — dancing, hiking
+├── /writing                Publications, talks, patents, thesis
 ├── /about                  Full bio, experience, education, skills, teaching, honors
-├── /off-hours              Hobbies (country swing dancing first)
-├── /press                  Media coverage / news features (footer-only until it grows)
-└── /contact                Masked email (Cloudflare forwarding) + socials
+├── /press                  Media coverage (footer-only until it grows)
+└── /contact                Masked email + socials
 ```
 
-**Top nav:** Projects · Writing · About · Off-hours · Contact
-**Footer nav:** same + Press + RSS (later)
-**Email:** masked address via Cloudflare Email Routing — `<chosen>@spadida.org` forwards to `adithya.sp.ee@gmail.com`.
+**Category labels (locked):**
+- `lab` for Work Projects
+- `side-quests` for Hobby Projects
+- `hub` for Community Activities
+- `off-hours` for Fun Hobbies
+
+**Top nav:** Lab · Side Quests · Hub · Off-hours · Contact
+**Secondary nav (footer):** Writing · About · Press · RSS
+
+**Email:** `adi@spadida.org` (Cloudflare Email Routing → `adithya.sp.ee@gmail.com`).
 
 ## 1. Goals (locked in)
 

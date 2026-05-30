@@ -9,7 +9,7 @@ const projects = defineCollection({
     year: z.number(),
     yearEnd: z.number().optional(),
     status: z.enum(['active', 'completed', 'archived']).default('completed'),
-    category: z.enum(['research', 'industry', 'hardware', 'software']),
+    category: z.enum(['lab', 'side-quests', 'hub', 'off-hours']),
     tags: z.array(z.string()),
     featured: z.boolean().default(false),
     order: z.number().optional(),
