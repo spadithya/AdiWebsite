@@ -44,7 +44,7 @@ Default flow when adapting a README:
 4. **Results** (bulleted list of metrics + an inline gallery for performance charts or data viz). Quantified outcomes win here.
 5. **Live demo / In action** section if the project has a deployed app or video. Embed it directly.
 6. **Notes on the data / Stack / Caveats** (optional, short). Worthwhile gotchas a fellow engineer would appreciate.
-7. **License / Credits** (one line, only if relevant).
+7. **Skip the License/Credits section.** Belongs on the GitHub repo, not the portfolio page. If a public-domain dataset or notable credit is genuinely worth surfacing, work it briefly into the relevant section (a single line in "Notes on the data" is plenty).
 
 ## Image placement
 
