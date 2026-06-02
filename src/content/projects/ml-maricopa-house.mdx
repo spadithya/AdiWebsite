@@ -7,7 +7,7 @@ category: side-quests
 tags: ["Machine Learning", "Streamlit", "Python", "Public Data", "XGBoost", "Random Forest", "Real Estate", "Data Pipeline"]
 featured: true
 order: 1
-heroImage: "/images/projects/ml-maricopa-house/maricopda-house-stats.png"
+heroImage: "/images/projects/ml-maricopa-house/maricopa-house-stats.png"
 role: "Solo build"
 links:
   - label: "Try the Stats Dashboard"
@@ -43,7 +43,7 @@ The exploratory side. The user picks year ranges, geography (Assessor BOOKs, whi
 
 <PhotoGallery
   images={[
-    { src: '/images/projects/ml-maricopa-house/maricopda-house-stats.png', alt: 'Maricopa Housing Stats Streamlit dashboard', caption: 'Stats dashboard: trends, geography, property class, year-over-year deltas.' },
+    { src: '/images/projects/ml-maricopa-house/maricopa-house-stats.png', alt: 'Maricopa Housing Stats Streamlit dashboard', caption: 'Stats dashboard: trends, geography, property class, year-over-year deltas.' },
   ]}
   columns={1}
   natural={true}
@@ -53,14 +53,7 @@ The exploratory side. The user picks year ranges, geography (Assessor BOOKs, whi
 
 ## Part 2: Price Predictor
 
-The ML side. Four numbered notebooks build the pipeline end to end:
-
-1. `01_get_data.py`: raw Assessor file to filtered Parquet.
-2. `02_clean_features.py`: feature engineering and the model-ready dataset.
-3. `03_baseline_model.py`: OLS and Ridge baselines.
-4. `04_better_models.py`: Random Forest and XGBoost.
-
-Trained artifacts get saved into `models/`, and the Streamlit app loads them at startup. The user enters property attributes and gets a sale-price estimate plus confidence context.
+The ML side. The pipeline runs end to end: raw Assessor file in, trained model out. Ingestion filters the dump to clean residential sales and writes a Parquet snapshot. Feature engineering follows, with categorical cleanup, log-transforming the target, and dropping the columns that turned out to be empty or noisy. Two baselines (OLS and Ridge regression) set the floor, then two tree-based models (Random Forest and XGBoost) compete for the top spot. The Streamlit app loads the winning artifact at startup, takes property attributes from the user, and returns a sale-price estimate.
 
 <PhotoGallery
   images={[
