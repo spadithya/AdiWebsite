@@ -1,31 +1,72 @@
 ---
 title: "Wireless Seatbelt Latch Indicator"
-summary: "RF-based Hall-effect seatbelt monitoring system designed to reduce automotive wiring complexity and production cost. Indian patent filed; two conference publications."
+summary: "RF-based Hall-effect seatbelt monitoring system that replaces traditional wired latch sensors with a network of low-power 2.4 GHz transceivers. Indian patent filed (2017), published in two conference proceedings (Springer FICTA, INDIACom 2018)."
 year: 2017
+yearEnd: 2018
 status: completed
 category: lab
-tags: ["RF", "Hall Effect", "Automotive", "Patent"]
+tags: ["RF", "Hall Effect", "ATmega328p", "nRF24L01+", "Automotive", "Patent", "Embedded"]
 featured: false
 order: 5
-heroImage: "/images/projects/seatbelt-indicator/hero.jpg"
+heroImage: "/images/projects/seatbelt-indicator/Circuit3DrenderImage1.jpg"
 role: "R&D Intern · Undergraduate Researcher"
 collaborators:
+  - "Dr. O.V. Gnana Swathika (advisor)"
   - "Rane Group, Chennai"
   - "VIT Chennai"
 links:
-  - label: "Springer FICTA paper"
-    url: "https://link.springer.com"
-  - label: "INDIACom paper"
-    url: "https://ieeexplore.ieee.org"
+  - label: "Springer FICTA 2018 paper"
+    url: "https://link.springer.com/chapter/10.1007/978-981-10-7563-6_8"
+  - label: "INDIACom 2018 paper"
+    url: "https://ieeexplore.ieee.org/document/8442763"
 ---
+
+import PhotoGallery from '../../components/PhotoGallery.astro';
 
 ## Overview
 
-**[TODO]** What problem you tackled at Rane Group as an undergraduate intern: replacing wired seatbelt monitoring with wireless RF + Hall-effect sensing.
+An undergraduate R&D project at Rane Group that became my first patent application and first peer-reviewed publications. The system replaces the wired seatbelt latch sensor in a vehicle with a small wireless transmitter at each seatbelt buckle and a single receiver inside the Electronic Control Unit (ECU). One Indian patent application was filed; two conference papers were published.
+
+## Problem
+
+Conventional seatbelt latch monitoring runs a wire from every buckle through the car body to the ECU. That's a manufacturing burden (laying harnesses), a space penalty inside seat assemblies, and a recurring failure mode (cabling wear at connection points). Existing wireless alternatives in the literature used optical or inductive sensing, but the optical solutions were expensive and bulky, and inductive sensors consumed too much power. There was room for a cheaper, smaller, lower-power approach.
+
+## Approach
+
+A network of low-power 2.4 GHz transmitters, one per seatbelt, talking to a single receiver in the ECU.
+
+- **Sensing**: a Hall effect sensor and a neodymium magnet on the buckle. Latched and the magnet sits near the sensor (closed switch); unlatched and the magnetic field disappears (open switch). Detection is interrupt-driven, so the transmitter idles in passive mode until the latch actually changes state.
+- **Radio**: an nRF24L01+ transceiver, picked over a plain RF transmitter/receiver pair because it supports Auto Acknowledgement (ACK) packets, which makes the link reliable on a noisy automotive bus. Picked over Bluetooth because the network can scale past two devices.
+- **Controller**: ATmega328p TQFP, automotive-graded and physically compact. One per transmitter, one in the receiver. Embedded firmware was written in Atmel Studio (Embedded C++).
+- **Addressing**: each transmitter has a unique 64-bit write address and the receiver listens on the matching read addresses (up to six pipelines, one per seatbelt in a typical vehicle). The 64-bit address space is large enough that addresses never need to be reused across vehicles.
+- **Power**: each transmitter runs from a 3 V CR2032 coin cell; the receiver regulates down from the car's 12 V supply.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/seatbelt-indicator/InitialPrototypeImage2.jpg', alt: 'Early breadboard prototype of the wireless seatbelt indicator system', caption: 'Early hardware prototype: two transmitter units and one receiver unit on a breadboard, validated against all latch-state combinations.' },
+  ]}
+  columns={1}
+  natural={true}
+/>
+
+## Validation
+
+The system was built on breadboard with two transmitter units and one receiver (an Arduino Uno R3 with the same transceiver and dual LEDs for visual state readout). All four latch-state combinations across the two transmitters were verified end to end:
+
+| T1 | T2 | LED1 | LED2 |
+|---|---|---|---|
+| Latched | Latched | Off | Off |
+| Unlatched | Latched | On | Off |
+| Latched | Unlatched | Off | On |
+| Unlatched | Unlatched | On | On |
+
+The Auto Acknowledgement protocol resolved transmission clashes cleanly: if two transmitters tried to send simultaneously, the receiver processed them in sequence and each transmitter waited for its ACK before returning to passive mode.
 
 ## Outcomes
 
-- Indian patent application filed (September 2017).
-- Springer FICTA 2018 conference paper.
-- INDIACom 2018 conference paper.
-- Cost reduction estimates and reliability characterization.
+- **Indian patent application** filed in September 2017 (Adithya, S. P., & Gnana Swathika, O. V., "Wireless Seatbelt Latch Status Indicator using Transceiver").
+- **Springer FICTA 2018** conference paper: "Wireless seatbelt latch status indicator." 6th International Conference on FICTA, *Information and Decision Sciences* (pp. 69–76).
+- **INDIACom 2018** conference paper: "Wireless seatbelt latch status indicator using transceiver." 5th International Conference on Computing for Sustainable Global Development, New Delhi (pp. 72–77).
+- Demonstrated a real cost, space, and power reduction over the conventional wired baseline, and over the optical and inductive alternatives in the literature.
+
+This was the start of the through-line in my work since: hardware that has to be right the first time, with the regulatory and reliability discipline that comes with anything going into a vehicle or, later, a clinic.

@@ -1,14 +1,13 @@
 ---
 title: "Symbionic: Bionic Prosthetic Arm"
-summary: "Co-founded startup integrating embedded systems with EEG sensors to translate real-time biopotentials into hand gesture recognition for bionic prostheses. DST India-funded."
+summary: "Co-founded a startup translating real-time EEG biopotentials into hand gesture recognition for bionic prostheses. Built the embedded signal-processing stack that turned brain signals into motor control. Funded by India's Department of Science & Technology."
 year: 2019
 yearEnd: 2021
 status: completed
 category: lab
-tags: ["EEG", "Signal Processing", "Embedded", "Startup", "DST India"]
+tags: ["EEG", "Signal Processing", "Embedded", "HGR", "Startup", "DST India", "Bionics"]
 featured: false
 order: 4
-heroImage: "/images/projects/symbionic/hero.jpg"
 role: "Co-founder"
 collaborators:
   - "Symbionic team (Chennai, India)"
@@ -21,14 +20,14 @@ links:
 
 ## Overview
 
-**[TODO]** Why you co-founded the company, the unmet need for affordable bionic prostheses in India, and what the product does.
+Co-founded Symbionic, a Chennai-based startup building affordable bionic prosthetic arms for users in India and across South Asia. The core problem we tackled: how do you translate noisy, real-time EEG biopotentials into reliable hand gesture commands that a prosthetic arm can act on within the latency budget of a natural motion?
 
-## Technical work
+## The work
 
-- Integrated embedded systems with EEG sensors to detect and process real-time biopotentials.
-- Translated complex EEG biopotentials into real-time Hand Gesture Recognition (HGR).
-- Optimized signal post-processing for motor control responsiveness.
+I owned the embedded signal-processing layer of the bionic arm. EEG sensors picked up raw biopotentials from the user. My code on the embedded controller filtered and post-processed the signal, then ran a hand gesture recognition (HGR) model that mapped clean signal patterns to specific gestures (grip, point, open, etc.). The arm responded to recognized gestures in real time.
+
+The hard part was the signal processing pipeline: EEG is noisy, the latency budget is tight (a delayed prosthetic doesn't feel like *your* arm), and the embedded hardware can't run the same models a laptop can. We iterated on filter chains and lightweight classifiers until the responsiveness felt natural to early users.
 
 ## Outcomes
 
-**[TODO]** What was achieved, what you learned, why the journey mattered.
+The work was funded by India's Department of Science & Technology. The company continues to operate; the most current information lives on the Symbionic site.
