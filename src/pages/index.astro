@@ -49,17 +49,6 @@ const categoryBlocks = [
     totalCount: allProjects.filter((p) => p.data.category === 'hub').length,
     soon: 'More community work landing here soon.',
   },
-  {
-    key: 'off-hours',
-    num: '05',
-    label: 'Off-hours',
-    title: 'Off-hours',
-    accent: 'screen',
-    lede: 'Outside the lab. Country swing, hiking, what else I get up to.',
-    projects: byCategory('off-hours'),
-    totalCount: allProjects.filter((p) => p.data.category === 'off-hours').length,
-    soon: 'Country swing, hiking, more on the way.',
-  },
 ];
 
 const publications = [
@@ -174,6 +163,23 @@ const publications = [
     </section>
   ))}
 
+  <section class="category-block off-hours-teaser" id="off-hours">
+    <div class="cat-header">
+      <div class="section-label"><span class="num">05</span>Off-hours</div>
+      <a class="see-all" href={`${baseUrl}/off-hours`}>See more →</a>
+    </div>
+    <h2 class="section-title">Off-<span class="accent">hours</span>.</h2>
+    <p class="cat-lede">Outside the lab, outside the screen.</p>
+
+    <a class="teaser-card" href={`${baseUrl}/off-hours`}>
+      <div class="teaser-label">Country Swing</div>
+      <p class="teaser-quote">
+        "Howdy. When I ain't at the bench or wranglin' a side-quest, you'll likely find me at a country bar somewhere in the Valley."
+      </p>
+      <div class="teaser-cta">Step into the dance floor →</div>
+    </a>
+  </section>
+
   <div class="featured">
     <div class="label-row">
       <div class="section-label">★ Featured Build</div>
@@ -277,4 +283,46 @@ const publications = [
     transition: color 0.2s;
   }
   .featured-link a:hover { color: var(--primary); }
+
+  .teaser-card {
+    display: block;
+    margin: 1rem 0 0;
+    padding: 1.8rem 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    text-decoration: none;
+    transition: border-color 0.25s, transform 0.25s, background 0.25s;
+  }
+  .teaser-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(255, 179, 71, 0.06), transparent);
+  }
+  .teaser-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .teaser-quote {
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--text);
+    font-style: italic;
+    max-width: 640px;
+    margin-bottom: 1rem;
+  }
+  .teaser-cta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+  }
+  .teaser-card:hover .teaser-cta {
+    color: var(--primary);
+  }
 </style>
