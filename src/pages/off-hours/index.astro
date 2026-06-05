@@ -1,0 +1,140 @@
+---
+import Base from '../../layouts/Base.astro';
+import VideoEmbed from '../../components/VideoEmbed.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+
+const baseUrl = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL.slice(0, -1)
+  : import.meta.env.BASE_URL;
+
+const danceImages = [
+  { src: '/images/projects/country-swing/Christmas_04.jpg', alt: 'Country swing dancing at a Christmas event' },
+  { src: '/images/projects/country-swing/Christmas_06.jpg', alt: 'Country swing dancing at a Christmas event' },
+  { src: '/images/projects/country-swing/untitled-57.jpg', alt: 'Country swing dance floor' },
+  { src: '/images/projects/country-swing/untitled-156.jpg', alt: 'Country swing dance floor' },
+  { src: '/images/projects/country-swing/desertsunentertainment9.9.23_brp-68.jpg', alt: 'Desert Sun Entertainment dance event, September 2023' },
+  { src: '/images/projects/country-swing/Screenshot 2024-10-20 153022.jpg', alt: 'Country swing dance moment, October 2024' },
+];
+---
+
+<Base
+  title="Off-hours · Adithya Shyamala Pandian"
+  description="Outside the lab, outside the screen. Country swing, hiking, and what else I get up to."
+>
+  <nav class="site">
+    <div class="mark"><a href={import.meta.env.BASE_URL}>ADITHYA<span>_</span>SP</a></div>
+    <ul>
+      <li><a href={`${baseUrl}/lab`}>Lab</a></li>
+      <li><a href={`${baseUrl}/side-quests`}>Side-quests</a></li>
+      <li><a href={`${baseUrl}/hub`}>Hub</a></li>
+      <li><a href={`${baseUrl}/off-hours`}>Off-hours</a></li>
+      <li><a href={`${import.meta.env.BASE_URL}#contact`}>Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="page-header">
+    <div class="section-label"><span class="num">▸</span>Off-hours</div>
+    <h1 class="page-title">Off-<span class="accent">hours</span>.</h1>
+    <p class="page-lede">
+      Outside the lab, outside the screen. Things I do when I'm not solving a problem and don't want one to solve me.
+    </p>
+  </section>
+
+  <section class="activity" id="country-swing">
+    <div class="activity-label">★ Country Swing</div>
+    <h2 class="activity-title">Country swing, <span class="accent">y'all</span>.</h2>
+
+    <div class="prose">
+      <p>
+        Howdy. When I ain't at the bench or wranglin' a side-quest, you'll likely find me at a country bar somewhere in the Valley. Country swing's the dance, two-step's the basic, and the band's usually loud enough to drown out anythin' I was thinkin' about that week.
+      </p>
+      <p>
+        Started a couple seasons back and got hooked real quick. It's the most relaxin', most social, most unplugged thing I do all week. Spin, dip, twirl, repeat. Best decision I ever made for my screen-to-sunlight ratio.
+      </p>
+    </div>
+
+    <VideoEmbed
+      id="GB5DcCvLyNY"
+      title="Country swing moves"
+      caption="A short from the dance floor."
+      vertical={true}
+    />
+
+    <PhotoGallery
+      images={danceImages}
+      columns={2}
+      portrait={true}
+    />
+  </section>
+
+  {/* Future activities (hiking, etc.) will land below this line, same format. */}
+
+  <footer class="site" id="contact">
+    <div class="saved">Last updated · June 2026</div>
+    <div class="socials">
+      <a href={import.meta.env.BASE_URL}>Home</a>
+      <a href="https://github.com/spadithya">GitHub</a>
+      <a href="mailto:adi@spadida.org">Email</a>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .page-header { padding: 4rem 0 2rem; }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0.5rem 0 1rem;
+  }
+  .page-title .accent {
+    color: var(--primary);
+    text-shadow: 0 0 24px var(--glow);
+  }
+  .page-lede {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 2.5rem;
+  }
+  .activity {
+    padding: 2rem 0 4rem;
+    border-top: 1px solid var(--line);
+    margin-top: 2rem;
+  }
+  .activity-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .activity-title {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .activity-title .accent {
+    color: var(--primary);
+    text-shadow: 0 0 18px var(--glow);
+  }
+  .prose {
+    max-width: 660px;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .prose p {
+    margin-bottom: 1.2rem;
+    color: var(--text);
+  }
+  @media (max-width: 700px) {
+    .page-title { font-size: 44px; }
+    .activity-title { font-size: 32px; }
+  }
+</style>

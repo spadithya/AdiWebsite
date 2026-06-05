@@ -32,7 +32,8 @@ const CATEGORIES = {
 type CategoryKey = keyof typeof CATEGORIES;
 
 export async function getStaticPaths() {
-  return ['lab', 'side-quests', 'hub', 'off-hours'].map((cat) => ({
+  // off-hours has its own custom page at /pages/off-hours/index.astro
+  return ['lab', 'side-quests', 'hub'].map((cat) => ({
     params: { category: cat },
   }));
 }

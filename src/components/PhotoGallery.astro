@@ -9,15 +9,16 @@ interface Props {
   images: Image[];
   columns?: 1 | 2 | 3;
   natural?: boolean;
+  portrait?: boolean;
 }
 
-const { images, columns = 2, natural = false } = Astro.props;
+const { images, columns = 2, natural = false, portrait = false } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL.slice(0, -1)
   : import.meta.env.BASE_URL;
 ---
 
-<div class={`gallery cols-${columns} ${natural ? 'natural' : ''}`}>
+<div class={`gallery cols-${columns} ${natural ? 'natural' : ''} ${portrait ? 'portrait' : ''}`}>
   {images.map((img) => (
     <figure class="gallery-item">
       <img
@@ -68,6 +69,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/')
   .gallery.natural .gallery-item img {
     aspect-ratio: auto;
     object-fit: contain;
+  }
+  /* Portrait mode: uniform vertical sizing for portrait-oriented photos */
+  .gallery.portrait .gallery-item img {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
   }
   .gallery-item figcaption {
     padding: 0.6rem 0.8rem;

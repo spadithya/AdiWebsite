@@ -3,12 +3,13 @@ interface Props {
   id: string;
   title?: string;
   caption?: string;
+  vertical?: boolean;
 }
 
-const { id, title = 'Video', caption } = Astro.props;
+const { id, title = 'Video', caption, vertical = false } = Astro.props;
 ---
 
-<figure class="video-embed">
+<figure class={`video-embed ${vertical ? 'vertical' : ''}`}>
   <div class="video-frame">
     <iframe
       src={`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`}
@@ -28,12 +29,21 @@ const { id, title = 'Video', caption } = Astro.props;
   }
   .video-frame {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
+    padding-bottom: 56.25%; /* 16:9 default */
     height: 0;
     overflow: hidden;
     background: var(--bg-card);
     border: 1px solid var(--line-glow);
     box-shadow: 0 0 24px rgba(91, 255, 133, 0.08);
+  }
+  /* Vertical / Shorts: 9:16, constrained max width to keep it phone-sized */
+  .video-embed.vertical {
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .video-embed.vertical .video-frame {
+    padding-bottom: 177.78%; /* 9:16 */
   }
   .video-frame iframe {
     position: absolute;
