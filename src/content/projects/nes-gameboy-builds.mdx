@@ -1,35 +1,61 @@
 ---
-title: "NES + Game Boy From Scratch"
-summary: "Four Game Boys and four NES systems hand-built from scratch: PCB design, firmware, custom enclosures. Showcased at ASU Open Door 2023 and 2024; featured in ASU news."
+title: "Open Door: Game Boys and NES Consoles"
+summary: "Four Game Boys built from scratch for ASU Open Door 2023, four Nintendo Entertainment Systems for Open Door 2024. Brought to the floor so kids could hold the hardware their parents grew up with, take it apart, and ask the real questions. Featured in ASU's news coverage."
 year: 2023
 yearEnd: 2024
 status: completed
 category: hub
-tags: ["Hardware", "Firmware", "PCB", "Retro", "ASU Open Door"]
+tags: ["Hardware", "PCB Design", "Firmware", "Retro Computing", "Community Outreach", "Education", "ASU Open Door"]
 featured: true
-order: 2
-heroImage: "/images/projects/nes-gameboy-builds/hero.jpg"
+order: 1
+heroImage: "/images/projects/nes-gameboy-builds/kids-playing-heroimage.JPG"
 role: "Designer and builder"
 links:
   - label: "ASU Open Door"
     url: "https://opendoor.asu.edu/"
 ---
 
+import PhotoGallery from '../../components/PhotoGallery.astro';
+
 ## Overview
 
-**[TODO]** A short paragraph on the project: what you built, why, and the spirit of it (open-source hardware, education outreach, personal challenge).
+Built four Game Boys from scratch for ASU Open Door 2023, and four Nintendo Entertainment Systems from scratch for Open Door 2024. All eight running on event day. The point of the project wasn't the builds. It was bringing them to a room full of kids and putting them in their hands.
 
-## What got built
+## Why this, and why for kids
 
-- Four **Game Boys** showcased at ASU Open Door 2023.
-- Four **NES systems** showcased at ASU Open Door 2024.
-- Custom PCB design, firmware, enclosures.
-- Featured in ASU news coverage.
+Most kids never get to hold the hardware their favorite games actually run on. They see the screen, not the board. They don't see the chips, or the way a cartridge clicks into a socket that someone sat down and designed.
 
-## Approach
+Open Door is one of the few days where elementary and middle schoolers can walk into ASU's engineering school and touch real engineering work in progress. I wanted them to leave with the certainty that this stuff is built by humans with hands and patience, not by magic. Hardware that works in front of you is convincing in a way a slide deck never is.
 
-**[TODO]** Walk readers through the build: PCB design tool used (Altium? KiCad?), where you sourced parts, firmware reverse-engineering or library used, mechanical fabrication (3D printing, drill press), and what you learned at each step.
+## The builds
 
-## Why this matters
+Eight units, all from scratch. PCB design, sourcing the chips, loading firmware, and fabricating custom enclosures in the lab using a drill press, SLA prints, and a soldering iron. The Game Boy set came together over the months leading into Open Door 2023. The NES set came together for 2024. All eight working on the show floor.
 
-**[TODO, optional]** A short paragraph on what this side project teaches you: discipline transfers between consumer retro hardware and clinical-grade biomedical instruments. This is your "I love hardware" signature.
+## On the floor
+
+Lines formed. Kids sat down and played for an hour at a stretch. Parents recognized the shells from their own childhoods and stayed too. The best questions came from elementary schoolers, things like *"how does the cartridge talk to the screen?"*, and got real answers, not handwaves. The intent was hands-on, low-pretense engineering, and that's what happened.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/nes-gameboy-builds/assisting-kid-playing.JPG', alt: 'Adi helping a kid play one of the from-scratch builds at ASU Open Door', caption: 'Helping a first-time player figure out the controls.' },
+  ]}
+  columns={1}
+  natural={true}
+/>
+
+## In the press
+
+ASU's official news ran a feature on the builds and the showcase. It traveled across the engineering school's channels and onto social.
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/nes-gameboy-builds/asu-official-news-page.jpg', alt: 'ASU official news coverage of the from-scratch Game Boy and NES builds', caption: 'ASU News feature on the showcase.' },
+    { src: '/images/projects/nes-gameboy-builds/instagram-post.JPEG', alt: 'Instagram post about the Open Door showcase', caption: 'Picked up on social.' },
+  ]}
+  columns={2}
+  natural={true}
+/>
+
+## What comes next
+
+Different platform each year. Same intent: put working hardware in the hands of the kids who'll be designing the next one.
