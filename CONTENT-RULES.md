@@ -52,10 +52,12 @@ Default flow when adapting a README:
 12. **Use `natural={true}` on the PhotoGallery component when images have varying aspect ratios** (preserves natural shapes).
 13. **Use `columns={1}` for single-image showcases**, `columns={2}` for side-by-side comparisons.
 
-## Video
+## Video and terminal demos
 
 14. **YouTube Unlisted only.** Never default to Public. Tell the user once at upload time.
 15. **`<VideoEmbed id="YT_ID_ONLY" />`** — pass just the 11-character video ID, not the full URL.
+16. **`<VideoEmbed vertical={true} />`** when the source is a YouTube Short (9:16). Constrains to phone-width so it doesn't get stretched.
+17. **`<AsciinemaEmbed id="CAST_ID" />`** for terminal recordings (cybersec demos, CLI tool walkthroughs, anything that lives on asciinema.org). Pass just the cast ID from the asciinema URL (`asciinema.org/a/<ID>`). Default to a sentence-length caption.
 
 ## Things to flag back to the user when adapting a README
 
