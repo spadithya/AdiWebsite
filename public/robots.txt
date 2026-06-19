@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /workout
+Disallow: /workout/
+
+Sitemap: https://spadida.org/sitemap-index.xml

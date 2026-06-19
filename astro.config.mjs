@@ -8,5 +8,11 @@ export default defineConfig({
   // The public/CNAME file tells GitHub Pages which domain to serve.
   site: 'https://spadida.org',
   trailingSlash: 'ignore',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // Exclude private/unlinked pages from the sitemap so search engines don't discover them.
+      filter: (page) => !page.includes('/workout'),
+    }),
+  ],
 });

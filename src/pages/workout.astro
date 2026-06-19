@@ -1,0 +1,521 @@
+---
+import Base from '../layouts/Base.astro';
+
+const days = [
+  {
+    day: 'Monday',
+    title: 'Lower Body Strength',
+    subtitle: 'hinge + squat',
+    morning: [
+      '3 min brisk walk/march',
+      '5 Sun Salutations',
+      "World's greatest stretch · 5 each side",
+      '10 slow air squats + 10 glute bridges',
+    ],
+    evening: {
+      intro: 'Warm up 3 min, then 4 rounds, rest 60 sec',
+      items: [
+        'Goblet / bodyweight squat · 12 reps [load]',
+        'Romanian deadlift (hip hinge) · 12 reps [load]',
+        'Reverse lunge · 10 each leg',
+        'Single-leg glute bridge · 10 each side',
+        'Calf raises · 20 reps',
+      ],
+    },
+    cooldown: 'Pigeon, seated forward fold, couch stretch · 60 sec each.',
+  },
+  {
+    day: 'Tuesday',
+    title: 'Upper Body Strength',
+    subtitle: 'push / pull / shoulders',
+    morning: [
+      '3 min march + arm circles, band/towel pull-aparts × 20',
+      '5 Sun Salutations',
+      'Scapular push-ups · 10',
+      'Wall slides · 10',
+    ],
+    evening: {
+      intro: 'Warm up 3 min, then 4 rounds, rest 60 sec',
+      items: [
+        'Push-ups (knees ok) · 8 to 12',
+        'Bent-over row · 12 [load] (or backpack/towel-under-door)',
+        'Overhead press · 10 [load] · key for lifting a partner overhead',
+        'Pike push-ups (shoulder strength) · 8',
+        'Superman hold · 3 × 15 sec',
+      ],
+    },
+    cooldown: "Doorway chest stretch, cross-body shoulder stretch, child's pose.",
+  },
+  {
+    day: 'Wednesday',
+    title: 'Mobility & Flexibility',
+    subtitle: 'active recovery',
+    morning: [
+      'Cat-cow × 10',
+      '5 slow Sun Salutations',
+      'Hip 90/90 transitions · 8 each side',
+      'Thoracic rotations · 10 each side',
+    ],
+    evening: {
+      intro: 'Deep flexibility · hold each 60 to 90 sec, breathe',
+      items: [
+        'Pigeon (each side)',
+        'Seated + standing forward fold (hamstrings)',
+        'Couch / quad stretch (each side)',
+        'Butterfly + straddle (groin · useful for dance stance)',
+        'Shoulder + thoracic opener over a chair',
+        'Deep squat hold · 2 min total',
+      ],
+    },
+    cooldown: null,
+  },
+  {
+    day: 'Thursday',
+    title: 'Full-Body Power',
+    subtitle: 'the "lift" day',
+    morning: [
+      '3 min jog in place',
+      '5 Sun Salutations',
+      '10 squat-to-stands, 10 inchworms',
+    ],
+    evening: {
+      intro: 'Warm up 4 min, then 4 rounds, rest 60 to 75 sec',
+      items: [
+        'Squat-to-overhead press (thruster) · 10 [load] · full lifting pattern',
+        'Deadlift / hip hinge · 10 [load]',
+        'Push-up to renegade row · 8 (5 each side if loaded)',
+        'Step-ups onto a sturdy chair · 10 each leg [load]',
+        'Hollow-body hold · 3 × 20 sec',
+      ],
+    },
+    cooldown: 'Full-body stretch, focus on hips and shoulders.',
+  },
+  {
+    day: 'Friday',
+    title: 'Core & Grip',
+    subtitle: 'the bracing + holding day',
+    morning: [
+      '3 min cardio (jumping jacks / high knees)',
+      '5 Sun Salutations',
+      'Bird-dog · 10 each side',
+    ],
+    evening: {
+      intro: 'Warm up 3 min, then 3 to 4 rounds, rest 45 sec',
+      items: [
+        'Plank · 45 sec',
+        'Side plank · 30 sec each side',
+        'Dead bug · 10 each side',
+        'Hanging hold or towel/door grip hold · 20 to 30 sec',
+        "Farmer's carry · 40 sec walk [load] (heavy as you can hold)",
+        'Russian twists · 20 total',
+      ],
+    },
+    cooldown: "Spinal twists, child's pose, wrist/forearm stretches.",
+  },
+  {
+    day: 'Saturday',
+    title: 'Dance Conditioning + Cardio',
+    subtitle: '',
+    morning: [
+      '3 min cardio',
+      '5 Sun Salutations',
+      'Balance work: single-leg stand 30 sec each, eyes closed if steady',
+    ],
+    evening: {
+      intro: 'Circuit, 4 rounds, minimal rest, keep moving',
+      items: [
+        'Jump squats · 15',
+        'Mountain climbers · 30 sec',
+        'Lateral lunges · 10 each side (dance footwork)',
+        'Lunge-to-knee-drive (balance + control) · 8 each leg',
+        'Burpees · 8',
+        'Quick-feet shuffle · 30 sec',
+      ],
+    },
+    cooldown: 'Full lower-body stretch, calves and ankles especially.',
+  },
+  {
+    day: 'Sunday',
+    title: 'Yoga & Rest',
+    subtitle: '',
+    morning: null,
+    evening: {
+      intro: 'One session, ~30 to 45 min, your call on timing',
+      items: [
+        'Full yoga flow you enjoy · prioritize hips, hamstrings, shoulders, spine',
+        'End with 5 min of stillness / breathing',
+        'Optional: light walk',
+        'No strength work · recovery is when you actually get stronger',
+      ],
+    },
+    cooldown: null,
+  },
+];
+
+const weeklyTargets = [
+  { day: 'Mon · Lower Strength', items: [
+    ['Goblet/BW Squat', '4 × 12'],
+    ['Romanian Deadlift', '4 × 12'],
+    ['Reverse Lunge', '4 × 10/leg'],
+    ['Single-leg Glute Bridge', '4 × 10/side'],
+    ['Calf Raises', '4 × 20'],
+  ]},
+  { day: 'Tue · Upper Strength', items: [
+    ['Push-ups', '4 × 8 to 12'],
+    ['Bent-over Row', '4 × 12'],
+    ['Overhead Press', '4 × 10'],
+    ['Pike Push-ups', '4 × 8'],
+    ['Superman Hold', '3 × 15s'],
+  ]},
+  { day: 'Thu · Full-Body Power', items: [
+    ['Thruster (Squat+Press)', '4 × 10'],
+    ['Deadlift / Hip Hinge', '4 × 10'],
+    ['Push-up + Renegade Row', '4 × 8'],
+    ['Step-ups', '4 × 10/leg'],
+    ['Hollow-body Hold', '3 × 20s'],
+  ]},
+  { day: 'Fri · Core & Grip', items: [
+    ['Plank', '4 × 45s'],
+    ['Side Plank', '4 × 30s/side'],
+    ['Dead Bug', '4 × 10/side'],
+    ['Grip Hold', '4 × 20 to 30s'],
+    ["Farmer's Carry", '4 × 40s walk'],
+  ]},
+];
+---
+
+<Base
+  title="Workout · Private"
+  description="Private workout reference."
+  noindex={true}
+>
+  <header class="page-header">
+    <div class="private-badge">▸ PRIVATE · NOT INDEXED</div>
+    <h1 class="page-title">7-Day <span class="accent">Workout</span>.</h1>
+    <p class="page-lede">
+      Strength · Structure · Flexibility. Built for country swing dancing: a braced core, strong posterior chain, stable shoulders, real grip strength, and the flexibility to move cleanly.
+    </p>
+
+    <div class="quick-info">
+      <div class="info-row">
+        <div class="info-label">Daily split</div>
+        <div class="info-value">20 min morning · 30 min evening (60 to 90 min post-dinner)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Equipment</div>
+        <div class="info-value">Bodyweight + optional adjustable dumbbells (or loaded backpack)</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">[load] marker</div>
+        <div class="info-value">Exercise benefits most from added weight</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="weekly-shape">
+    <div class="section-label"><span class="num">▸</span>Weekly shape</div>
+    <ul class="shape-list">
+      <li><strong>Mon</strong> · Lower Strength <span class="dim">(hinge + squat · the lifting base)</span></li>
+      <li><strong>Tue</strong> · Upper Strength <span class="dim">(push/pull + shoulders)</span></li>
+      <li><strong>Wed</strong> · Mobility & Flexibility <span class="dim">(active recovery)</span></li>
+      <li><strong>Thu</strong> · Full-Body Power <span class="dim">(the "lift" prep day)</span></li>
+      <li><strong>Fri</strong> · Core & Grip</li>
+      <li><strong>Sat</strong> · Dance-Specific Conditioning + Cardio</li>
+      <li><strong>Sun</strong> · Yoga & Rest</li>
+    </ul>
+  </section>
+
+  {days.map((d) => (
+    <section class="day-block" id={d.day.toLowerCase()}>
+      <div class="day-header">
+        <div class="day-name">{d.day}</div>
+        <h2 class="day-title">{d.title}{d.subtitle && <span class="day-subtitle"> · {d.subtitle}</span>}</h2>
+      </div>
+
+      {d.morning && (
+        <div class="session">
+          <div class="session-label">Morning · 20 min</div>
+          <ul class="session-list">
+            {d.morning.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      )}
+
+      {d.evening && (
+        <div class="session">
+          <div class="session-label">{d.morning ? 'Evening · 30 min' : 'Session'}</div>
+          {d.evening.intro && <p class="session-intro">{d.evening.intro}</p>}
+          <ul class="session-list">
+            {d.evening.items.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      )}
+
+      {d.cooldown && (
+        <div class="cooldown">
+          <span class="cooldown-label">Cooldown:</span> {d.cooldown}
+        </div>
+      )}
+    </section>
+  ))}
+
+  <section class="targets">
+    <div class="section-label"><span class="num">▸</span>Week-1 targets · quick reference</div>
+    <p class="dim">Same structure for 4 weeks. Each week, nudge ONE thing up: +1 to 2 reps, +1 round, slower tempo, or more weight. 10 lb dumbbells: great for press, rows, lunges, step-ups, goblet squats.</p>
+    <div class="targets-grid">
+      {weeklyTargets.map((group) => (
+        <div class="target-block">
+          <h3>{group.day}</h3>
+          <table>
+            {group.items.map(([name, target]) => (
+              <tr><td>{name}</td><td>{target}</td></tr>
+            ))}
+          </table>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="progression">
+    <div class="section-label"><span class="num">▸</span>Progression rules</div>
+    <ul class="progression-list">
+      <li><strong>Weeks 1 to 2:</strong> Nail the form and the routine. Use lighter loads / fewer reps if needed.</li>
+      <li><strong>Every week after:</strong> Add a little · +1 to 2 reps, +1 round, or more weight on [load] moves. This is how strength builds toward lifts.</li>
+      <li><strong>The lift itself:</strong> Don't force a partner lift until you can comfortably overhead-press a meaningful load and hold a strong plank for 60 sec. Build the base first; the lift becomes safe and easy.</li>
+      <li><strong>Listen to your body:</strong> Soreness is fine, joint pain is not. Take an extra rest day if needed.</li>
+    </ul>
+  </section>
+
+  <footer class="page-footer">
+    <div class="dim">Last updated · June 2026 · Page is unlinked + noindex'd. URL only, do not share.</div>
+  </footer>
+</Base>
+
+<style>
+  .page-header {
+    padding: 3rem 0 1.5rem;
+  }
+  .private-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    margin-bottom: 1.5rem;
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin: 0 0 1rem;
+  }
+  .page-title .accent {
+    color: var(--primary);
+    text-shadow: 0 0 24px var(--glow);
+  }
+  .page-lede {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 640px;
+    margin-bottom: 2rem;
+  }
+  .quick-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 1.2rem 1.4rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .info-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1rem;
+    font-size: 13px;
+  }
+  .info-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    align-self: center;
+  }
+  .info-value { color: var(--text); }
+
+  .weekly-shape { padding: 1.5rem 0 2rem; }
+  .shape-list { list-style: none; padding: 0; margin: 0; }
+  .shape-list li { padding: 0.4rem 0; font-size: 15px; }
+  .shape-list strong {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-block;
+    min-width: 50px;
+  }
+  .dim { color: var(--muted); font-size: 14px; }
+
+  .day-block {
+    padding: 2.5rem 0 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .day-header { margin-bottom: 1.5rem; }
+  .day-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .day-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .day-subtitle {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 22px;
+  }
+  .session {
+    margin: 1rem 0 1.5rem;
+  }
+  .session-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+  }
+  .session-intro {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    font-style: italic;
+  }
+  .session-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .session-list li {
+    padding: 0.4rem 0 0.4rem 1rem;
+    border-left: 2px solid var(--line);
+    margin-bottom: 0.3rem;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .session-list li:hover {
+    border-left-color: var(--primary);
+    background: linear-gradient(90deg, rgba(91, 255, 133, 0.04), transparent);
+  }
+  .cooldown {
+    margin-top: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .cooldown-label {
+    font-family: var(--font-mono);
+    color: var(--secondary);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-right: 0.4rem;
+  }
+
+  .targets {
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .targets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .target-block {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 1rem 1.2rem;
+  }
+  .target-block h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.6rem;
+  }
+  .target-block table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .target-block td {
+    padding: 4px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .target-block td:last-child {
+    font-family: var(--font-mono);
+    color: var(--secondary);
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .progression {
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .progression-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+  }
+  .progression-list li {
+    padding: 0.7rem 0;
+    font-size: 15px;
+    color: var(--text);
+    border-bottom: 1px solid var(--line);
+  }
+  .progression-list li:last-child { border-bottom: none; }
+  .progression-list strong {
+    color: var(--primary);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: 0.5rem;
+  }
+
+  .page-footer {
+    padding: 2rem 0 2rem;
+    border-top: 1px solid var(--line);
+    margin-top: 2rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  @media (max-width: 700px) {
+    .page-title { font-size: 38px; }
+    .day-title { font-size: 24px; }
+    .day-subtitle { font-size: 18px; }
+    .info-row { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+</style>

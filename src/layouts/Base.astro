@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const {
   title = "Adithya Shyamala Pandian · Electrical Engineer & Biomedical Sensor Researcher",
-  description = "PhD candidate at Arizona State University. Hardware-algorithm co-designed CMOS imaging sensors for high-sensitivity biomarker detection."
+  description = "PhD candidate at Arizona State University. Hardware-algorithm co-designed CMOS imaging sensors for high-sensitivity biomarker detection.",
+  noindex = false
 } = Astro.props;
 ---
 
@@ -22,6 +24,7 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
