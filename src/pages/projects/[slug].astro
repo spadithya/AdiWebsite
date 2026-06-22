@@ -2,11 +2,33 @@
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+  // These are the original project slugs that existed at /projects/<slug>
+  // BEFORE the Phase 2C restructure (when URLs moved to /<category>/<slug>).
+  // They each get a redirect stub so any old bookmarks, external links, or
+  // search-engine results still resolve to the canonical URL.
+  //
+  // New projects added after the restructure don't need an entry here because
+  // /projects/<slug> was never their canonical URL. Visitors arrive at the
+  // canonical /<category>/<slug> directly.
+  //
+  // Defined inside getStaticPaths because Astro hoists this function to run
+  // before any other frontmatter code, so top-level constants aren't in scope.
+  const LEGACY_SLUGS = [
+    'photodiode-biomarker-sensor',
+    'camera-biomarker-sensor',
+    'aerosol-mitigation',
+    'symbionic',
+    'seatbelt-indicator',
+    'nes-gameboy-builds',
+  ];
+
   const projects = await getCollection('projects', ({ data }) => !data.draft);
-  return projects.map((project) => ({
-    params: { slug: project.id },
-    props: { category: project.data.category, slug: project.id },
-  }));
+  return projects
+    .filter((project) => LEGACY_SLUGS.includes(project.id))
+    .map((project) => ({
+      params: { slug: project.id },
+      props: { category: project.data.category, slug: project.id },
+    }));
 }
 
 const { category, slug } = Astro.props;
