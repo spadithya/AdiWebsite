@@ -59,6 +59,11 @@ Default flow when adapting a README:
 16. **`<VideoEmbed vertical={true} />`** when the source is a YouTube Short (9:16). Constrains to phone-width so it doesn't get stretched.
 17. **`<AsciinemaEmbed id="CAST_ID" />`** for terminal recordings (cybersec demos, CLI tool walkthroughs, anything that lives on asciinema.org). Pass just the cast ID from the asciinema URL (`asciinema.org/a/<ID>`). Default to a sentence-length caption.
 
+## File layout
+
+18. **Project MDX files live in per-category subfolders** under `src/content/projects/{lab,hub,side-quests}/`. The `category` field in frontmatter is still authoritative for routing; the folder is organizational only. Keep them in sync.
+19. **Component imports inside MDX files use 3-up relative paths**: `import X from '../../../components/X.astro'`. Three `../` segments, not two. (Two `../` would resolve to `src/content/`, which has no `components/` folder.)
+
 ## Things to flag back to the user when adapting a README
 
 When the README hints at something that needs the user's call:

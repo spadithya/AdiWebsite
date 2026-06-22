@@ -13,10 +13,15 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => !data.draft);
-  return projects.map((project) => ({
-    params: { category: project.data.category, slug: project.id },
-    props: { project },
-  }));
+  return projects.map((project) => {
+    // Project IDs include the folder prefix (e.g. "lab/photodiode-biomarker-sensor")
+    // because files live in subfolders. The URL slug is just the filename portion.
+    const slug = project.id.split('/').pop() ?? project.id;
+    return {
+      params: { category: project.data.category, slug },
+      props: { project },
+    };
+  });
 }
 
 const { project } = Astro.props;

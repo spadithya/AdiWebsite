@@ -89,7 +89,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/')
         {allProjects.map((project) => (
           <a
             class="project"
-            href={`${baseUrl}/${category}/${project.id}`}
+            href={`${baseUrl}/${category}/${project.id.split('/').pop() ?? project.id}`}
           >
             <div class="year">{project.data.year}{project.data.yearEnd ? `–${String(project.data.yearEnd).slice(-2)}` : ''}</div>
             <div>

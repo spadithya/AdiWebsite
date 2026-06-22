@@ -146,7 +146,7 @@ const publications = [
       ) : (
         <div class="projects">
           {cat.projects.map((p) => (
-            <a class="project" href={`${baseUrl}/${cat.key}/${p.id}`}>
+            <a class="project" href={`${baseUrl}/${cat.key}/${p.id.split('/').pop() ?? p.id}`}>
               <div class="year">{p.data.year}{p.data.yearEnd ? `–${String(p.data.yearEnd).slice(-2)}` : ''}</div>
               <div>
                 <div class="title">{p.data.title}</div>
