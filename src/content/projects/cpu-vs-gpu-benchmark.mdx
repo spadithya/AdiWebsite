@@ -1,0 +1,128 @@
+---
+title: "CPU vs GPU Benchmark: Mixed-Precision Matmul"
+summary: "A self-contained benchmark measuring how much an NVIDIA GPU accelerates the core operation behind deep learning, large dense matrix multiplication, compared to the CPU. Tests four numeric precisions (FP32, TF32, FP16, BF16) to expose the speed-versus-accuracy trade-off that mixed-precision training relies on. Up to 59x speedup on an RTX 3060 Laptop."
+year: 2026
+status: completed
+category: side-quests
+tags: ["CUDA", "GPU", "PyTorch", "Benchmarking", "Mixed Precision", "Deep Learning", "Performance"]
+featured: false
+order: 4
+heroImage: "/images/projects/cpu-vs-gpu-benchmark/benchmark_results.png"
+role: "Solo build"
+---
+
+import PhotoGallery from '../../components/PhotoGallery.astro';
+
+## Overview
+
+A self-contained benchmark that measures how much an NVIDIA GPU accelerates a representative ML workload, large dense matrix multiplication, compared to the CPU. Written in PyTorch with CUDA. It also compares four numeric precisions on the GPU (FP32, TF32, FP16, BF16) to expose the speed-versus-accuracy trade-off that mixed-precision training relies on.
+
+Matrix multiply is the right thing to benchmark first. It's the core operation behind dense layers, attention, and most of deep learning, and it maps extremely well onto GPU hardware. The speedup measured here is a good proxy for the speedup you get training and running real models.
+
+## Why I built it
+
+You can read about GPU acceleration. You can read about Tensor Cores. You can read about why mixed-precision training works. None of it sticks until you measure the numbers yourself and watch them change with your own knobs. This benchmark exists so I could move "GPUs are faster" from received wisdom to a measured, dimensioned thing I can describe in detail.
+
+## Precision modes compared
+
+| Mode | Bits | What it is |
+|---|---|---|
+| CPU FP32 | 32 | The baseline everything else is measured against. |
+| GPU FP32 | 32 | True 32-bit float on the regular CUDA cores. |
+| GPU TF32 | 19 used | 32-bit inputs, but the matmul runs on Tensor Cores. Full FP32 range, reduced precision. Ampere or newer only. |
+| GPU FP16 | 16 | Half precision on Tensor Cores. Fast and small, overflows past 65,504. |
+| GPU BF16 | 16 | Brain float. Keeps FP32's range, trades away precision. The training-friendly 16-bit format. |
+
+Lower precision means fewer bits to move and (on Tensor Cores) far more math per clock. So it runs faster, at the cost of accuracy.
+
+## What it measures
+
+For each matrix size, for each precision mode, the benchmark:
+
+1. Builds two random N × N matrices of the right dtype on the target device.
+2. Runs a few untimed warm-up multiplications. The first CUDA call pays one-time context, allocation, and autotuning costs that would otherwise distort the numbers.
+3. Times several runs and reports the median.
+
+Then prints a timings table, a speedup-versus-CPU table, peak GFLOP/s per mode, and saves a chart. A relative-error check follows, comparing each precision's result against a float64 reference. Relative error of 1e-3 means "correct to about 3 significant digits", which lines up with the number of mantissa bits each format carries.
+
+## Results
+
+Measured on an **NVIDIA GeForce RTX 3060 Laptop GPU (6 GB)**, PyTorch 2.6.0 with CUDA 12.4, Intel CPU with 6 threads.
+
+```
+Time per matmul (milliseconds, lower is better)
+  Size |        CPU |       FP32 |       TF32 |       FP16 |       BF16
+-----------------------------------------------------------------------
+   512 |       1.05 |       0.10 |       0.10 |       0.08 |       0.10
+  1024 |       4.95 |       0.42 |       0.39 |       0.26 |       0.25
+  2048 |      41.18 |       2.70 |       1.94 |       0.90 |       0.90
+  4096 |     329.79 |      24.98 |      12.07 |       5.92 |       5.93
+  8192 |    2681.26 |     145.34 |      90.75 |      45.56 |      44.96
+```
+
+```
+Speedup vs CPU (higher is better)
+  Size |       FP32 |       TF32 |       FP16 |       BF16
+----------------------------------------------------------
+   512 |      10.4x |      10.7x |      13.9x |      10.6x
+  1024 |      11.8x |      12.8x |      19.4x |      19.8x
+  2048 |      15.3x |      21.3x |      45.7x |      45.9x
+  4096 |      13.2x |      27.3x |      55.7x |      55.6x
+  8192 |      18.4x |      29.5x |      58.9x |      59.6x
+```
+
+```
+Peak GPU throughput (GFLOP/s, higher is better)
+   FP32:     7565   (7.57 TFLOPS)
+   TF32:    12115  (12.12 TFLOPS)
+   FP16:    24133  (24.13 TFLOPS)
+   BF16:    24458  (24.46 TFLOPS)
+
+Fastest mode: BF16 (avg 38.3x faster than CPU)
+```
+
+```
+Relative error vs float64 reference (lower is better)
+  Size |         FP32 |         TF32 |         FP16 |         BF16
+------------------------------------------------------------------
+  1024 |     2.63e-07 |     2.94e-04 |     3.60e-04 |     2.88e-03
+  4096 |     5.76e-07 |     2.94e-04 |     3.60e-04 |     2.88e-03
+```
+
+<PhotoGallery
+  images={[
+    { src: '/images/projects/cpu-vs-gpu-benchmark/benchmark_results.png', alt: 'CPU vs GPU benchmark chart across matrix sizes and precision modes', caption: 'Time per matmul across CPU and four GPU precision modes, from 512 up to 8192.' },
+  ]}
+  columns={1}
+  natural={true}
+/>
+
+## What the numbers show
+
+- **Speedup grows with matrix size, from 10x to 59x.** Small matrices are dominated by launch overhead; large ones saturate the GPU's thousands of cores.
+- **Tensor Cores are the win.** FP32 uses the regular CUDA cores (about 7.6 TFLOPS). TF32 adds about 1.6x. 16-bit (FP16 and BF16) roughly doubles again to about 24 TFLOPS. FP16 and BF16 hit the same speed because they share the same 16-bit Tensor Core path.
+- **Precision tracks mantissa bits.** BF16's error (2.9e-3) is about 8x worse than FP16's (3.6e-4). That's exactly 2³, because FP16 has 3 more mantissa bits than BF16 (10 vs 7).
+- **Error does not grow with matrix size for the low-precision modes.** cuBLAS accumulates the sums in FP32 internally even for FP16/BF16 inputs. Only true FP32 (no wider accumulator) drifts up with N. This wider-accumulator trick is what makes mixed-precision training viable in real models.
+
+## What this taught me
+
+The point of the project wasn't the speedup number. It was understanding *why* the benchmark is written the way it is.
+
+- **A matmul is 2·N³ FLOPs.** An N × N by N × N product has N² output cells, each a dot product of N multiply-adds (1 multiply + 1 add = 2 ops). That 2·N³ is what turns a time into a GFLOP/s throughput, and why work grows cubically. Doubling N is 8x the compute.
+- **Threads are not cores.** A core is physical hardware; a thread is a software worker the OS schedules onto a core. PyTorch defaults to one thread per physical core. The real contrast here is 6 CPU workers versus roughly 3,840 GPU cores. That's the whole reason the GPU wins.
+- **Float formats decompose into sign, exponent, mantissa.** Exponent sets range (how big or small a number you can represent). Mantissa sets precision (how many significant digits). Fewer bits means faster and smaller, but less accurate.
+- **Warm-up matters.** The first CUDA call pays one-time costs (context init, allocation, kernel autotuning) that have nothing to do with the math. Untimed warm-up runs keep that out of the measurement.
+- **Take the median, not the mean.** A single timing is noisy: scheduler jitter, clock changes, background processes. The median ignores outlier spikes.
+- **`torch.cuda.synchronize()` is non-negotiable.** CUDA kernels launch asynchronously. The CPU queues the work and races ahead. Without synchronizing before stopping the timer, you measure the launch, not the compute.
+
+## Rookie mistakes this benchmark avoids
+
+- **Timing the launch instead of the work.** Forgetting `synchronize()` makes the GPU look thousands of times faster than it actually is.
+- **Counting startup as compute.** No warm-up means the first run's init cost pollutes the result.
+- **Comparing apples to oranges.** Leaving TF32 enabled while calling it "FP32", or using different random inputs per precision when checking accuracy.
+- **A reference no better than what it judges.** Accuracy must be measured against something strictly higher precision than every mode being tested. Float64 fits.
+- **One-shot timing.** Trusting a single noisy measurement instead of a median over repeats.
+
+## Stack
+
+Python 3.9 or newer, PyTorch 2.6.0 with CUDA 12.4, matplotlib for the chart. Tested on an RTX 3060 Laptop (Ampere). Should run on any CUDA-capable GPU; the script catches out-of-memory errors and skips sizes that don't fit.
