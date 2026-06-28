@@ -1,0 +1,469 @@
+---
+import Base from '../layouts/Base.astro';
+
+// IMPORTANT: Replace this with your real Argon2id hash before pushing.
+// Use the snippet in HANDOFF-cheatsheet.md to generate one in your browser
+// console. The plaintext password never appears in the source.
+//
+// This default hash matches the password "REPLACE_ME_BEFORE_DEPLOY" — useful
+// for local testing but DO NOT push to production with this value.
+const STORED_HASH = "$argon2id$v=19$m=12288,t=3,p=1$gxlfgmjwmlNsCguZVxtgBg$almj7LBmmsHkGiKxIEe+P2/R37ZYZnXOcK06FVymi3Q";
+---
+
+<Base title="Cheatsheet" description="Private notes." noindex={true}>
+
+  <!-- ========== LOCK SCREEN ========== -->
+  <div id="lock-screen" class="lock-screen">
+    <div class="lock-card">
+      <div class="lock-label">▸ LOCKED</div>
+      <h1 class="lock-title">Cheatsheet</h1>
+      <p class="lock-hint">Enter the password to unlock.</p>
+      <form id="unlock-form" data-hash={STORED_HASH}>
+        <input
+          type="password"
+          id="password-input"
+          name="password"
+          autocomplete="current-password"
+          placeholder="Password"
+          autofocus
+          required
+        />
+        <button type="submit" id="unlock-btn">Unlock</button>
+      </form>
+      <div id="lock-status" class="lock-status" role="status" aria-live="polite"></div>
+      <div class="lock-footer">argon2id · m=12 MiB · t=3 · p=1</div>
+    </div>
+  </div>
+
+  <!-- ========== WRONG-PASSWORD OVERLAY ========== -->
+  <!-- Image preloads on page visit. Toggles via the .active class on wrong password. -->
+  <div id="wrong-pw-overlay" class="wrong-pw-overlay" aria-hidden="true">
+    <img
+      src={`${import.meta.env.BASE_URL}images/cheatsheet/patience-has-a-limit.jpg`}
+      alt="Patience has a limit"
+    />
+  </div>
+
+  <!-- ========== CONTENT (hidden until unlocked) ========== -->
+  <div id="content" class="content" hidden>
+    <header class="page-header">
+      <div class="private-badge">▸ UNLOCKED · NOT INDEXED</div>
+      <h1 class="page-title">🎯 The One-Page <span class="accent">Cheat Sheet</span></h1>
+      <p class="page-lede">Keep this on your phone for the night. Glance at it in the bathroom mirror, not mid-dance.</p>
+    </header>
+
+    <section class="block">
+      <div class="block-label">🔑 Read this FIRST · the handbrake release</div>
+      <blockquote>
+        She's not above me and not below me. She's a person, probably a little nervous too, and I'm curious whether <em>we</em> click. I'm not auditioning, I'm finding out if she's someone <em>I'd</em> enjoy. A "no" just means "not us," and that costs me nothing.
+      </blockquote>
+      <ul>
+        <li><strong>Curiosity drops the pedestal.</strong> Can't be in awe of someone you're busy being interested in.</li>
+        <li>Her looks earn nothing I actually want. The good stuff is invisible until we talk.</li>
+        <li>I'm <strong>screening for fit</strong>, not begging for a verdict.</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="block-label">Before you walk in</div>
+      <ul>
+        <li>Process goal tonight: <strong>open 3, never end on "thanks."</strong> (Adjust to your phase.)</li>
+        <li>Warm up on someone easy first (bartender, a regular). Don't cold-start on her.</li>
+        <li>"I'm offering an experience, not asking for approval."</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="block-label">The 3-second rule</div>
+      <p>See her → <strong>3-2-1-GO.</strong> Move before your brain talks you out of it.</p>
+    </section>
+
+    <section class="block">
+      <div class="block-label">OPEN · just add a door + warmth</div>
+      <ul>
+        <li>"You've clearly done this before, how long have you been dancing?"</li>
+        <li>"You're a dangerous follow, you almost made me look good."</li>
+        <li>"That was genuinely fun, you're easy to dance with."</li>
+        <li><strong>Always:</strong> "I'm [name], what's yours?"</li>
+        <li><strong>NEVER let "thanks for dancing" be the last sentence.</strong> Add ONE bridge sentence.</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="block-label">HOLD · don't interview, TRADE</div>
+      <ul>
+        <li><strong>Statement + question.</strong> Give a bit of you, then ask.</li>
+        <li><strong>Pull the thread:</strong> grab the most <em>interesting</em> word she said, ask about that.</li>
+        <li><strong>React first</strong>, then ask next (laugh / "no way" / quick relate).</li>
+        <li>Wells when you blank: <strong>F</strong>amily · <strong>O</strong>ccupation · <strong>R</strong>ecreation · <strong>D</strong>reams.</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="block-label">DEEPEN · one real beat is the win</div>
+      <ul>
+        <li><strong>Why-ladder:</strong> what → "why that?" → "what's that like for you?"</li>
+        <li><strong>"Isn't it weird how..."</strong> · think together = a "we."</li>
+        <li><strong>Disclose first.</strong> Go a notch deeper; let her match.</li>
+        <li>Compliment how she <em>thinks</em>, not how she looks.</li>
+        <li>The 3 magic follow-ups: <strong>"Why that one?"</strong> · <strong>"How'd you get into that?"</strong> · <strong>"What's that like?"</strong></li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="block-label">CLOSE · on a high note, assume it</div>
+      <ul>
+        <li>Tie it to a thread: "You have to send me that song, put your number in." <em>(hand her your phone)</em></li>
+        <li>"I'm enjoying this. Let's keep talking. What's your number?"</li>
+        <li><strong>Close BEFORE the energy fades.</strong> Leave a little on the table.</li>
+        <li>Plant the text: "I'm gonna text you about [X], don't be a stranger."</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <div class="block-label">If she says no</div>
+      <p>Smile, mean it: <strong>"No worries at all. It was great dancing and talking with you. Have a good night."</strong> Then flip the next coin.</p>
+    </section>
+
+    <section class="block">
+      <div class="block-label">First text · within 24h</div>
+      <p>Reference the callback + a little personality. Then aim at a <strong>specific</strong> date: activity + day.</p>
+    </section>
+
+    <section class="block summary">
+      <div class="block-label">The whole thing in one breath</div>
+      <p class="summary-line"><strong>Open warm → trade & pull threads → one deep beat → close on the peak → text within a day.</strong></p>
+    </section>
+
+    <section class="block">
+      <div class="block-label">And remember</div>
+      <p>Reps > results. End the night on <strong>one more</strong> attempt, not a retreat. Log it when you get home.</p>
+    </section>
+
+    <footer class="content-footer">
+      <button id="relock-btn" type="button">▸ Lock again</button>
+    </footer>
+  </div>
+
+</Base>
+
+<script>
+  import { argon2Verify } from 'hash-wasm';
+
+  const UNLOCK_KEY = 'cheatsheet-unlocked';
+  const form = document.getElementById('unlock-form') as HTMLFormElement | null;
+  const passwordInput = document.getElementById('password-input') as HTMLInputElement | null;
+  const unlockBtn = document.getElementById('unlock-btn') as HTMLButtonElement | null;
+  const lockScreen = document.getElementById('lock-screen');
+  const content = document.getElementById('content');
+  const status = document.getElementById('lock-status');
+  const STORED_HASH = form?.dataset.hash ?? '';
+
+  function show(el: HTMLElement | null) { el?.removeAttribute('hidden'); }
+  function hide(el: HTMLElement | null) { el?.setAttribute('hidden', ''); }
+
+  function unlock() {
+    hide(lockScreen);
+    show(content);
+    sessionStorage.setItem(UNLOCK_KEY, '1');
+    if (passwordInput) passwordInput.value = '';
+  }
+
+  function relock() {
+    sessionStorage.removeItem(UNLOCK_KEY);
+    show(lockScreen);
+    hide(content);
+    if (passwordInput) {
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+    if (status) status.textContent = '';
+  }
+
+  // If already unlocked this session, skip the gate
+  if (sessionStorage.getItem(UNLOCK_KEY) === '1') {
+    unlock();
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = passwordInput?.value ?? '';
+    if (!password) return;
+    if (unlockBtn) unlockBtn.disabled = true;
+    if (status) status.textContent = 'Verifying...';
+    try {
+      const isValid = await argon2Verify({ password, hash: STORED_HASH });
+      if (isValid) {
+        if (status) status.textContent = '';
+        unlock();
+      } else {
+        if (status) status.textContent = 'Wrong password.';
+        passwordInput?.classList.add('shake');
+        setTimeout(() => passwordInput?.classList.remove('shake'), 500);
+        if (passwordInput) passwordInput.value = '';
+        // Full-screen "patience has a limit" overlay for wrong attempts
+        const overlay = document.getElementById('wrong-pw-overlay');
+        overlay?.classList.add('active');
+        setTimeout(() => overlay?.classList.remove('active'), 7000);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (status) status.textContent = 'Error: ' + msg;
+    } finally {
+      if (unlockBtn) unlockBtn.disabled = false;
+      passwordInput?.focus();
+    }
+  });
+
+  document.getElementById('relock-btn')?.addEventListener('click', relock);
+</script>
+
+<style>
+  /* The HTML `hidden` attribute defaults to `display: none`, but our explicit
+     display: flex / display: block rules below override that. This restores
+     the expected behavior so the lock screen actually disappears after unlock. */
+  .lock-screen[hidden],
+  .content[hidden] {
+    display: none !important;
+  }
+
+  /* ========== LOCK SCREEN ========== */
+  .lock-screen {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+  }
+
+  /* ========== WRONG-PASSWORD OVERLAY ========== */
+  .wrong-pw-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .wrong-pw-overlay.active {
+    opacity: 1;
+  }
+  .wrong-pw-overlay img {
+    max-width: min(92vw, 600px);
+    max-height: 90vh;
+    height: auto;
+    width: auto;
+    display: block;
+    box-shadow: 0 0 60px rgba(91, 255, 133, 0.15);
+  }
+  .lock-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    padding: 2rem 1.8rem;
+    text-align: center;
+  }
+  .lock-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .lock-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.8rem;
+  }
+  .lock-hint {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+  }
+  #unlock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  #password-input {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 0.8rem 1rem;
+    text-align: center;
+    letter-spacing: 0.2em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #password-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 12px var(--glow);
+  }
+  #password-input.shake {
+    animation: shake 0.4s;
+    border-color: var(--secondary);
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  #unlock-btn {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  #unlock-btn:hover:not(:disabled) {
+    background: rgba(91, 255, 133, 0.08);
+    box-shadow: 0 0 12px var(--glow);
+  }
+  #unlock-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+  .lock-status {
+    margin-top: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--secondary);
+    letter-spacing: 0.05em;
+    min-height: 1em;
+  }
+  .lock-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ========== CONTENT ========== */
+  .content { padding-bottom: 3rem; }
+  .page-header { padding: 3rem 0 2rem; }
+  .private-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    margin-bottom: 1.2rem;
+  }
+  .page-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+  .page-title .accent {
+    color: var(--primary);
+    text-shadow: 0 0 24px var(--glow);
+  }
+  .page-lede {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 640px;
+  }
+  .block {
+    padding: 1.8rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .block-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .block p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .block blockquote {
+    border-left: 2px solid var(--primary);
+    padding-left: 1rem;
+    margin: 0.8rem 0 1rem;
+    color: var(--text);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+  }
+  .block ul li {
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: 2px solid var(--line);
+    margin-bottom: 0.3rem;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .block strong { color: var(--primary); font-weight: 500; }
+  .block em { color: var(--secondary); font-style: italic; }
+  .block.summary {
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    border-top: 1px solid var(--line-glow);
+    padding: 1.5rem;
+    margin: 2rem 0 0;
+  }
+  .summary-line { font-size: 17px !important; }
+
+  .content-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  #relock-btn {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  #relock-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  @media (max-width: 700px) {
+    .page-title { font-size: 32px; }
+    .lock-card { padding: 1.5rem 1.2rem; }
+    .lock-title { font-size: 28px; }
+  }
+</style>

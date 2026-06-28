@@ -12,7 +12,7 @@ export default defineConfig({
     mdx(),
     sitemap({
       // Exclude private/unlinked pages from the sitemap so search engines don't discover them.
-      filter: (page) => !page.includes('/workout'),
+      filter: (page) => !page.includes('/workout') && !page.includes('/cheatsheet'),
     }),
   ],
 });
