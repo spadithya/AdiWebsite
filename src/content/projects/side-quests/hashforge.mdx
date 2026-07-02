@@ -1,0 +1,129 @@
+---
+title: "hashforge: Password Security Toolkit"
+summary: "Three Python tools behind one CLI covering the password lifecycle: entropy audit with breach-check via HIBP k-anonymity, ranked hash identification, and dictionary-attack driver over John the Ripper and Hashcat. Standard library only, no third-party crypto."
+year: 2026
+status: completed
+category: side-quests
+tags: ["Cybersecurity", "Python", "Cryptography", "Password Security", "HIBP", "John the Ripper", "Hashcat", "CLI Tool"]
+featured: false
+order: 5
+heroImage: "/images/projects/hashforge/hashforge-hero.png"
+role: "Solo build"
+links:
+  - label: "Watch the asciinema demo"
+    url: "https://asciinema.org/a/4oIBON0aP3smOHOG"
+---
+
+import AsciinemaEmbed from '../../../components/AsciinemaEmbed.astro';
+
+## Overview
+
+`hashforge` is three small Python tools behind one CLI, covering the password-handling lifecycle end to end: is this password any good, what algorithm produced this hash, and can we crack it. Standard library plus one optional dependency (`requests`, only used when the entropy tool hits Have I Been Pwned). Deliberately standard-library-only, because the point wasn't to replace `hashcat`. It was to understand what `hashcat` does, and why the cracking part is the smallest part of the pipeline.
+
+## Why I built it
+
+Mission 2 in my cybersecurity learning track. Portwalker (mission 1) taught the network layer: how a scanner sees the outside of a system. `hashforge` covers what happens once you have the hashes.
+
+Password entropy, hash identification, and dictionary attacks are three different disciplines with three different textbooks. Building a tool that touches all three forces you to actually understand each one, not just recite the buzzwords. The interesting insight the project taught me: **hash identification is what makes cracking possible.** Hashcat needs the format flag before it can do anything. Once you can identify the algorithm, the "cracking" is a subprocess call.
+
+## The three tools
+
+### `entropy`, is this password any good?
+
+Scores a password's Shannon entropy in bits, based on length and character-set complexity. With `--hibp`, it also checks whether the password has appeared in a real breach. The HIBP check uses **k-anonymity**: only the first 5 characters of the password's SHA-1 leave your machine, then HIBP returns every matching hash suffix and the checker completes locally. Your password never gets transmitted, only a five-hex-char prefix of its hash.
+
+### `identify`, what algorithm hashed this?
+
+Given an unknown hash string, returns **ranked guesses** at the algorithm from prefix, length, and character-set analysis. MD5 (32 hex chars), NTLM (also 32 hex chars, byte-identical to MD5), SHA-1 (40), SHA-256 (64), bcrypt (starts with `$2a$` / `$2b$` / `$2y$`), and a few dozen more.
+
+Ranked because a lot of hash formats are visually indistinguishable. Only context can break a tie between MD5 and NTLM. The tool ranks candidates by likelihood and lets the operator decide, instead of pretending to be certain.
+
+### `crack`, can we actually crack it?
+
+A thin, friendly wrapper over John the Ripper and Hashcat. Given a hash file, `crack` peeks at the first hash, asks `identify` for the format, and drives John (or Hashcat, if you ask) with the right `--format` flag. Dictionary attacks by default, mask attacks via `--mode mask`.
+
+The point wasn't to write a new cracker. It was to make John's flag ecosystem invisible when you know what you're doing but forgot the exact incantation.
+
+## Show, don't tell
+
+**Entropy: length actually beats complexity.**
+
+```console
+$ python hashforge.py entropy "Tr0ub4dor&3"
+       length : 11
+    char pool : 94
+      entropy : 72.1 bits
+     strength : strong
+
+$ python hashforge.py entropy "correct horse battery staple"
+       length : 28
+    char pool : 36
+      entropy : 144.8 bits
+     strength : very strong
+```
+
+The xkcd result, empirically confirmed. The passphrase has twice the entropy despite using a smaller character set.
+
+**Entropy + HIBP: why the math alone lies.**
+
+```console
+$ python hashforge.py entropy "password" --hibp
+       length : 8
+    char pool : 26
+      entropy : 37.6 bits
+     strength : reasonable
+     breached : YES, seen 52,372,427 times
+```
+
+"password" looks reasonable by the math but has appeared in real breaches 52 million times. Only 5 characters of its SHA-1 (`5BAA6`) left the machine to learn that.
+
+**Identify: honest about ambiguity.**
+
+```console
+$ python hashforge.py identify 5f4dcc3b5aa765d61d8327deb882cf99
+algorithm      confidence  hashcat -m  john --format
+--------------------------------------------------------
+MD5            high        0           raw-md5
+NTLM           medium      1000        nt
+MD4            low         900         raw-md4
+```
+
+MD5 and NTLM look identical on the wire (both 32 hex chars). The tool ranks rather than lies.
+
+**Crack: auto-detects, then runs.**
+
+```console
+$ python3 hashforge.py crack samples/weak_md5.hash
+[hashforge] engine=john  format=raw-md5  attack=dict
+[hashforge] cracked 5:
+    ?  ->  password
+    ?  ->  123456
+    ?  ->  letmein
+    ?  ->  monkey
+    ?  ->  superman
+```
+
+No `--format` given. `crack` peeked at the hashes, called `identify`, added `--format=raw-md5`, and drove John. The friction between "I have a hash file" and "I have plaintext passwords" is the identification step, and the tool makes it invisible.
+
+## Demo
+
+<AsciinemaEmbed
+  id="4oIBON0aP3smOHOG"
+  caption="Entropy audit with HIBP, hash identification, and an end-to-end crack with John."
+/>
+
+## What this taught me
+
+- **Password entropy is an upper bound, not a truth.** The math assumes the attacker knows nothing about your password. In reality, common passwords are common, and entropy-based scores don't know that. HIBP is the check that grounds theory to reality.
+- **k-anonymity for breach checks.** You can query a database of 800+ million compromised passwords without ever sending the password itself. Send the first 5 chars of the SHA-1, receive back every matching suffix, complete the check locally. Beautiful applied cryptography, and it's what makes the "check my password" experience safe.
+- **Most hash formats are shape-collisions.** MD5, NTLM, MD4, and half a dozen others produce hashes that look byte-identical. Length and prefix disambiguation only get you partway; context does the rest. Cracking tools crash when you guess wrong, so the identification step is load-bearing.
+- **Length beats complexity.** Every character you add multiplies the search space by the size of your character set. A common-word passphrase has more entropy than a random 8-character string, and it's easier to remember.
+- **John and Hashcat are tools, not competitors.** John's dictionary attack against MD5 runs comfortably on CPU. Hashcat wins when you have a GPU and are attacking a slow hash (bcrypt, scrypt) at scale. Knowing which to reach for is the skill; `hashforge` makes the flag lookup automatic.
+
+## Ethical use
+
+Audit or crack hashes only on systems you own or are explicitly authorized to test. `hashforge`'s HIBP integration is deliberately k-anonymous. That care has to extend to everything else you do with it.
+
+## Stack
+
+Python 3.8 or newer, standard library, plus `requests` (only for the optional HIBP check). Drives John the Ripper and Hashcat as subprocesses. Tested on Kali; runs on any system with Python and the target engine installed.
