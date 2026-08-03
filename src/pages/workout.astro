@@ -1,186 +1,244 @@
 ---
 import Base from '../layouts/Base.astro';
 
+const weekTable = [
+  { day: 'Sun', morning: 'Mobility wake-up', evening: 'GYM · Heavy Full-Body (finish eating by 7pm, fast begins)' },
+  { day: 'Mon', morning: 'Mobility wake-up (fasted)', evening: 'Core · Grip · Overhead prep ~6:15pm, fasted, then break fast ~7pm' },
+  { day: 'Tue', morning: 'Push lift (20 min) [DB]', evening: 'Dance · pre-dance warm-up + post-dance cool-down' },
+  { day: 'Wed', morning: 'Deep mobility flow', evening: 'Lower Hypertrophy (30 min) [DB]' },
+  { day: 'Thu', morning: 'Pull lift (20 min) [DB]', evening: 'Dance · warm-up + cool-down' },
+  { day: 'Fri', morning: 'Mobility + light activation only', evening: 'Dance · warm-up + cool-down' },
+  { day: 'Sat', morning: 'Yoga & balance (30–40 min)', evening: 'PM: Arms + dance conditioning (30–40 min) [DB] · Night: Dance' },
+];
+
 const days = [
   {
-    day: 'Monday',
-    title: 'Lower Body Strength',
-    subtitle: 'hinge + squat',
-    morning: [
-      '3 min brisk walk/march',
-      '5 Sun Salutations',
-      "World's greatest stretch · 5 each side",
-      '10 slow air squats + 10 glute bridges',
-    ],
-    evening: {
-      intro: 'Warm up 3 min, then 4 rounds, rest 60 sec',
-      items: [
-        'Goblet / bodyweight squat · 12 reps [load]',
-        'Romanian deadlift (hip hinge) · 12 reps [load]',
-        'Reverse lunge · 10 each leg',
-        'Single-leg glute bridge · 10 each side',
-        'Calf raises · 20 reps',
-      ],
-    },
-    cooldown: 'Pigeon, seated forward fold, couch stretch · 60 sec each.',
-  },
-  {
-    day: 'Tuesday',
-    title: 'Upper Body Strength',
-    subtitle: 'push / pull / shoulders',
-    morning: [
-      '3 min march + arm circles, band/towel pull-aparts × 20',
-      '5 Sun Salutations',
-      'Scapular push-ups · 10',
-      'Wall slides · 10',
-    ],
-    evening: {
-      intro: 'Warm up 3 min, then 4 rounds, rest 60 sec',
-      items: [
-        'Push-ups (knees ok) · 8 to 12',
-        'Bent-over row · 12 [load] (or backpack/towel-under-door)',
-        'Overhead press · 10 [load] · key for lifting a partner overhead',
-        'Pike push-ups (shoulder strength) · 8',
-        'Superman hold · 3 × 15 sec',
-      ],
-    },
-    cooldown: "Doorway chest stretch, cross-body shoulder stretch, child's pose.",
-  },
-  {
-    day: 'Wednesday',
-    title: 'Mobility & Flexibility',
-    subtitle: 'active recovery',
-    morning: [
-      'Cat-cow × 10',
-      '5 slow Sun Salutations',
-      'Hip 90/90 transitions · 8 each side',
-      'Thoracic rotations · 10 each side',
-    ],
-    evening: {
-      intro: 'Deep flexibility · hold each 60 to 90 sec, breathe',
-      items: [
-        'Pigeon (each side)',
-        'Seated + standing forward fold (hamstrings)',
-        'Couch / quad stretch (each side)',
-        'Butterfly + straddle (groin · useful for dance stance)',
-        'Shoulder + thoracic opener over a chair',
-        'Deep squat hold · 2 min total',
-      ],
-    },
-    cooldown: null,
-  },
-  {
-    day: 'Thursday',
-    title: 'Full-Body Power',
-    subtitle: 'the "lift" day',
-    morning: [
-      '3 min jog in place',
-      '5 Sun Salutations',
-      '10 squat-to-stands, 10 inchworms',
-    ],
-    evening: {
-      intro: 'Warm up 4 min, then 4 rounds, rest 60 to 75 sec',
-      items: [
-        'Squat-to-overhead press (thruster) · 10 [load] · full lifting pattern',
-        'Deadlift / hip hinge · 10 [load]',
-        'Push-up to renegade row · 8 (5 each side if loaded)',
-        'Step-ups onto a sturdy chair · 10 each leg [load]',
-        'Hollow-body hold · 3 × 20 sec',
-      ],
-    },
-    cooldown: 'Full-body stretch, focus on hips and shoulders.',
-  },
-  {
-    day: 'Friday',
-    title: 'Core & Grip',
-    subtitle: 'the bracing + holding day',
-    morning: [
-      '3 min cardio (jumping jacks / high knees)',
-      '5 Sun Salutations',
-      'Bird-dog · 10 each side',
-    ],
-    evening: {
-      intro: 'Warm up 3 min, then 3 to 4 rounds, rest 45 sec',
-      items: [
-        'Plank · 45 sec',
-        'Side plank · 30 sec each side',
-        'Dead bug · 10 each side',
-        'Hanging hold or towel/door grip hold · 20 to 30 sec',
-        "Farmer's carry · 40 sec walk [load] (heavy as you can hold)",
-        'Russian twists · 20 total',
-      ],
-    },
-    cooldown: "Spinal twists, child's pose, wrist/forearm stretches.",
-  },
-  {
-    day: 'Saturday',
-    title: 'Dance Conditioning + Cardio',
-    subtitle: '',
-    morning: [
-      '3 min cardio',
-      '5 Sun Salutations',
-      'Balance work: single-leg stand 30 sec each, eyes closed if steady',
-    ],
-    evening: {
-      intro: 'Circuit, 4 rounds, minimal rest, keep moving',
-      items: [
-        'Jump squats · 15',
-        'Mountain climbers · 30 sec',
-        'Lateral lunges · 10 each side (dance footwork)',
-        'Lunge-to-knee-drive (balance + control) · 8 each leg',
-        'Burpees · 8',
-        'Quick-feet shuffle · 30 sec',
-      ],
-    },
-    cooldown: 'Full lower-body stretch, calves and ankles especially.',
-  },
-  {
+    id: 'sunday',
     day: 'Sunday',
-    title: 'Yoga & Rest',
-    subtitle: '',
-    morning: null,
-    evening: {
-      intro: 'One session, ~30 to 45 min, your call on timing',
-      items: [
-        'Full yoga flow you enjoy · prioritize hips, hamstrings, shoulders, spine',
-        'End with 5 min of stillness / breathing',
-        'Optional: light walk',
-        'No strength work · recovery is when you actually get stronger',
-      ],
-    },
+    subtitle: 'Gym Day · Heavy Full-Body',
+    tag: 'GYM',
+    intro: 'Go morning or midday. Eat a real post-workout meal after, and finish your last meal by ~7pm (fast starts). This is the week\'s main bulk stimulus. Treat it as non-negotiable as the fast.',
+    sessions: [
+      {
+        label: 'Main lift',
+        intro: 'Warm up 5–8 min (bike/row + empty-bar sets), then:',
+        items: [
+          'Barbell back squat OR leg press · 4 × 6–8',
+          'Bench press OR DB bench · 4 × 6–8',
+          'Lat pulldown OR pull-ups · 3 × 8–10',
+          'Overhead press (barbell or DB) · 3 × 6–8 · the partner-lift builder, never skip',
+          'Romanian deadlift · 3 × 8',
+          'Optional finisher: farmer\'s carry, 3 lengths, heavy',
+        ],
+      },
+    ],
+    cooldown: '5 min · hips, hamstrings, shoulders',
+    note: 'If you miss the gym, run this at home with dumbbells at 8–12 reps instead of 6–8. Don\'t skip the day.',
+  },
+  {
+    id: 'monday',
+    day: 'Monday',
+    subtitle: 'Fasted · Core · Grip · Overhead Prep',
+    tag: 'FASTED',
+    intro: 'Moderate on purpose. Legs and pressing are still recovering from Sunday. Evening runs 6:15–6:50pm, still fasted, finish right before breaking the fast at ~7pm.',
+    sessions: [
+      {
+        label: 'Morning (20 min, fasted)',
+        intro: 'The usual wake-up:',
+        items: [
+          '3 min walk/march',
+          '5 Sun Salutations',
+          'Cat-cow × 10',
+          'Hip 90/90 × 6 each side',
+        ],
+      },
+      {
+        label: 'Evening (~6:15–6:50pm, fasted)',
+        intro: '3–4 rounds, rest 45–60 sec:',
+        items: [
+          'Plank · 45–60 sec (partner-lift gate: own 60 sec cold)',
+          'Side plank · 30 sec each side',
+          'Hollow-body hold · 20–30 sec',
+          'Farmer\'s carry · 40 sec walk [DB], as heavy as your grip holds',
+          'Half-kneeling DB press · 8 each side (overhead stability under fatigue)',
+          'Dead bug · 10 each side',
+        ],
+      },
+    ],
+    cooldown: 'Then break the fast and eat big. That\'s the plan working, not cheating.',
+  },
+  {
+    id: 'tuesday',
+    day: 'Tuesday',
+    subtitle: 'AM Push Lift + Dance Night',
+    tag: 'DB',
+    intro: null,
+    sessions: [
+      {
+        label: 'Morning (20 min) [DB]',
+        intro: '3 min warm-up (arm circles, scap push-ups × 10, wall slides × 10), then 3 rounds, rest 60 sec:',
+        items: [
+          'DB overhead press · 8–10',
+          'Push-ups · 10–15 (elevate feet when easy)',
+          'Pike push-ups · 8',
+          'Lateral raises · 12–15 (light)',
+        ],
+      },
+      {
+        label: 'Evening · Dance night',
+        intro: 'See pre-dance and post-dance routines below.',
+        items: [],
+      },
+    ],
     cooldown: null,
+  },
+  {
+    id: 'wednesday',
+    day: 'Wednesday',
+    subtitle: 'Deep Mobility AM · Lower Hypertrophy PM',
+    tag: 'DB',
+    intro: null,
+    sessions: [
+      {
+        label: 'Morning (20 min) · flexibility',
+        intro: 'The week\'s dedicated flexibility session:',
+        items: [
+          '5 slow Sun Salutations',
+          'Hip 90/90 transitions · 8 each side',
+          'Deep squat hold · 2 min total',
+          'Straddle + butterfly · 60–90 sec each',
+          'Thoracic rotations + chair shoulder opener · 10 / 60 sec',
+        ],
+      },
+      {
+        label: 'Evening (30 min) [DB]',
+        intro: 'Warm up 3 min, then 4 rounds, rest 60 sec:',
+        items: [
+          'Goblet squat · 10–12',
+          'DB Romanian deadlift · 10–12',
+          'Reverse lunge · 8 each leg (hold DBs)',
+          'Single-leg glute bridge · 10 each side',
+          'Calf raises · 20 (hold DBs)',
+        ],
+      },
+    ],
+    cooldown: 'Pigeon, seated forward fold, couch stretch · 60 sec each',
+  },
+  {
+    id: 'thursday',
+    day: 'Thursday',
+    subtitle: 'AM Pull Lift + Dance Night',
+    tag: 'DB',
+    intro: null,
+    sessions: [
+      {
+        label: 'Morning (20 min) [DB]',
+        intro: '3 min warm-up (band/towel pull-aparts × 20, scap push-ups × 10), then 3 rounds, rest 60 sec:',
+        items: [
+          'Bent-over DB row · 10–12',
+          'Renegade row · 6 each side',
+          'Hammer curls · 10–12',
+          'Superman hold · 20 sec',
+          'Towel/DB grip hold · 30 sec',
+        ],
+      },
+      {
+        label: 'Evening · Dance night',
+        intro: 'Same pre-dance / post-dance routines as Tuesday.',
+        items: [],
+      },
+    ],
+    cooldown: null,
+  },
+  {
+    id: 'friday',
+    day: 'Friday',
+    subtitle: 'Recovery Valve + Dance Night',
+    tag: 'RECOVERY',
+    intro: 'Two dance nights are coming back-to-back. This morning protects them. Light on purpose.',
+    sessions: [
+      {
+        label: 'Morning (15–20 min)',
+        intro: 'Light on purpose:',
+        items: [
+          '3 min easy cardio',
+          '5 Sun Salutations',
+          'Bird-dog · 10 each side',
+          'World\'s greatest stretch · 5 each side',
+          'Optional, only if feeling fresh: 2 easy rounds of push-ups + air squats. If in doubt, skip.',
+        ],
+      },
+      {
+        label: 'Evening · Dance night',
+        intro: 'Same pre-dance / post-dance routines as Tuesday.',
+        items: [],
+      },
+    ],
+    cooldown: null,
+  },
+  {
+    id: 'saturday',
+    day: 'Saturday',
+    subtitle: 'Yoga AM · Arms & Dance PM · Dance Night',
+    tag: 'DB',
+    intro: null,
+    sessions: [
+      {
+        label: 'Morning (30–40 min) · Yoga',
+        intro: 'Full yoga flow you enjoy: hips, hamstrings, shoulders, spine. Add balance work.',
+        items: [
+          'Full yoga flow',
+          'Balance: single-leg stand 30 sec each side, eyes closed if steady',
+          'End with 5 min stillness / breathing',
+        ],
+      },
+      {
+        label: 'Afternoon (30–40 min) [DB]',
+        intro: 'Finish by ~4–5pm so you\'re fresh for dancing. Block 1: Arms & shoulders (pure-bulk block, doesn\'t dent Sunday\'s compounds or tonight\'s legs). 3 rounds, rest 45–60 sec:',
+        items: [
+          'DB curls · 10–12',
+          'Overhead triceps extension · 10–12',
+          'Lateral raises · 12–15 (light)',
+          'Rear-delt fly · 12–15 (light)',
+          'Wrist curls or towel wring-outs · 15 (grip volume)',
+        ],
+      },
+      {
+        label: 'Afternoon · Block 2 (dance conditioning)',
+        intro: '2–3 rounds, easy pace. Skill and footwork, not exhaustion:',
+        items: [
+          'Lateral lunges · 8 each side',
+          'Lunge-to-knee-drive · 6 each leg (balance + control)',
+          'Quick-feet shuffle · 20 sec',
+          'Single-leg calf raises · 10 each side, slow',
+        ],
+      },
+      {
+        label: 'Evening · Dance night',
+        intro: 'Same pre-dance / post-dance routines as Tuesday.',
+        items: [],
+      },
+    ],
+    cooldown: 'What stays out on purpose: heavy squats, hinges, and anything that leaves your legs or nervous system flat. Those belong to Sunday. If dragging, drop Block 2 first, then Block 1; yoga and dancing stay.',
   },
 ];
 
-const weeklyTargets = [
-  { day: 'Mon · Lower Strength', items: [
-    ['Goblet/BW Squat', '4 × 12'],
-    ['Romanian Deadlift', '4 × 12'],
-    ['Reverse Lunge', '4 × 10/leg'],
-    ['Single-leg Glute Bridge', '4 × 10/side'],
-    ['Calf Raises', '4 × 20'],
-  ]},
-  { day: 'Tue · Upper Strength', items: [
-    ['Push-ups', '4 × 8 to 12'],
-    ['Bent-over Row', '4 × 12'],
-    ['Overhead Press', '4 × 10'],
-    ['Pike Push-ups', '4 × 8'],
-    ['Superman Hold', '3 × 15s'],
-  ]},
-  { day: 'Thu · Full-Body Power', items: [
-    ['Thruster (Squat+Press)', '4 × 10'],
-    ['Deadlift / Hip Hinge', '4 × 10'],
-    ['Push-up + Renegade Row', '4 × 8'],
-    ['Step-ups', '4 × 10/leg'],
-    ['Hollow-body Hold', '3 × 20s'],
-  ]},
-  { day: 'Fri · Core & Grip', items: [
-    ['Plank', '4 × 45s'],
-    ['Side Plank', '4 × 30s/side'],
-    ['Dead Bug', '4 × 10/side'],
-    ['Grip Hold', '4 × 20 to 30s'],
-    ["Farmer's Carry", '4 × 40s walk'],
-  ]},
+const preDance = [
+  'Leg swings · 10 each direction',
+  'Hip circles · 10 each side',
+  '10 air squats',
+  '10 lateral lunges',
+  'Ankle rolls',
+  '20 quick-feet in place',
+];
+
+const postDance = [
+  'Slow standing forward fold · 60 sec',
+  'Pigeon · 60 sec each side',
+  'Couch stretch · 45 sec each side',
+  'Doorway chest stretch · 45 sec',
+  '10 slow nasal breaths lying down',
+  'Lights out by 11:30pm',
 ];
 ---
 
@@ -191,103 +249,160 @@ const weeklyTargets = [
 >
   <header class="page-header">
     <div class="private-badge">▸ PRIVATE · NOT INDEXED</div>
-    <h1 class="page-title">7-Day <span class="accent">Workout</span>.</h1>
+    <h1 class="page-title">Bulk · Dance <span class="accent">Flexibility</span> · Partner-Lift Strength</h1>
     <p class="page-lede">
-      Strength · Structure · Flexibility. Built for country swing dancing: a braced core, strong posterior chain, stable shoulders, real grip strength, and the flexibility to move cleanly.
+      Effective <strong>2026-08-03</strong>. Replaces the July baseline. Strength lifts are morning; evenings are for dance (Tue/Thu/Fri/Sat) or heavy work (Sun/Mon/Wed). Sunday is the gym day; Monday runs fasted.
     </p>
 
     <div class="quick-info">
       <div class="info-row">
-        <div class="info-label">Daily split</div>
-        <div class="info-value">20 min morning · 30 min evening (60 to 90 min post-dinner)</div>
-      </div>
-      <div class="info-row">
         <div class="info-label">Equipment</div>
-        <div class="info-value">Bodyweight + optional adjustable dumbbells (or loaded backpack)</div>
+        <div class="info-value">Adjustable dumbbells [DB] at home; gym on Sundays [GYM]</div>
       </div>
       <div class="info-row">
-        <div class="info-label">[load] marker</div>
-        <div class="info-value">Exercise benefits most from added weight</div>
+        <div class="info-label">Fasting</div>
+        <div class="info-value">Monday: fast until ~7pm, evening session runs 6:15–6:50pm fasted</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Dance nights</div>
+        <div class="info-value">Tue · Thu · Fri · Sat</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Goal</div>
+        <div class="info-value">Bulk with partner-lift strength; every muscle ~2 quality touches/week</div>
       </div>
     </div>
   </header>
 
-  <section class="weekly-shape">
-    <div class="section-label"><span class="num">▸</span>Weekly shape</div>
-    <ul class="shape-list">
-      <li><strong>Mon</strong> · Lower Strength <span class="dim">(hinge + squat · the lifting base)</span></li>
-      <li><strong>Tue</strong> · Upper Strength <span class="dim">(push/pull + shoulders)</span></li>
-      <li><strong>Wed</strong> · Mobility & Flexibility <span class="dim">(active recovery)</span></li>
-      <li><strong>Thu</strong> · Full-Body Power <span class="dim">(the "lift" prep day)</span></li>
-      <li><strong>Fri</strong> · Core & Grip</li>
-      <li><strong>Sat</strong> · Dance-Specific Conditioning + Cardio</li>
-      <li><strong>Sun</strong> · Yoga & Rest</li>
+  <section class="changes-callout">
+    <div class="callout-label">▸ What changed from July's plan</div>
+    <ul>
+      <li>Tue/Thu/Fri evenings no longer hold strength sessions. Those are dance nights now.</li>
+      <li>Strength moved to Sun/Mon/Wed evenings and short Tue/Thu <strong>morning</strong> lifts.</li>
+      <li>Saturday is now treated as a consistent dance night.</li>
+      <li>Sunday is the gym day: the one heavy barbell/machine session per week.</li>
+      <li>Monday's session runs <strong>fasted, before the ~7pm fast-break</strong> (train, then eat big).</li>
+      <li>Volume upgraded for the bulk goal, with recovery guardrails because history says overload costs whole weeks.</li>
     </ul>
   </section>
 
+  <section class="week-section">
+    <div class="section-label"><span class="num">▸</span>Week at a glance</div>
+    <div class="week-table-wrap">
+      <table class="week-table">
+        <thead>
+          <tr><th>Day</th><th>Morning (~20 min)</th><th>Evening</th></tr>
+        </thead>
+        <tbody>
+          {weekTable.map((row) => (
+            <tr>
+              <td class="wt-day"><a href={`#${row.day.toLowerCase()}`}>{row.day}</a></td>
+              <td>{row.morning}</td>
+              <td>{row.evening}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="dim">Every muscle group gets ~2 quality touches per week. Friday morning is deliberately light: the recovery valve before the Fri/Sat back-to-back dance nights.</p>
+  </section>
+
   {days.map((d) => (
-    <section class="day-block" id={d.day.toLowerCase()}>
+    <section class="day-block" id={d.id}>
       <div class="day-header">
-        <div class="day-name">{d.day}</div>
-        <h2 class="day-title">{d.title}{d.subtitle && <span class="day-subtitle"> · {d.subtitle}</span>}</h2>
+        <div class="day-name">{d.day}{d.tag && <span class="day-tag">{d.tag}</span>}</div>
+        <h2 class="day-title">{d.subtitle}</h2>
       </div>
 
-      {d.morning && (
-        <div class="session">
-          <div class="session-label">Morning · 20 min</div>
-          <ul class="session-list">
-            {d.morning.map((item) => <li>{item}</li>)}
-          </ul>
-        </div>
-      )}
+      {d.intro && <p class="day-intro">{d.intro}</p>}
 
-      {d.evening && (
+      {d.sessions.map((s) => (
         <div class="session">
-          <div class="session-label">{d.morning ? 'Evening · 30 min' : 'Session'}</div>
-          {d.evening.intro && <p class="session-intro">{d.evening.intro}</p>}
-          <ul class="session-list">
-            {d.evening.items.map((item) => <li>{item}</li>)}
-          </ul>
+          <div class="session-label">{s.label}</div>
+          {s.intro && <p class="session-intro">{s.intro}</p>}
+          {s.items.length > 0 && (
+            <ul class="session-list">
+              {s.items.map((item) => <li>{item}</li>)}
+            </ul>
+          )}
         </div>
-      )}
+      ))}
 
       {d.cooldown && (
         <div class="cooldown">
-          <span class="cooldown-label">Cooldown:</span> {d.cooldown}
+          <span class="cooldown-label">Notes:</span> {d.cooldown}
+        </div>
+      )}
+
+      {d.note && (
+        <div class="day-note">
+          <span class="note-label">▸</span> {d.note}
         </div>
       )}
     </section>
   ))}
 
-  <section class="targets">
-    <div class="section-label"><span class="num">▸</span>Week-1 targets · quick reference</div>
-    <p class="dim">Same structure for 4 weeks. Each week, nudge ONE thing up: +1 to 2 reps, +1 round, slower tempo, or more weight. 10 lb dumbbells: great for press, rows, lunges, step-ups, goblet squats.</p>
-    <div class="targets-grid">
-      {weeklyTargets.map((group) => (
-        <div class="target-block">
-          <h3>{group.day}</h3>
-          <table>
-            {group.items.map(([name, target]) => (
-              <tr><td>{name}</td><td>{target}</td></tr>
-            ))}
-          </table>
-        </div>
-      ))}
+  <section class="dance-routines" id="dance-routines">
+    <div class="section-label"><span class="num">▸</span>Pre-dance / Post-dance</div>
+    <p class="dim">Same routines every dance night (Tue/Thu/Fri/Sat).</p>
+    <div class="dance-grid">
+      <div class="dance-block">
+        <h3>Pre-dance <span class="dim">(5–10 min, in the parking lot)</span></h3>
+        <ul class="session-list">
+          {preDance.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="dance-block">
+        <h3>Post-dance <span class="dim">(≤10 min, home ~11:15pm)</span></h3>
+        <ul class="session-list">
+          {postDance.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
     </div>
   </section>
 
   <section class="progression">
-    <div class="section-label"><span class="num">▸</span>Progression rules</div>
-    <ul class="progression-list">
-      <li><strong>Weeks 1 to 2:</strong> Nail the form and the routine. Use lighter loads / fewer reps if needed.</li>
-      <li><strong>Every week after:</strong> Add a little · +1 to 2 reps, +1 round, or more weight on [load] moves. This is how strength builds toward lifts.</li>
-      <li><strong>The lift itself:</strong> Don't force a partner lift until you can comfortably overhead-press a meaningful load and hold a strong plank for 60 sec. Build the base first; the lift becomes safe and easy.</li>
-      <li><strong>Listen to your body:</strong> Soreness is fine, joint pain is not. Take an extra rest day if needed.</li>
+    <div class="section-label"><span class="num">▸</span>Progression rules · double progression, weekly</div>
+    <ol class="progression-list">
+      <li>Each exercise has a rep range (e.g. 6–8). Start at the bottom with a load you could do ~2 more reps with.</li>
+      <li>Add reps week to week. When you hit the top of the range on <strong>all</strong> sets, add load (smallest jump available) and drop back to the bottom.</li>
+      <li>Gym lifts (Sunday) progress in load; morning DB lifts progress reps-first since jumps are bigger.</li>
+    </ol>
+    <div class="gate-callout">
+      <div class="gate-label">▸ Partner-lift gate (measurable)</div>
+      <p>Comfortable DB or barbell overhead press at a meaningful load <strong>plus</strong> a 60-sec unbroken plank. When both are routine, we program actual lift practice.</p>
+    </div>
+  </section>
+
+  <section class="recovery">
+    <div class="section-label"><span class="num">▸</span>Recovery rules · read these</div>
+    <ul class="recovery-list">
+      <li><strong>Every 5th week is a deload.</strong> Halve the rounds/sets everywhere; keep all mobility and dance. Put it on the calendar in advance; don't wait to earn it.</li>
+      <li><strong>Soreness is fine. Joint pain is not.</strong> Pain in a joint means stop that movement and log it.</li>
+      <li><strong>"Run down" means back off.</strong> Scratchy throat, bad sleep, dragging through mornings: drop the next 1–2 strength sessions entirely, keep only mobility and dancing (or skip dancing too if it's real). You lose nothing in a bulk by resting 2 days; you lose a week by pushing.</li>
+      <li>If a dance night runs late or sleep breaks 11:30 badly, the next morning lift becomes mobility-only. Sleep outranks volume.</li>
     </ul>
   </section>
 
+  <section class="nutrition">
+    <div class="section-label"><span class="num">▸</span>Nutrition (handoff to mise-en-place)</div>
+    <ul class="nutrition-list">
+      <li><strong>Protein: ~1.8 g per kg bodyweight per day</strong>, every day including Monday's eating window. Front-load protein into the fast-break meal and after.</li>
+      <li><strong>Surplus: ~250–350 kcal above maintenance</strong> on average. Monday's fast pulls the weekly average down; Sun (post-gym) and Tue–Sat need to compensate, especially the Sunday post-workout meal.</li>
+      <li>Real breakfasts on lifting mornings (Tue/Thu after the AM lift is the natural slot).</li>
+    </ul>
+    <p class="dim">Still needed to make these concrete: current bodyweight, and whether "bulk" has a kg/timeframe target. Log both when known.</p>
+  </section>
+
+  <section class="track">
+    <div class="section-label"><span class="num">▸</span>Track it</div>
+    <p>After each session, add one line to <code>logs/training-log.md</code>:</p>
+    <pre class="track-line">date · session · loads/reps that moved · easy / right / too hard · anything sore or off</pre>
+    <p class="dim">After 2–3 weeks of lines, review and progress the plan.</p>
+  </section>
+
   <footer class="page-footer">
-    <div class="dim">Last updated · June 2026 · Page is unlinked + noindex'd. URL only, do not share.</div>
+    <div class="dim">Last updated · August 2026 · Page is unlinked + noindex'd. URL only, do not share.</div>
   </footer>
 </Base>
 
@@ -307,10 +422,10 @@ const weeklyTargets = [
   }
   .page-title {
     font-family: var(--font-display);
-    font-size: 56px;
+    font-size: 48px;
     font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
     margin: 0 0 1rem;
   }
   .page-title .accent {
@@ -318,11 +433,13 @@ const weeklyTargets = [
     text-shadow: 0 0 24px var(--glow);
   }
   .page-lede {
-    font-size: 17px;
+    font-size: 16px;
     color: var(--muted);
-    max-width: 640px;
+    max-width: 720px;
     margin-bottom: 2rem;
+    line-height: 1.6;
   }
+  .page-lede strong { color: var(--primary); font-weight: 500; }
   .quick-info {
     display: grid;
     grid-template-columns: 1fr;
@@ -348,25 +465,88 @@ const weeklyTargets = [
   }
   .info-value { color: var(--text); }
 
-  .weekly-shape { padding: 1.5rem 0 2rem; }
-  .shape-list { list-style: none; padding: 0; margin: 0; }
-  .shape-list li { padding: 0.4rem 0; font-size: 15px; }
-  .shape-list strong {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--primary);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    display: inline-block;
-    min-width: 50px;
+  .changes-callout {
+    margin: 2rem 0;
+    padding: 1.4rem 1.6rem;
+    background: linear-gradient(135deg, rgba(255, 179, 71, 0.06), transparent);
+    border: 1px solid var(--line-glow);
+    border-left: 3px solid var(--accent);
   }
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+  .changes-callout ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .changes-callout li {
+    padding: 0.35rem 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .changes-callout strong { color: var(--primary); font-weight: 500; }
+
+  .week-section { padding: 2rem 0; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+  }
+  .section-label .num { color: var(--primary); margin-right: 0.6rem; }
+  .week-table-wrap { overflow-x: auto; }
+  .week-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 1rem;
+  }
+  .week-table th {
+    text-align: left;
+    padding: 0.7rem 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .week-table td {
+    padding: 0.7rem 0.8rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    vertical-align: top;
+  }
+  .week-table .wt-day {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    width: 60px;
+  }
+  .week-table .wt-day a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--line);
+  }
+  .week-table .wt-day a:hover { color: var(--secondary); border-color: var(--secondary); }
   .dim { color: var(--muted); font-size: 14px; }
 
   .day-block {
     padding: 2.5rem 0 2rem;
     border-top: 1px solid var(--line);
   }
-  .day-header { margin-bottom: 1.5rem; }
+  .day-header { margin-bottom: 1.2rem; }
   .day-name {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -374,22 +554,36 @@ const weeklyTargets = [
     color: var(--accent);
     text-transform: uppercase;
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .day-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 2px 6px;
+    background: rgba(91, 255, 133, 0.04);
   }
   .day-title {
     font-family: var(--font-display);
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.15;
     color: var(--text);
   }
-  .day-subtitle {
+  .day-intro {
+    font-size: 14px;
     color: var(--muted);
-    font-weight: 400;
-    font-size: 22px;
+    line-height: 1.6;
+    margin: 0.6rem 0 1rem;
+    font-style: italic;
   }
   .session {
-    margin: 1rem 0 1.5rem;
+    margin: 0.8rem 0 1.2rem;
   }
   .session-label {
     font-family: var(--font-mono);
@@ -416,6 +610,7 @@ const weeklyTargets = [
     margin-bottom: 0.3rem;
     font-size: 15px;
     color: var(--text);
+    line-height: 1.5;
   }
   .session-list li:hover {
     border-left-color: var(--primary);
@@ -437,71 +632,126 @@ const weeklyTargets = [
     text-transform: uppercase;
     margin-right: 0.4rem;
   }
+  .day-note {
+    margin-top: 0.8rem;
+    padding: 0.7rem 0.9rem;
+    background: rgba(255, 179, 71, 0.05);
+    border-left: 2px solid var(--accent);
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .note-label { color: var(--accent); font-weight: 500; margin-right: 0.3rem; }
 
-  .targets {
+  .dance-routines {
     padding: 3rem 0 2rem;
     border-top: 1px solid var(--line);
   }
-  .targets-grid {
+  .dance-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
   }
-  .target-block {
+  .dance-block {
     background: var(--bg-card);
     border: 1px solid var(--line);
-    padding: 1rem 1.2rem;
+    padding: 1.2rem 1.4rem;
   }
-  .target-block h3 {
+  .dance-block h3 {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--primary);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
   }
-  .target-block table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  .target-block td {
-    padding: 4px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .target-block td:last-child {
+  .dance-block h3 .dim {
     font-family: var(--font-mono);
-    color: var(--secondary);
-    text-align: right;
-    font-size: 12px;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.04em;
+    margin-left: 0.4rem;
   }
 
-  .progression {
-    padding: 3rem 0 2rem;
+  .progression, .recovery, .nutrition, .track {
+    padding: 3rem 0 1rem;
     border-top: 1px solid var(--line);
   }
-  .progression-list {
+  .progression-list, .recovery-list, .nutrition-list {
     list-style: none;
     padding: 0;
-    margin: 1rem 0 0;
+    margin: 0.8rem 0;
+    counter-reset: item;
   }
-  .progression-list li {
-    padding: 0.7rem 0;
+  .progression-list li, .recovery-list li, .nutrition-list li {
+    padding: 0.7rem 0 0.7rem 1rem;
     font-size: 15px;
     color: var(--text);
     border-bottom: 1px solid var(--line);
+    line-height: 1.55;
   }
-  .progression-list li:last-child { border-bottom: none; }
-  .progression-list strong {
+  .progression-list li { counter-increment: item; position: relative; padding-left: 2rem; }
+  .progression-list li::before {
+    content: counter(item);
+    position: absolute;
+    left: 0;
+    font-family: var(--font-mono);
+    color: var(--primary);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    top: 0.85rem;
+  }
+  .progression-list li:last-child, .recovery-list li:last-child, .nutrition-list li:last-child { border-bottom: none; }
+  .progression-list strong, .recovery-list strong, .nutrition-list strong {
     color: var(--primary);
     font-weight: 500;
+  }
+
+  .gate-callout {
+    margin-top: 1.5rem;
+    padding: 1rem 1.3rem;
+    background: var(--bg-card);
+    border: 1px solid var(--line-glow);
+    border-left: 3px solid var(--primary);
+  }
+  .gate-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  .gate-callout p {
+    font-size: 14px;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .gate-callout strong { color: var(--secondary); font-weight: 500; }
+
+  .track-line {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 0.7rem 0.9rem;
     font-family: var(--font-mono);
     font-size: 12px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-right: 0.5rem;
+    color: var(--secondary);
+    letter-spacing: 0.02em;
+    overflow-x: auto;
+    margin: 0.7rem 0;
   }
+  .track code {
+    font-family: var(--font-mono);
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 2px 6px;
+    color: var(--secondary);
+    font-size: 12px;
+  }
+  .track p { font-size: 14px; color: var(--text); }
 
   .page-footer {
     padding: 2rem 0 2rem;
@@ -513,9 +763,9 @@ const weeklyTargets = [
   }
 
   @media (max-width: 700px) {
-    .page-title { font-size: 38px; }
-    .day-title { font-size: 24px; }
-    .day-subtitle { font-size: 18px; }
+    .page-title { font-size: 34px; }
+    .day-title { font-size: 22px; }
     .info-row { grid-template-columns: 1fr; gap: 0.2rem; }
+    .info-label { font-size: 9px; }
   }
 </style>
