@@ -394,13 +394,6 @@ const postDance = [
     <p class="dim">Still needed to make these concrete: current bodyweight, and whether "bulk" has a kg/timeframe target. Log both when known.</p>
   </section>
 
-  <section class="track">
-    <div class="section-label"><span class="num">▸</span>Track it</div>
-    <p>After each session, add one line to <code>logs/training-log.md</code>:</p>
-    <pre class="track-line">date · session · loads/reps that moved · easy / right / too hard · anything sore or off</pre>
-    <p class="dim">After 2–3 weeks of lines, review and progress the plan.</p>
-  </section>
-
   <footer class="page-footer">
     <div class="dim">Last updated · August 2026 · Page is unlinked + noindex'd. URL only, do not share.</div>
   </footer>
@@ -675,7 +668,7 @@ const postDance = [
     margin-left: 0.4rem;
   }
 
-  .progression, .recovery, .nutrition, .track {
+  .progression, .recovery, .nutrition {
     padding: 3rem 0 1rem;
     border-top: 1px solid var(--line);
   }
@@ -731,27 +724,6 @@ const postDance = [
     line-height: 1.55;
   }
   .gate-callout strong { color: var(--secondary); font-weight: 500; }
-
-  .track-line {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    padding: 0.7rem 0.9rem;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--secondary);
-    letter-spacing: 0.02em;
-    overflow-x: auto;
-    margin: 0.7rem 0;
-  }
-  .track code {
-    font-family: var(--font-mono);
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    padding: 2px 6px;
-    color: var(--secondary);
-    font-size: 12px;
-  }
-  .track p { font-size: 14px; color: var(--text); }
 
   .page-footer {
     padding: 2rem 0 2rem;
