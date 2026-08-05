@@ -1,0 +1,73 @@
+---
+title: "Photo Classifier: Transfer Learning on 445 Photos"
+summary: "ResNet18 fine-tuned to sort personal photos into six categories (people, documents, landscape, adi, food, lab). Frozen-backbone baseline beat full fine-tuning at 97.8% vs 95.5% validation accuracy on a 445-image dataset. Ships as a Streamlit web app plus a CLI that streams thousands of photos from disk."
+year: 2026
+status: completed
+category: side-quests
+tags: ["Machine Learning", "Transfer Learning", "PyTorch", "ResNet18", "CNN", "Streamlit", "Computer Vision"]
+featured: false
+order: 6
+heroImage: "/images/projects/photo-classifier/hero.png"
+role: "Solo build"
+links:
+  - label: "Try the live demo"
+    url: "https://spadida-photo-classifier.streamlit.app"
+---
+
+## Overview
+
+`photo-classifier` is a small CNN that sorts a photo library into content categories: `people`, `documents`, `landscape`, `adi` (me), `food`, `lab`. Built on ResNet18 with transfer learning, and deployed two ways. A Streamlit web app for spot-checking and bulk-organizing via ZIP upload. A CLI that streams from disk for local libraries with thousands of photos. One trained model, two interfaces.
+
+## Why I built it
+
+Third project in my ML curriculum, after the Maricopa Housing regressor (tabular data) and the MNIST digit recognizer (deep learning from scratch). This one introduces **transfer learning**: reusing an ImageNet-pretrained network instead of training a vision model from zero.
+
+Building a photo classifier meant confronting a problem the previous projects didn't have: personal data at realistic scale. Thousands of my own photos on disk, no labels, no time to hand-tag them all. Transfer learning is the reason this is even possible with a small labeled seed set. The pretrained backbone already knows what edges, textures, and objects look like from ImageNet's million images. I only had to teach the last layer what *my* specific categories look like.
+
+## The setup
+
+Trained on **445 photos across 6 classes**, 80/20 train/val split. Roughly balanced categories, varied lighting and angles. Two models trained head-to-head on identical data.
+
+## Results
+
+| Approach | Trainable params | Best val accuracy |
+|---|---|---|
+| **Frozen ResNet18 + new head** (feature extraction) | 3,078 | **97.8%** |
+| Full fine-tuning (all layers unfrozen) | 11.2M | 95.5%, overfit |
+
+The frozen baseline won, and that's the shipped model. Full fine-tuning drove train accuracy to 100% while validation loss rose. Textbook overfitting: when 11.2M parameters meet ~356 training images, the network memorizes the training set and generalizes worse. **The simpler model won on the actual job.**
+
+## What the errors taught me
+
+Error analysis on the 2 validation misses was more revealing than the aggregate score:
+
+- **One was a screenshot I had mislabeled as `landscape`.** The model correctly said `documents`. Fixing the label brings effective accuracy to ~98.9%. The model caught a data bug I couldn't see myself.
+- **One was an `adi`→`people` confusion at low confidence.** An inherent overlap: both classes are humans, and the distinction is identity, which asks the model to do face recognition on top of scene classification. Fair miss.
+
+If I had only looked at the 97.8% number, I would have called it "good." Looking at the individual mistakes turned it into "97.8%, with one mislabeled example and one genuinely hard case." That's a very different story, and it's the story error analysis is meant to surface.
+
+## The two interfaces
+
+One model, two ways to reach for it.
+
+**Streamlit web app.** Sidebar toggle between *Quick test* (upload one photo, see top-3 predictions with confidence bars) and *Bulk organize* (upload a ZIP, get a sorted ZIP back with low-confidence photos routed to an `unsure/` folder for manual review). This is what the hero image at the top of this page shows: a HEIC of a plane interior classified as `people` at 71.5% confidence, with `lab` second at 23.7%.
+
+**CLI for local libraries.** Point it at a folder of thousands of photos. Streams from disk at constant memory (so it doesn't die on a 20k-photo `Pictures\` folder). Copies or moves photos into per-category subfolders, with a configurable confidence threshold. Anything the model isn't confident about lands in `unsure/` for manual review. Anything unreadable lands in `unreadable/`. Progress bar with ETA.
+
+The point of the two-interface design: the web app is for showing people how it works; the CLI is for actually using it on real libraries.
+
+## What this taught me
+
+- **Transfer learning is the entry ticket.** Loading a pretrained `torchvision` ResNet18 and mastering the freeze/unfreeze pattern is what made a 445-image dataset usable at all. Trying to train a CNN from scratch on that data would have overfit disastrously.
+- **Preprocessing has to match at inference.** ImageNet mean/std normalization and the 224×224 resize aren't cosmetic. If training and inference transforms differ, the model silently gets worse. Both need to be the exact same pipeline.
+- **Data augmentation is the tiny-dataset lever.** Random crop, flip, and color jitter multiply the effective size of the training set without collecting new photos. On 356 training images, this made the difference between usable and hopeless.
+- **Custom `Dataset` classes and stratified train/val splits.** The stock `ImageFolder` gets you started, but a real dataset with custom loading, augmentation, and class-balanced sampling needs your own `Dataset` subclass.
+- **Reading loss curves.** Training loss going down while validation loss goes up is the shape of overfitting. Once you've seen the curve once, you recognize it instantly the next time.
+- **Choose the simpler model when it generalizes better.** 11.2M trainable parameters lost to 3,078. Bigger isn't better. Matched-to-data is better.
+- **Mixed-precision (AMP) training** on a 6 GB laptop GPU. Halves the memory footprint of activations and gradients, roughly doubles training throughput. Made the difference between "fits in VRAM" and "doesn't."
+- **Error analysis beats the aggregate score.** Looking at what the model got wrong surfaced a labeling mistake in my own dataset. The mistakes are where the interesting information lives.
+- **Two-interface deployment.** One trained model, one shared inference module, two front-ends (web + CLI). The model file is committed; everything else is stateless code.
+
+## Stack
+
+Python 3.9 or newer, PyTorch, torchvision (for the pretrained ResNet18), Pillow, Streamlit for the web app. Trained on a 6 GB laptop GPU with AMP; inference is fast enough on CPU that the deployed app runs on Streamlit Community Cloud without a GPU.
